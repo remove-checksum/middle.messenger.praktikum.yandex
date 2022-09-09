@@ -1,0 +1,20 @@
+@import '/src/shared/variables.css';
+
+.button {
+  /* background-color: var(--colour-green from global); */
+  background-color: var(--colour-blue);
+  border: 0;
+  padding: var(--s-1) var(--s-2);
+  border-bottom: 2px solid var(--colour-dark-blue);
+  position: relative;
+  color: var(--colour-white);
+}
+
+.button:hover {
+  background-color: var(--colour-dark-blue);
+}
+
+.button:active {
+  color: var(--text-colour);
+  background-color: var(--colour-yellow);
+}
