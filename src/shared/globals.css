@@ -1,15 +1,44 @@
-body {
+@import './variables.css';
+@import './links.css';
+
+@font-face {
+  font-family: "Inter";
+  src: url('../assets/inter-v12-latin_cyrillic-regular.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Inter";
+  src: url('../assets//inter-v12-latin_cyrillic-600.woff2') format('woff2');
+  font-weight: 600;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont,
   'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
   'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
   font-size: var(--text-regular);
+  margin: 0;
 }
 
 h1 {
   font-size: var(--text-h1);
+  font-weight: 600;
+  margin: 0;
 }
 
 h2 {
   font-size: var(--text-h2);
+  font-weight: 600;
+  margin: 0;
+}
+
+p {
+  margin: 0;
 }

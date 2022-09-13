@@ -29,25 +29,25 @@
   --text-colour-secondary: var(--colour-dark-grey);
 
   /* Links */
-  --link-colour: var(--colour-blue);
-  --link-hover-colour: var(--colour-dark-blue);
-  --link-visited-colour: var(--colour-purple);
-  --link-active-colour: var(--colour-black);
+  --colour-link: var(--colour-blue);
+  --colour-link-hover: var(--colour-dark-blue);
+  --colour-link-visited: var(--colour-purple);
+  --colour-link-active: var(--colour-black);
 
   /* Focus state */
-  --focus-colour: var(--colour-yellow);
-  --focused-colour: var(--colour-black);
+  --colour-focus: var(--colour-yellow);
+  --colour-focused: var(--colour-black);
 
   /* State */
-  --error-colour: var(--colour-red);
-  --success-colour: var(--colour-green);
+  --colour-error: var(--colour-red);
+  --colour-success: var(--colour-green);
 
   /* Border */
-  --border-colour: var(--colour-mid-grey);
+  --colour-border: var(--colour-mid-grey);
 
   /* Inputs */
-  --input-border-colour: var(--colour-black);
-  --input-hover-colour: var(--colour-mid-grey);
+  --colour-input-border: var(--colour-black);
+  --colour-input-hover: var(--colour-mid-grey);
 
 
   /* Spacing */
@@ -63,10 +63,13 @@
   --s-9: 60px;
 
   /* Typography */
-
+  --text-smaller: 16px;
   --text-regular: 19px;
   --text-h1: 40px;
   --text-h2: 36px;
+
+  /* Util */
+  --util-darken: #000000;
 }
 
 
