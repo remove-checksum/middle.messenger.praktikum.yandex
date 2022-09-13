@@ -24,7 +24,7 @@
   color: var(--button-text-colour);
   cursor: pointer;
   font-size: var(--text-regular);
-  width: 15em;
+  min-width: 12em;
 }
 
 .button:hover {
