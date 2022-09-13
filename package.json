@@ -7,7 +7,8 @@
   },
   "scripts": {
     "start": "parcel serve src/index.hbs --no-cache",
-    "build": "parcel build src/pages/*.hbs"
+    "build": "parcel build src/pages/*.hbs",
+    "build:deploy": "parcel build src/pages/*.hbs"
   },
   "repository": {
     "type": "git",
