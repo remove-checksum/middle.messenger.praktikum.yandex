@@ -1,0 +1,49 @@
+@import '../../shared/variables.css';
+
+.page-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 95vh;
+}
+
+.signin-form__heading {
+  text-align: left;
+  align-self: flex-start;
+  margin-bottom: 105px;
+}
+
+.signin-form__card {
+  width: 550px;
+  background-color: var(--colour-light-pink);
+  border: 2px solid var(--colour-black);
+}
+
+.signin-form__wrapper {
+  padding-top: var(--s-8);
+  width: fit-content;
+  margin: 0 auto;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center; */
+}
+
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.signin-form__button {
+  margin-top: auto;
+  align-self: center;
+  margin-top: var(--s-9);
+}
+
+.signin-form__link {
+  align-self: center;
+  margin-bottom: var(--s-9);
+}

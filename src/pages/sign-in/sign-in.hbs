@@ -1,0 +1,24 @@
+---
+heading: Вход
+---
+
+{{#extend "page"}}
+  {{#content "stylesheet"}}
+    <link rel="stylesheet" href="./sign-in.css">
+  {{/content}}
+{{#content "content"}}
+  <main class="page-content">
+    <section class="signin-form__card">
+      <div class="signin-form__wrapper">
+        <h1 class="signin-form__heading">{{heading}}</h1>
+        <form action="#" class="signin-form">
+          {{> input/input type="text" label="Логин" placeholder="Введите имя пользователя"}}
+          {{> input/input type="password" label="Пароль" placeholder="Введите пароль"}}
+          {{> button/button text="Войти" type="submit" extraClass="signin-form__button"}}
+          <a href="../sign-up/sign-up" class="signin-form__link">Зарегистрироваться</a>
+        </form>
+      </div>
+    </section>
+  </main>
+{{/content}}
+{{/extend}}
