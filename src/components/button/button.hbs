@@ -1,3 +1,13 @@
-<button class="button">
-  Bottom text
+<button class="button
+  {{#if kind}}
+    button_{{kind}}
+  {{/if}}
+  {{#if small}}
+    button_small
+  {{/if}}
+  {{#if extraClass}}
+    {{extraClass}}
+  {{/if}}"
+  type="{{type}}">
+  {{text}}
 </button>

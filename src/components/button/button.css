@@ -1,20 +1,75 @@
-@import '/src/shared/variables.css';
+@import '../../shared/variables.css';
 
-.button {
-  /* background-color: var(--colour-green from global); */
-  background-color: var(--colour-blue);
+.button {  
+  --button-colour: var(--colour-green);
+  --button-hover-colour: color-mod(var(--colour-green) blend(var(--util-darken) 20%));
+  --button-shadow-colour: color-mod(var(--colour-green) blend(var(--util-darken) 60%));
+  --button-text-colour: var(--colour-white);
+
+  --secondary-button-colour: var(--colour-light-grey);
+  --secondary-button-hover-colour: color-mod(var(--colour-light-grey) blend(var(--util-darken) 10%));
+  --secondary-button-shadow-colour: color-mod(var(--colour-light-grey) blend(var(--util-darken) 40%));
+  --secondary-button-text-colour: var(--colour-black);
+
+  --warning-button-colour: var(--colour-red);
+  --warning-button-hover-colour: color-mod(var(--colour-red) blend(var(--util-darken) 20%));
+  --warning-button-shadow-colour: color-mod(var(--colour-red) blend(var(--util-darken) 40%));
+  --warning-button-text-colour: var(--colour-white);
+
+  background-color: var(--button-colour);
   border: 0;
-  padding: var(--s-1) var(--s-2);
-  border-bottom: 2px solid var(--colour-dark-blue);
+  padding: var(--s-2) var(--s-3);
+  box-shadow: 0 2px 0 var(--button-shadow-colour);
   position: relative;
-  color: var(--colour-white);
+  color: var(--button-text-colour);
+  cursor: pointer;
+  font-size: var(--text-regular);
+  width: 15em;
 }
 
 .button:hover {
-  background-color: var(--colour-dark-blue);
+  background-color: var(--button-hover-colour);
 }
 
-.button:active {
+.button:active:not(:disabled) {
+  top: 2px;
+  outline: 2px solid var(--colour-focus);
+}
+
+.button:focus:not(:active):not(:hover) {
+  color: var(--colour-focused);
+  outline: 0 transparent;
+  background-color: var(--colour-focus);
+  box-shadow: 0 2px 0 0 var(--colour-focused);
+  text-decoration: none;
+}
+
+.button:disabled {
+  opacity: .5;
+}
+
+.button_secondary {
   color: var(--text-colour);
-  background-color: var(--colour-yellow);
+  background-color: var(--colour-light-grey);
+  box-shadow: 0 2px 0 var(--colour-dark-grey);;
+}
+
+.button_secondary:hover {
+  background-color: var(--secondary-button-hover-colour);
+  outline: 0 transparent;
+}
+
+.button_warning {
+  color: var(--warning-button-text-colour);
+  background-color: var(--warning-button-colour);
+  box-shadow: 0 2px 0 var(--warning-button-shadow-colour);
+}
+
+.button_warning:hover {
+  background-color: var(--warning-button-hover-colour);
+  outline: 0 transparent;
+}
+
+.button_small {
+  width: 5em;
 }
