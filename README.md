@@ -51,10 +51,18 @@ npm run build
 
 ## Используемые технологии
 <a href="https://parceljs.org/" target="_blank">
-  <img width="120" align="left" src="https://raw.githubusercontent.com/parcel-bundler/website/v2/src/assets/og.png" alt="Parcel logo"/>
+  <img height="100" align="left" src="https://raw.githubusercontent.com/parcel-bundler/website/v2/src/assets/og.png" alt="Parcel logo"/>
 </a>
-
 
 <a href="https://handlebarsjs.com/" target="_blank">
-  <img width="120" src="https://raw.githubusercontent.com/handlebars-lang/docs/master/src/.vuepress/public/images/handlebars_logo.png" alt="Handlebars logo"/>
+  <img height="100" align="left" src="https://raw.githubusercontent.com/handlebars-lang/docs/master/src/.vuepress/public/images/handlebars_logo.png" alt="Handlebars logo"/>
 </a>
+
+<a href="https://postcss.org/" target="_blank">
+  <img height="100" align="left" src="https://postcss.org/logo.svg" alt="PostCSS logo"/>
+</a>
+
+<a href="https://expressjs.com/" target="_blank">
+  <img width="200" style="padding-top: 20px;" src="https://i.cloudup.com/zfY6lL7eFa-3000x3000.png" alt="Expressjs logo"/>
+</a>
+
