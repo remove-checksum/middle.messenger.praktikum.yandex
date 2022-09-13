@@ -1,0 +1,39 @@
+@import "../../shared/variables.css";
+
+.input {
+  border: 2px solid var(--colour-input-border);
+  font-size: inherit;
+  line-height: 23px;
+  padding: var(--s-2) var(--s-2);
+  width: 15em;
+}
+
+.input__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.input__label {
+  font-size: var(--text-regular);
+  color: var(--text-colour);
+  margin-left: var(--s-2);
+  margin-bottom: var(--s-1);
+}
+
+.input:focus {
+  outline: 3px solid var(--colour-focus);
+  box-shadow: inset 0 0 0 2px;
+}
+
+.input_warning {
+  border: 2px solid var(--colour-error);
+}
+
+
+.input__label_warning {
+  color: var(--colour-error);
+}
+
+.input_small {
+  width: 10em;
+}

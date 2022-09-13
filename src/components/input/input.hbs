@@ -1,0 +1,10 @@
+{{#if label}}
+<div class="input__wrapper">
+  <label class="input__label{{#if type}} input_{{type}}{{/if}}" for="label">
+    {{label}}
+  </label>
+  {{> input/input-element type=type placeholder=placeholder}}
+</div>
+{{else}}
+  {{> input/input-element type=type placeholder=placeholder}}
+{{/if}}
