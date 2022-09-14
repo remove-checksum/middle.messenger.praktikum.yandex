@@ -1,5 +1,29 @@
 {{#extend "page"}}
+  {{#content "stylesheet"}}
+    <link rel="stylesheet" href="./sign-up.css">
+  {{/content}}
   {{#content "content"}}
-      <h1>Sign-up</h1>
+      <section class="signup-card">
+          <h1 class="signup-card__heading">Регистрация</h1>
+          <form action="#" class="signup-form">
+            <div class="signup-form__row">
+              {{> input/input type="text" label="Имя" placeholder="Введите имя"}}
+              {{> input/input type="text" label="Фамилия" placeholder="Введите фамилию"}}
+            </div>
+            <div class="signup-form__row">
+              {{> input/input type="text" label="Логин" placeholder="Введите логин"}}
+            </div>
+            <div class="signup-form__row">
+              {{> input/input type="email" label="Почта" placeholder="Введите email"}}
+              {{> input/input type="tel" label="Фамилия" placeholder="Введите фамилию"}}
+            </div>
+            <div class="signup-form__row">
+              {{> input/input type="password" label="Пароль" placeholder="Введите пароль"}}
+              {{> input/input type="password" label="Повторите пароль" placeholder="Повторите пароль"}}
+            </div>
+            {{> button/button text="Зарегистрироваться" type="submit" extraClass="signup-form__button"}}
+            <a href="../sign-in/sign-in" class="signup-form__link">Войти</a>
+          </form>
+      </section>
   {{/content}}
 {{/extend}}
