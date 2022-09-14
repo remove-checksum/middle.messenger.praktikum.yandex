@@ -4,12 +4,7 @@
   width: 550px;
   background-color: var(--colour-light-pink);
   border: 2px solid var(--colour-black);
-}
-
-.signin-card__wrapper {
-  padding-top: var(--s-8);
-  width: 300px;
-  margin: 0 auto;
+  padding: var(--s-8) 125px;
 }
 
 .signin-card__heading {
@@ -25,7 +20,6 @@
 }
 
 .signin-form__button {
-  margin-top: auto;
   align-self: center;
   margin-top: var(--s-9);
   width: 100%;
@@ -33,5 +27,4 @@
 
 .signin-form__link {
   align-self: center;
-  margin-bottom: var(--s-9);
 }
