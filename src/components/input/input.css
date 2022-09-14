@@ -29,7 +29,6 @@
   border: 2px solid var(--colour-error);
 }
 
-
 .input__label_warning {
   color: var(--colour-error);
 }
