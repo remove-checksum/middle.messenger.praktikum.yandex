@@ -25,6 +25,14 @@ html {
   sans-serif;
   font-size: var(--text-regular);
   margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--colour-light-grey);
+  max-width: 1440px;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {

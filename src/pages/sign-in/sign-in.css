@@ -1,13 +1,5 @@
 @import '../../shared/variables.css';
 
-.page-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 95vh;
-}
-
 .signin-form__heading {
   text-align: left;
   align-self: flex-start;
