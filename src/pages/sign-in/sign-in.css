@@ -1,25 +1,20 @@
 @import '../../shared/variables.css';
 
-.signin-form__heading {
-  text-align: left;
-  align-self: flex-start;
-  margin-bottom: 105px;
-}
-
-.signin-form__card {
+.signin-card {
   width: 550px;
   background-color: var(--colour-light-pink);
   border: 2px solid var(--colour-black);
 }
 
-.signin-form__wrapper {
+.signin-card__wrapper {
   padding-top: var(--s-8);
   width: 300px;
   margin: 0 auto;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center; */
+}
+
+.signin-card__heading {
+  align-self: flex-start;
+  margin-bottom: 105px;
 }
 
 .signin-form {
