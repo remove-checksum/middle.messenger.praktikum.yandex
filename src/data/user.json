@@ -1,0 +1,34 @@
+{
+  "email": {
+    "label": "Почта",
+    "value": "email@mail.com",
+    "input_type": "email"
+  },
+  "login": {
+    "label": "Логин",
+    "value": "ivanov_ivan",
+    "input_type": "text"
+  },
+  "first_name": {
+    "label": "Имя",
+    "value": "Иван",
+    "input_type": "text"
+  },
+  "second_name": {
+    "label": "Фамилия",
+    "value": "Иванов",
+    "input_type": "text"
+  },
+  "display_name": {
+    "label": "Имя в чате",
+    "value": "Иван",
+    "input_type": "text"
+  },
+  "phone": {
+    "label": "Телефон",
+    "value": "+7 800 525 35 35",
+    "input_type": "tel"
+  },
+  "avatar_url": "../../assets/catpix.jpeg",
+  "redacting": true
+}

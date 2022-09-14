@@ -1,0 +1,18 @@
+<ul class="user-info">
+  {{#each user}}
+    {{#if this.label}}
+      <li class="user-info__row">
+          <span class="user-info__text">{{this.label}}</span>
+          {{#if ../user.redacting}}
+            {{> input/input has_label=false
+                            type=this.input_type
+                            value=this.value
+                            id=this.label
+                            name=@key
+                            extraClass="user-info__input"}}
+          {{else}}
+            <span class="user-info__text user-info__data">{{this.value}}</span>
+          {{/if}}
+    {{/if}}
+  {{/each}}
+</ul>

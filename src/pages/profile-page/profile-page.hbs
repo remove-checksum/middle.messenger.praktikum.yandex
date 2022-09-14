@@ -1,1 +1,21 @@
-<h1>Profile page</h1>
+{{#extend "page"}}
+  {{#content "stylesheet"}}
+    <link rel="stylesheet" href="./profile-page.css">
+    <script src="https://unpkg.com/phosphor-icons"></script>
+  {{/content}}
+  {{#content "content"}}
+      <section class="profile-page">
+        <button class="close-button profile-page__close-button">
+          <i class="ph-x close-button__icon">
+        </button>
+        <img src="{{user.avatar_url}}" alt="User avatar" class="profile-page__avatar">
+        <h2 class="profile-page__username">{{user.display_name.value}}</h2>
+        {{> profile-info/profile-info user=user}}
+        <div class="profile-page__action-buttons">
+          {{> button/button text="Изменить данные" extraClass="profile-page__button"}}
+          {{> button/button text="Изменить пароль" extraClass="profile-page__button"}}
+          {{> button/button text="Выйти" kind="warning" extraClass="profile-page__button"}}
+        </div>
+      </section>
+  {{/content}}
+{{/extend}}
