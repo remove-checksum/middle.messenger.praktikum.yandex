@@ -7,19 +7,40 @@
           <h1 class="signup-card__heading">Регистрация</h1>
           <form action="#" class="signup-form">
             <div class="signup-form__row">
-              {{> input/input type="text" label="Имя" placeholder="Введите имя"}}
-              {{> input/input type="text" label="Фамилия" placeholder="Введите фамилию"}}
+              {{> input/input type="text" 
+                              name="first_name" 
+                              label="Имя" 
+                              placeholder="Введите имя"}}
+              {{> input/input type="text" 
+                              name="second_name" 
+                              label="Фамилия" 
+                              placeholder="Введите фамилию"}}
             </div>
             <div class="signup-form__row">
-              {{> input/input type="text" label="Логин" placeholder="Введите логин"}}
+              {{> input/input type="text" 
+                              name="login" 
+                              label="Логин" 
+                              placeholder="Введите логин"}}
             </div>
             <div class="signup-form__row">
-              {{> input/input type="email" label="Почта" placeholder="Введите email"}}
-              {{> input/input type="tel" label="Фамилия" placeholder="Введите фамилию"}}
+              {{> input/input type="email" 
+                              name="email" 
+                              label="Почта" 
+                              placeholder="Введите email"}}
+              {{> input/input type="tel" 
+                              name="phone" 
+                              label="Фамилия" 
+                              placeholder="Введите фамилию"}}
             </div>
             <div class="signup-form__row">
-              {{> input/input type="password" label="Пароль" placeholder="Введите пароль"}}
-              {{> input/input type="password" label="Повторите пароль" placeholder="Повторите пароль"}}
+              {{> input/input type="password" 
+                              name="password" 
+                              label="Пароль" 
+                              placeholder="Введите пароль"}}
+              {{> input/input type="password" 
+                              name="password_repeat" 
+                              label="Повторите пароль" 
+                              placeholder="Повторите пароль"}}
             </div>
             {{> button/button text="Зарегистрироваться" type="submit" extraClass="signup-form__button"}}
             <a href="../sign-in/sign-in" class="signup-form__link">Войти</a>

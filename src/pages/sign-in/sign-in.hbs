@@ -6,8 +6,14 @@
     <section class="signin-card">
         <h1 class="signin-card__heading">Вход</h1>
         <form action="#" class="signin-form">
-          {{> input/input type="text" label="Логин" placeholder="Введите имя пользователя"}}
-          {{> input/input type="password" label="Пароль" placeholder="Введите пароль"}}
+          {{> input/input type="text" 
+                          name="login" 
+                          label="Логин" 
+                          placeholder="Введите имя пользователя"}}
+          {{> input/input type="password" 
+                          name="password" 
+                          label="Пароль" 
+                          placeholder="Введите пароль"}}
           {{> button/button text="Войти" type="submit" extraClass="signin-form__button"}}
           <a href="../sign-up/sign-up" class="signin-form__link">Зарегистрироваться</a>
         </form>
