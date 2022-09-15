@@ -33,7 +33,7 @@
 
 .button:active:not(:disabled) {
   top: 2px;
-  outline: 2px solid var(--colour-focus);
+  outline: 3px solid var(--colour-focus);
 }
 
 .button:focus:not(:active):not(:hover) {
