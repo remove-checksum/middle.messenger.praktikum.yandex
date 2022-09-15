@@ -7,11 +7,13 @@
     <section class="signin-card">
         <h1 class="signin-card__heading">Вход</h1>
         <form action="#" class="signin-form">
-          {{> input/input type="text" 
+          {{> input/input hasLabel=true
+                          type="text" 
                           name="login" 
                           label="Логин" 
                           placeholder="Введите имя пользователя"}}
-          {{> input/input type="password" 
+          {{> input/input hasLabel=true
+                          type="password" 
                           name="password" 
                           label="Пароль" 
                           placeholder="Введите пароль"}}

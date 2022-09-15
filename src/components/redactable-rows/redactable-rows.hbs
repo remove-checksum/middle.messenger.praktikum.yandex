@@ -1,18 +1,24 @@
 <ul class="user-info">
-  {{#each user}}
-    {{#if this.label}}
+  {{#if redacting}}
+    {{#each fields as |field|}}
+      {{#if field.name}}
+        <li class="user-info__row">
+            <span class="user-info__text">{{field.label}}</span>
+              {{> input/input has_label=false
+                              type=field.input_type
+                              value=field.value
+                              id=field.label
+                              name=field.name
+                              extraClass="user-info__input"}}
+      {{/if}}
+    {{/each}}
+  {{else}}
+    {{#each fields as |field|}}
+      {{#if field.name}}
       <li class="user-info__row">
-          <span class="user-info__text">{{this.label}}</span>
-          {{#if ../user.redacting}}
-            {{> input/input has_label=false
-                            type=this.input_type
-                            value=this.value
-                            id=this.label
-                            name=@key
-                            extraClass="user-info__input"}}
-          {{else}}
-            <span class="user-info__text user-info__data">{{this.value}}</span>
-          {{/if}}
-    {{/if}}
-  {{/each}}
+        <span class="user-info__text">{{field.label}}</span>
+        <span class="user-info__text user-info__data">{{field.value}}</span>
+      {{/if}}
+    {{/each}}
+  {{/if}}
 </ul>

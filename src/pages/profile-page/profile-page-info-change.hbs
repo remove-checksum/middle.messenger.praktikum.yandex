@@ -12,12 +12,8 @@
         </button>
         <img src="{{user.avatar_url}}" alt="User avatar" class="profile-page__avatar">
         <h2 class="profile-page__username">{{user.display_name.value}}</h2>
-        {{> redactable-rows/redactable-rows fields=user.fields redacting=false}}
-        <div class="profile-page__action-buttons">
-          {{> button/button text="Изменить данные" extraClass="profile-page__button"}}
-          {{> button/button text="Изменить пароль" extraClass="profile-page__button"}}
-          {{> button/button text="Выйти" kind="warning" extraClass="profile-page__button"}}
-        </div>
+        {{> redactable-rows/redactable-rows fields=user.fields redacting=true}}
+        {{> button/button text="Сохранить" extraClass="profile-page__save-button"}}
       </section>
   {{/content}}
 {{/extend}}
