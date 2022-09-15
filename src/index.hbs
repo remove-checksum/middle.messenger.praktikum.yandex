@@ -1,16 +1,7 @@
----
-routes:
-  - 404
-  - 500
-  - chat
-  - profile-page
-  - sign-in
-  - sign-up
----
 {{#extend "page"}}
   {{#content "content"}}
-    {{#each routes}}
-      <a href="./pages/{{this}}/{{this}}.hbs">{{this}}</a>
+    {{#each pages}}
+      <a href="./pages/{{@key}}/{{@key}}.hbs">{{@key}}</a>
     {{/each}}
   {{/content}}
 {{/extend}}
