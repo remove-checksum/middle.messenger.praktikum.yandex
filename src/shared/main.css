@@ -2,5 +2,5 @@
 @import './variables.css';
 @import '../components/button/button.css';
 @import '../components/input/input.css';
-@import '../components/profile-info/profile-info.css';
+@import '../components/redactable-rows/redactable-rows.css';
 

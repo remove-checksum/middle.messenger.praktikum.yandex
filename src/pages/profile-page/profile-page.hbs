@@ -12,7 +12,7 @@
         </button>
         <img src="{{user.avatar_url}}" alt="User avatar" class="profile-page__avatar">
         <h2 class="profile-page__username">{{user.display_name.value}}</h2>
-        {{> profile-info/profile-info user=user}}
+        {{> redactable-rows/redactable-rows user=user}}
         <div class="profile-page__action-buttons">
           {{> button/button text="Изменить данные" extraClass="profile-page__button"}}
           {{> button/button text="Изменить пароль" extraClass="profile-page__button"}}
