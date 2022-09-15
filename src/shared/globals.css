@@ -30,7 +30,7 @@ html {
 
 body {
   background-color: var(--colour-light-grey);
-  max-width: 1440px;
+  width: 100%;
   margin: 0;
   padding: 0;
 }

@@ -7,3 +7,5 @@ export const setupAvatarPopup = () => {
 
   avatar.addEventListener('click', togglePopup)
 }
+
+setupAvatarPopup()
