@@ -42,11 +42,15 @@ cd middle.messenger.praktikum.yandex && npm install
 ```
 3. Запустите девсервер
 ```bash
-npm run start
+npm run start:dev
 ```
 4. Сборка для деплоя:
 ```bash
 npm run build
+```
+5. Отдать собранные страницы с помощью express:
+```bash
+npm run start
 ```
 
 ## Используемые технологии

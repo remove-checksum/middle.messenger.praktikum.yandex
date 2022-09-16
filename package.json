@@ -6,8 +6,9 @@
     "node": ">=16.15.1"
   },
   "scripts": {
-    "start": "parcel serve src/index.hbs --no-cache",
+    "start:dev": "parcel serve src/index.hbs --no-cache",
     "build": "parcel build src/index.hbs",
+    "start": "npm run build && node ./server",
     "build:deploy": "parcel build src/index.hbs"
   },
   "repository": {
@@ -21,7 +22,7 @@
   },
   "homepage": "https://github.com/remove-checksum/middle.messenger.praktikum.yandex#readme",
   "dependencies": {
-    "handlebars": "4.7.7"
+    "express": "4.18.1"
   },
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars": "1.0.9",
