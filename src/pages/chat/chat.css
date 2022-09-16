@@ -73,6 +73,12 @@
   border-top: 2px solid var(--colour-black);
 }
 
+.chatlist-item:hover {
+  background-color: 
+  color-mod(var(--colour-green) blend(var(--colour-white) 20%))
+  
+}
+
 .chatlist-item__midsection {
   width: 200px;
   padding-top: var(--s-2);
