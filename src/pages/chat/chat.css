@@ -1,0 +1,132 @@
+@import '../../shared/variables.css';
+
+.chat-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.chatlist {
+  width: 400px;
+  min-width: 400px;
+  background-color: var(--colour-white);
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+.controls-box {
+  padding: var(--s-3);
+  display: flex;
+  gap: var(--s-6);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.controls-box__button {
+  min-width: 10em;
+  padding: var(--s-1) var(--s-9);
+  align-self: end;
+  flex-grow: 1;
+}
+
+.messages {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.input-form {
+  background-color: var(--colour-light-pink);
+  padding: var(--s-2) var(--s-4);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.input-form__input {
+  width: 100%;
+}
+
+.input-form__button {
+  border: 0;
+  background-color: unset;
+  cursor: pointer;
+}
+
+.input-form__icon {
+  position: relative;
+  top: 2px;
+  font-size: var(--s-6);
+}
+
+.chatlist-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 115px;
+  padding: var(--s-3);
+  gap: var(--s-3);
+  border-top: 2px solid var(--colour-black);
+}
+
+.chatlist-item__midsection {
+  width: 200px;
+  padding-top: var(--s-2);
+}
+
+.chatlist-item__avatar {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  min-height: 90px;
+  background-color: var(--colour-mid-grey);
+  border-radius: 50%;
+}
+
+.chatlist-item__chat-name {
+  font-size: var(--text-regular);
+  font-weight: 400;
+  color: var(--text-colour);
+  margin-bottom: var(--s-2);
+}
+
+.chatlist-item__last-message {
+  width: 100%;
+  height: var(--s-8);
+  font-size: var(--text-smaller);
+  color: var(--text-colour-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatlist-item__metadata {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.chatlist-item__time {
+  font-size: var(--text-smaller);
+  color: var(--colour-mid-grey);
+}
+
+.chatlist-item__badge {
+  background-color: var(--colour-blue);
+  width: var(--s-6);
+  height: var(--s-6);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatlist-item__unread {
+  color: var(--colour-white);
+  font-size: var(--text-smaller);
+}

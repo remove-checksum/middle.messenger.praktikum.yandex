@@ -1,7 +1,6 @@
 <ul class="user-info">
   {{#if redacting}}
     {{#each fields as |field|}}
-      {{log field}}
       {{#if field.input_type}}
         <li class="user-info__row">
             <span class="user-info__text">{{field.label}}</span>

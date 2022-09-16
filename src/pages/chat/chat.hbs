@@ -1,5 +1,54 @@
 {{#extend "page"}}
+  {{#content "head"}}
+    <link rel="stylesheet" href="./chat.css">
+    <script src="https://unpkg.com/phosphor-icons"></script>
+  {{/content}}
   {{#content "content"}}
-    <h1>Chat</h1>
+    <div class="chat-wrapper">
+      <aside class="chatlist">
+        <div class="controls-box">
+          {{> button/button text="Профиль"
+                            kind=constants.button_kind.secondary
+                            extraClass="controls-box__button"}}
+          {{> input/input placeholder="Поиск" extraClass="controls-box__input"}}
+        </div>
+        {{#each chat.chats as |chat|}}
+          <div class="chatlist-item">
+            <div class="chatlist-item__avatar"></div>
+            <div class="chatlist-item__midsection">
+              <h3 class="chatlist-item__chat-name">{{chat.chat_name}}</h3>
+              <p class="chatlist-item__last-message">{{chat.last_message}}</p>
+            </div>
+            <div class="chatlist-item__metadata">
+              <span class="chatlist-item__time">{{chat.last_time}}</span>
+              {{#if chat.unread}}
+                <div class="chatlist-item__badge">
+                  <span class="chatlist-item__unread">
+                    {{chat.unread}}
+                  </span>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+
+        {{/each}}
+      </aside>
+      <section class="messages">
+        
+
+
+        <form action="#" class="input-form">
+          <button class="input-form__button">
+            <i class="ph-paperclip input-form__icon"></i>
+          </button>
+          {{> input/input hasLabel=false
+                          extraClass="input-form__input"
+                          type=chat.input.type}}
+          <button class="input-form__button">
+            <i class="ph-paper-plane-right input-form__icon"></i>
+          </button>
+        </form>
+      </section>
+    </div>    
   {{/content}}
 {{/extend}}
