@@ -1,41 +1,39 @@
 {
-  "fields": [
-    {
-      "name": "email",
+  "fields": {
+    "email": {
       "label": "Почта",
       "value": "email@mail.com",
       "input_type": "email"
     },
-    {
-      "name": "login",
+    "login": {
       "label": "Логин",
       "value": "ivanov_ivan",
       "input_type": "text"
     },
-    {
-      "name": "first_name",
+    "first_name": {
       "label": "Имя",
       "value": "Иван",
       "input_type": "text"
     },
-    {
-      "name": "second_name",
+    "second_name": {
       "label": "Фамилия",
       "value": "Иванов",
       "input_type": "text"
     },
-    {
-      "name": "display_name",
+    "display_name": {
       "label": "Имя в чате",
       "value": "Иван",
       "input_type": "text"
     },
-    {
-      "name": "phone",
+    "phone": {
       "label": "Телефон",
       "value": "+7 800 525 35 35",
       "input_type": "tel"
     }
-  ],
-  "avatar_url": "../../assets/catpix.jpeg"
+  },
+  "avatar": {
+    "label": "Поменять аватар",
+    "url": "../../assets/catpix.jpeg"
+  }
+  
 }
