@@ -10,8 +10,8 @@
         <button class="close-button profile-page__close-button">
           <i class="ph-x close-button__icon">
         </button>
-        <img src="{{user.avatar_url}}" alt="User avatar" class="profile-page__avatar">
-        <h2 class="profile-page__username">{{user.display_name.value}}</h2>
+        {{> avatar/avatar inputLabel=user.avatar.label inputName="avatar" imgUrl=user.avatar.url}}
+        <h2 class="profile-page__username">{{user.fields.display_name.value}}</h2>
         {{> redactable-rows/redactable-rows fields=user.fields redacting=false}}
         <div class="profile-page__action-buttons">
           {{> button/button text="Изменить данные" extraClass="profile-page__button"}}
