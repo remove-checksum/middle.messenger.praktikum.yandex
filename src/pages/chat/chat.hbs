@@ -13,30 +13,11 @@
           {{> input/input placeholder="Поиск" extraClass="controls-box__input"}}
         </div>
         {{#each chat.chats as |chat|}}
-          <div class="chatlist-item">
-            <div class="chatlist-item__avatar"></div>
-            <div class="chatlist-item__midsection">
-              <h3 class="chatlist-item__chat-name">{{chat.chat_name}}</h3>
-              <p class="chatlist-item__last-message">{{chat.last_message}}</p>
-            </div>
-            <div class="chatlist-item__metadata">
-              <span class="chatlist-item__time">{{chat.last_time}}</span>
-              {{#if chat.unread}}
-                <div class="chatlist-item__badge">
-                  <span class="chatlist-item__unread">
-                    {{chat.unread}}
-                  </span>
-                </div>
-              {{/if}}
-            </div>
-          </div>
-
+          {{> chatlist-item/chatlist-item chat=chat}}
         {{/each}}
       </aside>
-      <section class="messages">
-        
-
-
+      <section class="messages-column">
+        <p class="messages-column__select-chat">Выберите чат и отправьте сообщение</p>
         <form action="#" class="input-form">
           <button class="input-form__button">
             <i class="ph-paperclip input-form__icon"></i>
