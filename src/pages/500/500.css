@@ -1,0 +1,16 @@
+@import '../../shared/variables.css';
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-page__code {
+  margin-bottom: var(--s-3);
+}
+
+.error-page__subheading {
+  margin-bottom: 120px;
+}
