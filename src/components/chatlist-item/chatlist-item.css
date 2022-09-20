@@ -9,8 +9,9 @@
 }
 
 .chatlist-item:hover {
-  background-color: 
-  color-mod(var(--colour-green) blend(var(--colour-white) 20%))
+  background-color: color-mod(
+    var(--colour-green) blend(var(--colour-white) 20%)
+  );
 }
 
 .chatlist-item__midsection {

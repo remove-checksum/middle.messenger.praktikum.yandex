@@ -1,7 +1,7 @@
-@import './globals.css';
-@import './variables.css';
-@import '../components/button/button.css';
-@import '../components/input/input.css';
-@import '../components/redactable-rows/redactable-rows.css';
-@import '../components/avatar/avatar.css';
-@import '../components/chatlist-item/chatlist-item.css'
+@import "./globals.css";
+@import "./variables.css";
+@import "../components/button/button.css";
+@import "../components/input/input.css";
+@import "../components/redactable-rows/redactable-rows.css";
+@import "../components/avatar/avatar.css";
+@import "../components/chatlist-item/chatlist-item.css";

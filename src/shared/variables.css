@@ -49,7 +49,6 @@
   --colour-input-border: var(--colour-black);
   --colour-input-hover: var(--colour-mid-grey);
 
-
   /* Spacing */
   --s-0: 0;
   --s-1: 5px;
@@ -71,5 +70,3 @@
   /* Util */
   --util-darken: #000000;
 }
-
-

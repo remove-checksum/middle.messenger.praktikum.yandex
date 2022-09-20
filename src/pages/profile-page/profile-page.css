@@ -1,4 +1,4 @@
-@import '../../shared/variables.css';
+@import "../../shared/variables.css";
 
 .profile-page {
   display: flex;
@@ -35,7 +35,7 @@
 
 .close-button__icon {
   font-size: 45px;
-  color: var(--text-colour-secondary)
+  color: var(--text-colour-secondary);
 }
 
 .close-button__icon:hover {
