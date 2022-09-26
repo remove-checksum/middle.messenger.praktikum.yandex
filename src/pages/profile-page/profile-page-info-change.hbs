@@ -1,0 +1,17 @@
+{{#extend "page"}}
+  {{#content "head"}}
+    <link rel="stylesheet" href="./profile-page.css">
+    <title>{{pages.profile-page}}</title>
+  {{/content}}
+  {{#content "content"}}
+      <section class="profile-page">
+        <button class="close-button profile-page__close-button">
+          <i class="ph-x close-button__icon">
+        </button>
+        {{> avatar/avatar inputLabel=user.avatar.label inputName="avatar" imgUrl=user.avatar.url}}
+        <h2 class="profile-page__username">{{user.display_name.value}}</h2>
+        {{> redactable-rows/redactable-rows fields=user.fields redacting=true}}
+        {{> button/button text="Сохранить" extraClass="profile-page__save-button"}}
+      </section>
+  {{/content}}
+{{/extend}}

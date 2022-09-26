@@ -1,0 +1,38 @@
+@import "../../shared/variables.css";
+
+.signup-card {
+  width: 697px;
+  background-color: var(--colour-light-pink);
+  border: 2px solid var(--colour-black);
+  padding: var(--s-8) var(--s-6);
+}
+
+.signup-card__heading {
+  margin-bottom: var(--s-9);
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.signup-form__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.signup-form__row > div {
+  flex-basis: 300px;
+}
+
+.signup-form__button {
+  margin-top: var(--s-9);
+  align-self: center;
+  width: 16em;
+}
+
+.signup-form__link {
+  align-self: center;
+}

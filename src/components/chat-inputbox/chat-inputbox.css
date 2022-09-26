@@ -1,0 +1,25 @@
+.input-form {
+  background-color: var(--colour-light-pink);
+  padding: var(--s-2) var(--s-4);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.input-form__input {
+  width: 100%;
+}
+
+.input-form__button {
+  border: 0;
+  background-color: unset;
+  cursor: pointer;
+}
+
+.input-form__icon {
+  position: relative;
+  top: 2px;
+  font-size: var(--s-6);
+}

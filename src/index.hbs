@@ -1,0 +1,17 @@
+{{#extend "page"}}
+  {{#content "content"}}
+    <div
+      style="display: flex; flex-direction: column; gap: var(--s-2); align-items: center;"
+    >
+      {{#each pages}}
+        <a href="./pages/{{@key}}/{{@key}}.hbs">{{@key}}</a>
+      {{/each}}
+      <a
+        href="./pages/profile-page/profile-page-info-change.hbs"
+      >profile-page-info-change</a>
+      <a
+        href="./pages/profile-page/profile-page-password-change.hbs"
+      >profile-page-password-change</a>
+    </div>
+  {{/content}}
+{{/extend}}

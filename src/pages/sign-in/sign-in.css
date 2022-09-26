@@ -1,0 +1,30 @@
+@import "../../shared/variables.css";
+
+.signin-card {
+  width: 550px;
+  background-color: var(--colour-light-pink);
+  border: 2px solid var(--colour-black);
+  padding: var(--s-8) 125px;
+}
+
+.signin-card__heading {
+  align-self: flex-start;
+  margin-bottom: 105px;
+}
+
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.signin-form__button {
+  align-self: center;
+  margin-top: var(--s-9);
+  width: 100%;
+}
+
+.signin-form__link {
+  align-self: center;
+}

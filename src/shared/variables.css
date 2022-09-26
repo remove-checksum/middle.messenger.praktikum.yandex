@@ -1,0 +1,72 @@
+:root {
+  /* palette and spacing borrowed from https://design-system.service.gov.uk/styles/colour/  */
+  /* Palette */
+  --colour-red: #d4351c;
+  --colour-yellow: #ffdd00;
+  --colour-green: #00703c;
+  --colour-blue: #1d70b8;
+  --colour-dark-blue: #003078;
+  --colour-light-blue: #5694ca;
+  --colour-purple: #4c2c92;
+
+  --colour-black: #0b0c0c;
+  --colour-dark-grey: #505a5f;
+  --colour-mid-grey: #b1b4b6;
+  --colour-light-grey: #f3f2f1;
+  --colour-white: #ffffff;
+
+  --colour-light-purple: #6f72af;
+  --colour-bright-purple: #912b88;
+  --colour-pink: #d53880;
+  --colour-light-pink: #f499be;
+  --colour-orange: #f47738;
+  --colour-brown: #b58840;
+  --colour-light-green: #85994b;
+  --colour-turquoise: #28a197;
+
+  /* Text */
+  --text-colour: var(--colour-black);
+  --text-colour-secondary: var(--colour-dark-grey);
+
+  /* Links */
+  --colour-link: var(--colour-blue);
+  --colour-link-hover: var(--colour-dark-blue);
+  --colour-link-visited: var(--colour-purple);
+  --colour-link-active: var(--colour-black);
+
+  /* Focus state */
+  --colour-focus: var(--colour-yellow);
+  --colour-focused: var(--colour-black);
+
+  /* State */
+  --colour-error: var(--colour-red);
+  --colour-success: var(--colour-green);
+
+  /* Border */
+  --colour-border: var(--colour-mid-grey);
+
+  /* Inputs */
+  --colour-input-border: var(--colour-black);
+  --colour-input-hover: var(--colour-mid-grey);
+
+  /* Spacing */
+  --s-0: 0;
+  --s-1: 5px;
+  --s-2: 10px;
+  --s-3: 15px;
+  --s-4: 20px;
+  --s-5: 25px;
+  --s-6: 30px;
+  --s-7: 40px;
+  --s-8: 50px;
+  --s-9: 60px;
+
+  /* Typography */
+  --text-smaller: 16px;
+  --text-regular: 19px;
+  --text-h1: 40px;
+  --text-h2: 36px;
+
+  /* Util */
+  --util-darken: #000000;
+}

@@ -1,0 +1,24 @@
+<ul class="user-info">
+  {{#if redacting}}
+    {{#each fields as |field|}}
+      {{#if field.input_type}}
+        <li class="user-info__row">
+            <span class="user-info__text">{{field.label}}</span>
+              {{> input/input hasLabel=false
+                              type=field.input_type
+                              value=field.value
+                              id=field.label
+                              name=field.name
+                              extraClass="user-info__input"}}
+      {{/if}}
+    {{/each}}
+  {{else}}
+    {{#each fields as |field|}}
+      {{#if field.input_type}}
+      <li class="user-info__row">
+        <span class="user-info__text">{{field.label}}</span>
+        <span class="user-info__text user-info__data">{{field.value}}</span>
+      {{/if}}
+    {{/each}}
+  {{/if}}
+</ul>

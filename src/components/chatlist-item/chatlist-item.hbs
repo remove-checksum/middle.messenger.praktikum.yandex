@@ -1,0 +1,17 @@
+<div class="chatlist-item">
+  <div class="chatlist-item__avatar"></div>
+  <div class="chatlist-item__midsection">
+    <h3 class="chatlist-item__chat-name">{{meta.chat_name}}</h3>
+    <p class="chatlist-item__last-message">{{meta.last_message}}</p>
+  </div>
+  <div class="chatlist-item__metadata">
+    <span class="chatlist-item__time">{{meta.last_time}}</span>
+    {{#if meta.unread}}
+      <div class="chatlist-item__badge">
+        <span class="chatlist-item__unread">
+          {{meta.unread}}
+        </span>
+      </div>
+    {{/if}}
+  </div>
+</div>

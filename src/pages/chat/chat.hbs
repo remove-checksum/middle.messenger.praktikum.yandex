@@ -1,0 +1,14 @@
+{{#extend "page"}}
+  {{#content "head"}}
+    <link rel="stylesheet" href="./chat.css">
+  {{/content}}
+  {{#content "content"}}
+    <div class="chat-wrapper">
+      {{> chatlist/chatlist chat=chat }}
+      <section class="messages-column">
+        <p class="messages-column__select-chat">Выберите чат и отправьте сообщение</p>
+        {{> chat-inputbox/chat-inputbox inputType=chat.input.type }}
+      </section>
+    </div>
+  {{/content}}
+{{/extend}}

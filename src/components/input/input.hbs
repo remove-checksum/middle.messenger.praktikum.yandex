@@ -1,0 +1,30 @@
+{{#if hasLabel}}
+  <div class="input__wrapper">
+    <label class="input__label
+                  {{~#if kind}} input__label_{{kind}}{{/if}}"
+           for="{{label}}">
+      {{label}}
+    </label>
+    <input class="input
+                  {{~#if small}} input_small{{/if}}
+                  {{~#if kind}} input_{{kind}}{{/if}}
+                  {{extraClass}}"
+           type="{{type}}"
+           placeholder="{{placeholder}}"
+           id="{{label}}"
+           name="{{name}}"
+           value="{{value}}"
+    />
+  </div>
+{{else}}
+  <input class="input
+                {{~#if small}} input_small{{/if}}
+                {{~#if kind}} input_{{kind}}{{/if}}
+                {{extraClass}}"
+         type="{{type}}"
+         placeholder="{{placeholder}}"
+         id="{{label}}"
+         name="{{name}}"
+         value="{{value}}"
+  />
+{{/if}}
