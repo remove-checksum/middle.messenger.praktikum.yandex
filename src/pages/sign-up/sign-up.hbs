@@ -10,7 +10,7 @@
               {{#each signUp.rows as |row|}}
                 <div class="signup-form__row">
                   {{#each row as |field|}}
-                    {{> input/input type=field.type 
+                    {{> input/input type=field.type
                                     name=@key
                                     hasLabel=true
                                     label=field.label
