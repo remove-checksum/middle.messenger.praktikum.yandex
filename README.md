@@ -1,3 +1,5 @@
+## [Ссылка на PR первого спринта](https://github.com/remove-checksum/middle.messenger.praktikum.yandex/pull/1)
+
 # Веб-приложение "Чат"
 
 ## [Макет](https://www.figma.com/file/cG1j59KCBoXf3Ix9HX5Fs3/Chat-App)
@@ -69,4 +71,3 @@ npm run start
 <a href="https://expressjs.com/" target="_blank">
   <img width="200" style="padding-top: 20px;" src="https://i.cloudup.com/zfY6lL7eFa-3000x3000.png" alt="Expressjs logo"/>
 </a>
-
