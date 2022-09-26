@@ -7,29 +7,6 @@
   flex-grow: 1;
 }
 
-.chatlist {
-  width: 400px;
-  min-width: 400px;
-  background-color: var(--colour-white);
-  overflow-x: scroll;
-  scrollbar-width: none;
-}
-
-.controls-box {
-  padding: var(--s-3);
-  display: flex;
-  gap: var(--s-6);
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.controls-box__button {
-  min-width: 10em;
-  padding: var(--s-1) var(--s-9);
-  align-self: end;
-  flex-grow: 1;
-}
-
 .messages-column {
   width: 100%;
   display: flex;
@@ -41,30 +18,4 @@
   margin-top: 45vh;
   align-self: center;
   color: var(--text-colour-secondary);
-}
-
-.input-form {
-  background-color: var(--colour-light-pink);
-  padding: var(--s-2) var(--s-4);
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--s-2);
-}
-
-.input-form__input {
-  width: 100%;
-}
-
-.input-form__button {
-  border: 0;
-  background-color: unset;
-  cursor: pointer;
-}
-
-.input-form__icon {
-  position: relative;
-  top: 2px;
-  font-size: var(--s-6);
 }

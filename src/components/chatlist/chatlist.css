@@ -1,0 +1,22 @@
+.chatlist {
+  width: 400px;
+  min-width: 400px;
+  background-color: var(--colour-white);
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+.controls-box {
+  padding: var(--s-3);
+  display: flex;
+  gap: var(--s-6);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.controls-box__button {
+  min-width: 10em;
+  padding: var(--s-1) var(--s-9);
+  align-self: end;
+  flex-grow: 1;
+}
