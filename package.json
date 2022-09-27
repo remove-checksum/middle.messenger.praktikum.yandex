@@ -10,7 +10,8 @@
     "build": "parcel build src/index.hbs",
     "start": "npm run build && node ./server",
     "build:deploy": "parcel build src/index.hbs",
-    "lint:styles": "npx stylelint 'src/**/*.css'"
+    "lint:styles": "npx stylelint 'src/**/*.css'",
+    "lint": "npx eslint 'src'"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,11 @@
   },
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars": "1.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
     "parcel": "2.7.0",
     "postcss": "8.4.16",
     "postcss-color-mod-function": "3.0.3",
