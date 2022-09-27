@@ -1,4 +1,4 @@
-[*.{hbs,js,ts,css}]
+[*.{hbs,js,ts,css,json}]
 insert_final_newline = true
 end_of_line = lf
 charset = utf-8
