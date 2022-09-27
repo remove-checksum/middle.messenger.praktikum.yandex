@@ -1,20 +1,20 @@
 :root {
   /* palette and spacing borrowed from https://design-system.service.gov.uk/styles/colour/  */
+
   /* Palette */
+
   --colour-red: #d4351c;
-  --colour-yellow: #ffdd00;
+  --colour-yellow: #fd0;
   --colour-green: #00703c;
   --colour-blue: #1d70b8;
   --colour-dark-blue: #003078;
   --colour-light-blue: #5694ca;
   --colour-purple: #4c2c92;
-
   --colour-black: #0b0c0c;
   --colour-dark-grey: #505a5f;
   --colour-mid-grey: #b1b4b6;
   --colour-light-grey: #f3f2f1;
-  --colour-white: #ffffff;
-
+  --colour-white: #fff;
   --colour-light-purple: #6f72af;
   --colour-bright-purple: #912b88;
   --colour-pink: #d53880;
@@ -68,5 +68,5 @@
   --text-h2: 36px;
 
   /* Util */
-  --util-darken: #000000;
+  --util-darken: #000;
 }

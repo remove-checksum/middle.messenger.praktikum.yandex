@@ -9,7 +9,6 @@
     var(--colour-green) blend(var(--util-darken) 60%)
   );
   --button-text-colour: var(--colour-white);
-
   --secondary-button-colour: var(--colour-light-grey);
   --secondary-button-hover-colour: color-mod(
     var(--colour-light-grey) blend(var(--util-darken) 10%)
@@ -18,7 +17,6 @@
     var(--colour-light-grey) blend(var(--util-darken) 40%)
   );
   --secondary-button-text-colour: var(--colour-black);
-
   --warning-button-colour: var(--colour-red);
   --warning-button-hover-colour: color-mod(
     var(--colour-red) blend(var(--util-darken) 20%)
@@ -43,21 +41,21 @@
   background-color: var(--button-hover-colour);
 }
 
+.button:disabled {
+  opacity: 0.5;
+}
+
 .button:active:not(:disabled) {
   top: 2px;
   outline: 3px solid var(--colour-focus);
 }
 
-.button:focus:not(:active):not(:hover) {
+.button:focus:not(:active, :hover) {
   color: var(--colour-focused);
   outline: 0 transparent;
   background-color: var(--colour-focus);
   box-shadow: 0 2px 0 0 var(--colour-focused);
   text-decoration: none;
-}
-
-.button:disabled {
-  opacity: 0.5;
 }
 
 .button_secondary {
