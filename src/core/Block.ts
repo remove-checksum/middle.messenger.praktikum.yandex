@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
-import EventBus from "./EventBus"
+import { EventBus } from "./EventBus"
 
 interface BlockMeta<P = any> {
   props: P
@@ -10,7 +10,7 @@ type BlockChildren = Record<string, Block>
 
 type Events = Values<typeof Block.EVENTS>
 
-export default class Block<P = EmptyObject> {
+export abstract class Block<P = EmptyObject> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
@@ -60,7 +60,7 @@ export default class Block<P = EmptyObject> {
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
-  _createResources() {
+  private _createResources() {
     this._element = this._createDocumentElement("div")
   }
 
@@ -73,13 +73,13 @@ export default class Block<P = EmptyObject> {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props)
   }
 
-  _componentDidMount(props: P) {
+  private _componentDidMount(props: P) {
     this.componentDidMount(props)
   }
 
   componentDidMount(props: P) {}
 
-  _componentDidUpdate(oldProps: P, newProps: P) {
+  private _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps)
     if (!response) {
       return
@@ -111,7 +111,7 @@ export default class Block<P = EmptyObject> {
     return this._element
   }
 
-  _render() {
+  private _render() {
     const fragment = this._compile()
 
     this._removeEvents()
@@ -123,9 +123,7 @@ export default class Block<P = EmptyObject> {
     this._addEvents()
   }
 
-  protected render(): string {
-    return ""
-  }
+  abstract render(): string
 
   getContent(): HTMLElement {
     // Хак, чтобы вызвать CDM только после добавления в DOM
@@ -148,11 +146,11 @@ export default class Block<P = EmptyObject> {
     const self = this
 
     return new Proxy(props as unknown as object, {
-      get(target: Record<string, unknown>, prop: string) {
+      get(target: EmptyObject, prop: string) {
         const value = target[prop]
         return typeof value === "function" ? value.bind(target) : value
       },
-      set(target: Record<string, unknown>, prop: string, value: unknown) {
+      set(target: EmptyObject, prop: string, value: unknown) {
         target[prop] = value
 
         // Запускаем обновление компоненты
