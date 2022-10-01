@@ -1,8 +1,13 @@
 import { Block } from "./Block"
 
-export function renderDOM(block: Block) {
-  const root = document.querySelector("#app")
+export function renderDOM(selector: string, block: Block) {
+  const root = document.querySelector(selector)
 
-  root!.innerHTML = ""
-  root!.appendChild(block.getContent())
+  if (!root) {
+    throw new Error("No root element")
+  }
+
+  root.innerHTML = ""
+  root.appendChild(block.getContent())
+  console.log(block.getContent())
 }
