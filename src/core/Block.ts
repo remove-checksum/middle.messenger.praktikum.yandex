@@ -7,10 +7,16 @@ interface BlockMeta<P = any> {
 }
 
 type BlockChildren = Record<string, Block>
-
+type BlockRefs = Record<string, HTMLElement>
 type Events = Values<typeof Block.EVENTS>
 
-export abstract class Block<P = EmptyObject> {
+interface BlockProps {
+  children?: BlockChildren
+  refs?: BlockRefs
+  events?: Record<keyof HTMLElementEventMap, (e: Event) => void>
+}
+
+export abstract class Block<P extends BlockProps = EmptyObject> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
@@ -26,13 +32,13 @@ export abstract class Block<P = EmptyObject> {
 
   protected readonly props: P
 
-  protected children: { [id: string]: Block } = {}
+  protected children: BlockChildren = {}
 
   eventBus: () => EventBus<Events>
 
   protected state: any = {}
 
-  protected refs: { [key: string]: HTMLElement } = {}
+  protected refs: BlockRefs = {}
 
   public constructor(props?: P) {
     const eventBus = new EventBus<Events>()
@@ -244,7 +250,7 @@ export abstract class Block<P = EmptyObject> {
   }
 
   show() {
-    this.getContent().style.display = "block"
+    this.getContent().style.display = "initial"
   }
 
   hide() {
