@@ -7,16 +7,20 @@ interface BlockMeta<P = any> {
 }
 
 type BlockChildren = Record<string, Block>
-type BlockRefs = Record<string, HTMLElement>
+type BlockRefs = Record<string, Block>
 type Events = Values<typeof Block.EVENTS>
 
-interface BlockProps {
+export interface BlockProps {
   children?: BlockChildren
   refs?: BlockRefs
-  events?: Record<keyof HTMLElementEventMap, (e: Event) => void>
+  events?: Partial<Record<keyof HTMLElementEventMap, EventListener>>
+  [key: string]: any
 }
 
-export abstract class Block<P extends BlockProps = EmptyObject> {
+export abstract class Block<
+  P extends BlockProps = AnyObject,
+  R extends Record<string, Block> = AnyObject
+> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
@@ -32,13 +36,14 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
 
   protected readonly props: P
 
+  static blockName: string
+
   protected children: BlockChildren = {}
 
   eventBus: () => EventBus<Events>
 
-  protected state: any = {}
-
-  protected refs: BlockRefs = {}
+  // @ts-expect-error 'R could be instantiated with a different subtype of Record<string, Block>
+  protected refs: R = {}
 
   public constructor(props?: P) {
     const eventBus = new EventBus<Events>()
@@ -50,7 +55,6 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
     this.getStateFromProps(props)
 
     this.props = this._makePropsProxy(props || ({} as P))
-    this.state = this._makePropsProxy(this.state)
 
     this.eventBus = () => eventBus
 
@@ -70,10 +74,6 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
     this._element = this._createDocumentElement("div")
   }
 
-  protected getStateFromProps(props: any): void {
-    this.state = {}
-  }
-
   init() {
     this._createResources()
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props)
@@ -81,6 +81,10 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
 
   private _componentDidMount(props: P) {
     this.componentDidMount(props)
+  }
+
+  dispatchComponentDidMount() {
+    this.eventBus().emit(Block.EVENTS.FLOW_CDM, this.props)
   }
 
   componentDidMount(props: P) {}
@@ -97,7 +101,7 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
     return true
   }
 
-  setProps = (nextProps: P) => {
+  setProps = (nextProps: Partial<P>) => {
     if (!nextProps) {
       return
     }
@@ -105,12 +109,8 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
     Object.assign(this.props, nextProps)
   }
 
-  setState = (nextState: any) => {
-    if (!nextState) {
-      return
-    }
-
-    Object.assign(this.state, nextState)
+  getProps = () => {
+    return this.props
   }
 
   get element() {
@@ -138,7 +138,7 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
         if (
           this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
         ) {
-          this.eventBus().emit(Block.EVENTS.FLOW_CDM)
+          this.eventBus().emit(Block.EVENTS.FLOW_CDM, this.props)
         }
       }, 100)
     }
@@ -175,26 +175,30 @@ export abstract class Block<P extends BlockProps = EmptyObject> {
   }
 
   _removeEvents() {
-    const { events } = this.props as any
+    const { events } = this.props
 
     if (!events || !this._element) {
       return
     }
 
     Object.entries(events).forEach(([event, listener]) => {
-      this._element!.removeEventListener(event, listener)
+      if (this._element) {
+        this._element.removeEventListener(event, listener)
+      }
     })
   }
 
   _addEvents() {
-    const { events } = this.props as any
+    const { events } = this.props
 
     if (!events) {
       return
     }
 
     Object.entries(events).forEach(([event, listener]) => {
-      this._element!.addEventListener(event, listener)
+      if (this._element) {
+        this._element.addEventListener(event, listener)
+      }
     })
   }
 
