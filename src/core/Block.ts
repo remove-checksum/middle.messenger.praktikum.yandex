@@ -2,24 +2,15 @@ import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
 import { EventBus } from "./EventBus"
 
-interface BlockMeta<P = any> {
-  props: P
-}
-
-type BlockChildren = Record<string, Block>
-type BlockRefs = Record<string, Block>
 type Events = Values<typeof Block.EVENTS>
 
 export interface BlockProps {
-  children?: BlockChildren
-  refs?: BlockRefs
   events?: Partial<Record<keyof HTMLElementEventMap, EventListener>>
-  [key: string]: any
 }
 
 export abstract class Block<
-  P extends BlockProps = AnyObject,
-  R extends Record<string, Block> = AnyObject
+  P extends AnyObject & BlockProps = EmptyObject,
+  R extends Record<string, Block<any>> = AnyObject
 > {
   static EVENTS = {
     INIT: "init",
@@ -30,15 +21,13 @@ export abstract class Block<
 
   public id = nanoid(6)
 
-  private readonly _meta: BlockMeta
-
   protected _element: Nullable<HTMLElement> = null
 
   protected readonly props: P
 
   static blockName: string
 
-  protected children: BlockChildren = {}
+  protected children: Record<string, Block<EmptyObject>> = {}
 
   eventBus: () => EventBus<Events>
 
@@ -48,13 +37,7 @@ export abstract class Block<
   public constructor(props?: P) {
     const eventBus = new EventBus<Events>()
 
-    this._meta = {
-      props,
-    }
-
-    this.getStateFromProps(props)
-
-    this.props = this._makePropsProxy(props || ({} as P))
+    this.props = this.makePropsProxy(props || ({} as P))
 
     this.eventBus = () => eventBus
 
@@ -63,18 +46,20 @@ export abstract class Block<
     eventBus.emit(Block.EVENTS.INIT, this.props)
   }
 
-  _registerEvents(eventBus: EventBus<Events>) {
+  private _registerEvents(eventBus: EventBus<Events>) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
+    // @ts-expect-error 'P could be instantiated with arbitrary type'
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
+    // @ts-expect-error 'P could be instantiated with arbitrary type'
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
   private _createResources() {
-    this._element = this._createDocumentElement("div")
+    this._element = this.createDocumentElement("div")
   }
 
-  init() {
+  private init() {
     this._createResources()
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props)
   }
@@ -87,6 +72,8 @@ export abstract class Block<
     this.eventBus().emit(Block.EVENTS.FLOW_CDM, this.props)
   }
 
+  // This method meant to be overriden
+  // eslint-disable-next-line
   componentDidMount(props: P) {}
 
   private _componentDidUpdate(oldProps: P, newProps: P) {
@@ -97,6 +84,8 @@ export abstract class Block<
     this._render()
   }
 
+  // This method meant to be overriden
+  // eslint-disable-next-line
   componentDidUpdate(oldProps: P, newProps: P) {
     return true
   }
@@ -109,24 +98,25 @@ export abstract class Block<
     Object.assign(this.props, nextProps)
   }
 
-  getProps = () => {
-    return this.props
-  }
+  getProps = () => this.props
 
   get element() {
     return this._element
   }
 
   private _render() {
-    const fragment = this._compile()
+    const fragment = this.compile()
 
-    this._removeEvents()
-    const newElement = fragment.firstElementChild!
+    this.removeEvents()
+    const newElement = fragment.firstElementChild
 
-    this._element!.replaceWith(newElement)
+    if (newElement) {
+      this._element?.replaceWith(newElement)
 
-    this._element = newElement as HTMLElement
-    this._addEvents()
+      this._element = newElement as HTMLElement
+    }
+
+    this.addEvents()
   }
 
   abstract render(): string
@@ -143,25 +133,24 @@ export abstract class Block<
       }, 100)
     }
 
-    return this.element!
+    if (!this.element) {
+      throw new Error("Block has no elements")
+    }
+
+    return this.element
   }
 
-  _makePropsProxy(props: any): any {
-    // Можно и так передать this
-    // Такой способ больше не применяется с приходом ES6+
-    const self = this
-
+  private makePropsProxy(props: P): P {
     return new Proxy(props as unknown as object, {
       get(target: EmptyObject, prop: string) {
-        const value = target[prop]
+        const value = Reflect.get(target, prop)
         return typeof value === "function" ? value.bind(target) : value
       },
-      set(target: EmptyObject, prop: string, value: unknown) {
-        target[prop] = value
+      // arrow function, 'this' inside is Block instance
+      set: (target: EmptyObject, prop: string, value: unknown) => {
+        Reflect.set(target, prop, value)
 
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
         return true
       },
       deleteProperty() {
@@ -170,11 +159,11 @@ export abstract class Block<
     }) as unknown as P
   }
 
-  _createDocumentElement(tagName: string) {
+  private createDocumentElement(tagName: string) {
     return document.createElement(tagName)
   }
 
-  _removeEvents() {
+  private removeEvents() {
     const { events } = this.props
 
     if (!events || !this._element) {
@@ -188,7 +177,7 @@ export abstract class Block<
     })
   }
 
-  _addEvents() {
+  private addEvents() {
     const { events } = this.props
 
     if (!events) {
@@ -202,7 +191,7 @@ export abstract class Block<
     })
   }
 
-  _compile(): DocumentFragment {
+  private compile(): DocumentFragment {
     const fragment = document.createElement("template")
 
     /**
@@ -210,7 +199,6 @@ export abstract class Block<
      */
     const template = Handlebars.compile(this.render())
     fragment.innerHTML = template({
-      ...this.state,
       ...this.props,
       children: this.children,
       refs: this.refs,
@@ -240,10 +228,12 @@ export abstract class Block<
       /**
        * Ищем элемент layout-а, куда вставлять детей
        */
-      const layoutContent = content.querySelector('[data-layout="1"]')
+      const slotContent = content.querySelector(
+        '[data-slot="1"]'
+      ) as HTMLDivElement
 
-      if (layoutContent && stubChilds.length) {
-        layoutContent.append(...stubChilds)
+      if (slotContent && stubChilds.length) {
+        slotContent.replaceWith(...stubChilds)
       }
     })
 
