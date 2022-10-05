@@ -1,29 +1,46 @@
 import { Block } from "../../core"
+import { BlockProps } from "../../core/Block"
 import "./button.css"
 
 type ButtonKind = "warning" | "secondary"
 
-interface ButtonProps {
+interface ButtonProps extends BlockProps {
   text: string
   kind?: ButtonKind
   small?: boolean
   extraClass?: string
-  onClick?: (e: MouseEvent) => void
+  events: {
+    click: EventListener
+  }
+}
+
+interface IncomingButtonProps {
+  text: string
+  kind?: ButtonKind
+  small?: boolean
+  extraClass?: string
+  onClick: EventListener
 }
 
 export class Button extends Block<ButtonProps> {
-  constructor(props: ButtonProps) {
+  static blockName = "Button"
+
+  constructor(props: IncomingButtonProps) {
     super({ ...props, events: { click: props.onClick } })
   }
 
   render(): string {
-    const { kind, small, extraClass = "" } = this.props
-
-    return /*html*/ `
+    return /* html */ `
       <button class="button
-        ${kind ? `button_${kind}` : ""}
-        ${small ? "button_small" : ""}
-        ${extraClass}"
+        {{#if kind}}
+          button_{{kind}}
+        {{/if}}
+        {{#if small}}
+          button_small
+        {{/if}}
+        {{#if extraClass}}
+          {{extraClass}}
+        {{/if}}"
         type="{{type}}">
         {{text}}
       </button>
