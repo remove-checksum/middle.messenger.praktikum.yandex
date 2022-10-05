@@ -12,7 +12,8 @@
     "start": "npm run build && node ./server",
     "build:deploy": "parcel build src/index.hbs",
     "lint:styles": "npx stylelint 'src/**/*.css'",
-    "lint": "npx eslint 'src'"
+    "lint": "eslint 'src'",
+    "check-types": "tsc --project ./tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",

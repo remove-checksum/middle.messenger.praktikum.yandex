@@ -1,17 +1,22 @@
-import { Block, renderDOM, registerComponent } from "./core"
-
+import { renderDOM, registerComponent } from "./core"
+import * as Components from "./components"
+import { PageLayout } from "./layouts"
+import * as Pages from "./pages"
+import { routes, Routes } from "./routes"
 import "./shared/main.css"
 
-import { Button, Input } from "./components"
-import { Page } from "./layouts"
+const allComponents = [
+  ...Object.values(Components),
+  ...Object.values(Pages),
+  PageLayout,
+]
 
-registerComponent(Button, "Button")
-registerComponent(Input, "Input")
-
-// registerComponent(App, "App")
-
-const page = new Page({})
+allComponents.forEach((component) => registerComponent(component))
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderDOM("#app", page)
+  const route = window.location.pathname as Routes
+
+  const CurrentPage = routes[route] || Pages.NotFoundPage
+
+  renderDOM("#app", new CurrentPage({}))
 })
