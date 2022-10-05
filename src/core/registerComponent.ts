@@ -1,38 +1,31 @@
-import { Block } from "./Block"
 import Handlebars, { HelperOptions } from "handlebars"
+import { Block, BlockProps } from "./Block"
 
-interface BlockConstructable<Props = any> {
-  new (props: Props): Block
+export interface BlockConstructable<Props extends BlockProps = EmptyObject> {
+  new (props: Props): Block<Props>
+  blockName: string
 }
 
-export function registerComponent<Props extends any>(
-  Component: BlockConstructable<Props>,
-  name: string
+export function registerComponent<Props extends EmptyObject = EmptyObject>(
+  Component: BlockConstructable<Props>
 ) {
   Handlebars.registerHelper(
-    name,
-    function (
+    Component.blockName,
+    function componentFactory(
       this: Props,
       { hash: { ref, ...hash }, data, fn }: HelperOptions
     ) {
-      if (!data.root.children) {
-        data.root.children = {}
-      }
-
-      if (!data.root.refs) {
-        data.root.refs = {}
-      }
-
-      const { children, refs } = data.root
+      const { children = {}, refs = {} } = data.root
 
       /**
        * Костыль для того, чтобы передавать переменные
        * внутрь блоков вручную подменяя значение
        */
-      ;(Object.keys(hash) as any).forEach((key: keyof Props) => {
+      Object.keys(hash).forEach((key: keyof Props) => {
         if (this[key] && typeof this[key] === "string") {
+          // eslint-disable-next-line
           hash[key] = hash[key].replace(
-            new RegExp(`{{${key}}}`, "i"),
+            new RegExp(`{{${key as string}}}`, "i"),
             this[key]
           )
         }
@@ -43,7 +36,7 @@ export function registerComponent<Props extends any>(
       children[component.id] = component
 
       if (ref) {
-        refs[ref] = component.getContent()
+        refs[ref] = component
       }
 
       const contents = fn ? fn(this) : ""

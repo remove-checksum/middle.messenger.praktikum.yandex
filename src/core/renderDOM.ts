@@ -1,6 +1,6 @@
 import { Block } from "./Block"
 
-export function renderDOM(selector: string, block: Block) {
+export function renderDOM(selector: string, block: Block<any>) {
   const root = document.querySelector(selector)
 
   if (!root) {
@@ -8,6 +8,7 @@ export function renderDOM(selector: string, block: Block) {
   }
 
   root.innerHTML = ""
-  root.appendChild(block.getContent())
-  console.log(block.getContent())
+  const content = block.getContent()
+  root.appendChild(content)
+  block.dispatchComponentDidMount()
 }
