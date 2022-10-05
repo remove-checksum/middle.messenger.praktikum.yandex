@@ -11,6 +11,7 @@ interface BaseInputProps extends BlockProps {
   disabled: boolean
   onFocus?: (e: FocusEvent) => void
   onBlur?: (e: FocusEvent) => void
+  onInput?: (e: InputEvent) => void
 }
 
 interface BaseInputExternalProps {
@@ -20,16 +21,20 @@ interface BaseInputExternalProps {
   name: string
   value: string
   disabled: boolean
-  onFocus?: EventListener
-  onBlur?: EventListener
+  onFocus?: (e: FocusEvent) => void
+  onBlur?: (e: FocusEvent) => void
+  onInput?: (e: InputEvent) => void
 }
 
 export class BaseInput extends Block<BaseInputProps> {
   static blockName = "BaseInput"
 
   constructor(props: BaseInputExternalProps) {
-    const { onFocus, onBlur } = props
-    super({ ...props, events: { focus: onFocus, blur: onBlur } })
+    const { onFocus, onBlur, onInput } = props
+    super({
+      ...props,
+      events: { focus: onFocus, blur: onBlur, input: onInput },
+    })
   }
 
   render(): string {

@@ -1,4 +1,1 @@
-export {
-  removeFormErrorState,
-  setFormErrorState,
-} from "./formValidation/formValidationHelpers"
+export { onFormErrorSubmit, printFormData } from "./formHelpers/formHelpers"

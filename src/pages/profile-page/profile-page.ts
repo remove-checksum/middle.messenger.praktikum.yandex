@@ -2,7 +2,8 @@ import { Block } from "../../core"
 import "./profile-page.css"
 import userChangeData from "./user-data.json"
 import passwordChangeData from "./password-change.json"
-import { UserCredentialsFields } from "../../models/forms/user-credentials-change"
+import { onFormErrorSubmit } from "../../helpers"
+import { printFormData } from "../../helpers/formHelpers/formHelpers"
 
 const userDisplayName = userChangeData.fields.display_name.value
 const userFields = userChangeData.fields
@@ -55,12 +56,10 @@ export class ProfilePage extends Block<ProfilePageProps, ProfilePageRefs> {
           console.error("No form element found")
           return
         }
-        const fd = new FormData(form).entries()
-        const confirmMessage = Array.from(fd).reduce((acc, [key, value]) => {
-          acc[key] = value
-          return acc
-        }, {} as EmptyObject) as Record<UserCredentialsFields, string>
-        console.table(confirmMessage)
+        const valid = onFormErrorSubmit(form)
+        if (valid) {
+          printFormData(form)
+        }
 
         this.setProps({ inactive: !this.props.inactive })
       },
@@ -69,6 +68,9 @@ export class ProfilePage extends Block<ProfilePageProps, ProfilePageRefs> {
           fields: passwordFields,
           inactive: !this.props.inactive,
         })
+      },
+      logout: () => {
+        window.location.hash = "#sign-in"
       },
     })
   }

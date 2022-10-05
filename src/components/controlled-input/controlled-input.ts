@@ -16,6 +16,7 @@ interface ControlledInputProps {
   disabled: boolean
   onFocus: (e: FocusEvent) => void
   onBlur: (e: FocusEvent) => void
+  onInput: (e: InputEvent) => void
 }
 
 interface ControlledInputExternalProps {
@@ -31,6 +32,7 @@ interface ControlledInputExternalProps {
   disabled: boolean
   onFocus: (e: FocusEvent) => void
   onBlur: (e: FocusEvent) => void
+  onInput: (e: InputEvent) => void
 }
 
 interface ControlledInputRefs extends AnyObject {
@@ -69,6 +71,19 @@ export class ControlledInput extends Block<
 
         const error = this.validate(e.target.value, props.name)
 
+        if (error) {
+          this.setErrorState(error)
+        } else {
+          this.removeErrorState()
+        }
+      },
+      onInput: (e: InputEvent) => {
+        if (!(e.target instanceof HTMLInputElement)) {
+          console.error("Focus target not InputElement")
+          return
+        }
+
+        const error = this.validate(e.target.value, props.name)
         if (error) {
           this.setErrorState(error)
         } else {
@@ -121,6 +136,7 @@ export class ControlledInput extends Block<
             ref="inputRef"
             onFocus=onFocus
             onBlur=onBlur
+            onInput=onInput
             disabled=disabled
           }}}
         </div>

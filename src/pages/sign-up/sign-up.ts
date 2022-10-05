@@ -1,21 +1,41 @@
 import { Block } from "../../core"
+import { BlockProps } from "../../core/Block"
 import "./sign-up.css"
 import signupData from "./sign-up.json"
+import { onFormErrorSubmit } from "../../helpers"
 
-export class SignUpPage extends Block {
+interface SignUpPageProps extends BlockProps {
+  signUp: typeof signupData
+}
+
+type SignUpPageRefs = {
+  inputRef: Block
+}
+
+export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
   static blockName = "SignUpPage"
 
-  constructor(props) {
+  constructor(props: SignUpPageProps) {
     super({
       ...props,
       signUp: signupData,
       events: {
         submit: (e: SubmitEvent) => {
           e.preventDefault()
-          const fd = new FormData(e.target)
-          fd.forEach(([fieldName, fieldValue]) => {
-            console.log(`${fieldName}:${fieldValue}`)
-          })
+          if (!(e.target instanceof HTMLFormElement)) {
+            return
+          }
+          const valid = onFormErrorSubmit(e.target)
+          if (valid) {
+            const formEntries = Array.from(new FormData(e.target).entries())
+
+            const pretty = formEntries.reduce((acc, [name, value]) => {
+              Reflect.set(acc, name, value)
+              return acc
+            }, {})
+            console.table(pretty)
+            window.location.hash = "#chat"
+          }
         },
       },
     })
@@ -43,7 +63,7 @@ export class SignUpPage extends Block {
                 {{/each}}
               </ul>
               {{{ Button text="Зарегистрироваться" type="submit" extraClass="signup-form__button" }}}
-              <a href="../sign-in/sign-in" class="signup-form__link">Войти</a>
+              <a href="/#sign-in" class="signup-form__link">Войти</a>
             </form>
         </section>
       {{/PageLayout}}

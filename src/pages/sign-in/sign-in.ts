@@ -1,6 +1,7 @@
 import { Block } from "../../core"
-import { onFormErrorSubmit } from "../../helpers/formValidation/formValidationHelpers"
+import { onFormErrorSubmit } from "../../helpers/formHelpers/formHelpers"
 import "./sign-in.css"
+import { printFormData } from "../../helpers"
 
 type SignInPageRefs = {
   loginRef: Block
@@ -17,10 +18,12 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
         submit: (e: SubmitEvent) => {
           e.preventDefault()
           const { target } = e
-          if (target) {
-            const valid = onFormErrorSubmit(target as HTMLFormElement)
+          if (target && target instanceof HTMLFormElement) {
+            const valid = onFormErrorSubmit(target)
             if (valid) {
-              window.location.pathname = "/chat"
+              printFormData(target)
+
+              window.location.hash = "#chat"
             }
           }
         },
@@ -51,7 +54,7 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
               ref="passwordRef"
             }}}
             {{{ Button text="Войти" type="submit" extraClass="signinForm__button" }}}
-            <a href="/sign-up" class="signinForm__link">Зарегистрироваться</a>
+            <a href="/#sign-up" class="signinForm__link">Зарегистрироваться</a>
           </form>
         </section>
       {{/PageLayout}}

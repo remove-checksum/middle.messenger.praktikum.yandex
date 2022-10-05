@@ -38,7 +38,16 @@ const onFormErrorSubmit = (form: HTMLFormElement) => {
     }
   })
 
-  return elements.every((e) => e.error !== "string")
+  return elements.every((e) => e.error === "")
 }
 
-export { onFormErrorSubmit }
+const printFormData = (form: HTMLFormElement) => {
+  const fd = new FormData(form).entries()
+  const confirmMessage = Array.from(fd).reduce((acc, [key, value]) => {
+    acc[key] = value
+    return acc
+  }, {} as EmptyObject) as Record<InputFields, string>
+  console.table(confirmMessage)
+}
+
+export { onFormErrorSubmit, printFormData }

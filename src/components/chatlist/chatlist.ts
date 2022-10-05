@@ -18,7 +18,7 @@ export class Chatlist extends Block<ChatlistProps> {
     super({
       ...props,
       goProfile: () => {
-        window.location.pathname = "/profile"
+        window.location.hash = "#profile"
       },
     })
   }

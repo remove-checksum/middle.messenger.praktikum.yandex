@@ -13,6 +13,7 @@
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
     "no-use-before-define":"off",
-    "@typescript-eslint/no-use-before-define": "warn"
+    "@typescript-eslint/no-use-before-define": "warn",
+    "no-param-reassign": "off"
   }
 }

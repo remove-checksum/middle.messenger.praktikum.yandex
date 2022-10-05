@@ -11,12 +11,19 @@ const allComponents = [
   PageLayout,
 ]
 
+// @ts-expect-error 'every block generic should be instantiated with its props'
 allComponents.forEach((component) => registerComponent(component))
 
 document.addEventListener("DOMContentLoaded", () => {
-  const route = window.location.pathname as Routes
+  // const route = window.location.hash as Routes
+  // const CurrentPage = routes[route] || Pages.SignInPage
+  // console.log(route, CurrentPage)
+  renderDOM("#app", new Pages.SignInPage({}))
 
-  const CurrentPage = routes[route] || Pages.SignInPage
-
-  renderDOM("#app", new CurrentPage({}))
+  window.addEventListener("hashchange", () => {
+    const route = window.location.hash as Routes
+    const CurrentPage = routes[route] || Pages.SignInPage
+    // @ts-expect-error 'every block generic should be instantiated with its props'
+    renderDOM("#app", new CurrentPage({}))
+  })
 })

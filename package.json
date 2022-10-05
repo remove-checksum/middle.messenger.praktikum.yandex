@@ -6,11 +6,10 @@
     "node": ">=16.15.1"
   },
   "scripts": {
-    "start:spa": "parcel serve src/index.html --no-cache",
-    "start:dev": "parcel serve src/index.hbs --no-cache",
-    "build": "parcel build src/index.hbs",
+    "start:dev": "parcel serve src/index.html --no-cache",
+    "build": "parcel build src/index.html --no-cache",
     "start": "npm run build && node ./server",
-    "build:deploy": "parcel build src/index.hbs",
+    "build:deploy": "parcel build src/index.html",
     "lint:styles": "npx stylelint 'src/**/*.css'",
     "lint": "eslint 'src'",
     "check-types": "tsc --project ./tsconfig.json --noEmit"

@@ -12,6 +12,7 @@ export class ChatPage extends Block<ChatPageProps> {
   static blockName = "ChatPage"
 
   constructor(props: EmptyObject) {
+    // @ts-expect-error 'ChatPageProps is parsed json but expected to have array methods'
     super({ ...props, chats: chatData })
   }
 

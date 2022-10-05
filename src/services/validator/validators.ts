@@ -15,39 +15,39 @@ export interface Validator {
 const passwordValidator: Validator = (value) => {
   const valid = from(8)(value) && upto(40)(value) && passwordMatcher.test(value)
 
-  return valid ? null : errorMessages.password.characters
+  return valid ? "" : errorMessages.password.characters
 }
 
 const nameValidator: Validator = (value) => {
   const valid = notEmpty(value) && upto(20)(value) && nameMatcher.test(value)
 
-  return valid ? null : errorMessages.name.characters
+  return valid ? "" : errorMessages.name.characters
 }
 
 const loginValidator: Validator = (value) => {
   const valid = from(3)(value) && upto(20)(value) && loginMatcher.test(value)
 
-  return valid ? null : errorMessages.login.characters
+  return valid ? "" : errorMessages.login.characters
 }
 
 const emailValidator: Validator = (value) => {
   const valid = upto(40)(value) && emailMatcher.test(value)
-  return valid ? null : errorMessages.email.characters
+  return valid ? "" : errorMessages.email.characters
 }
 
 const phoneValidator: Validator = (value) => {
   const valid = from(10)(value) && upto(15)(value) && phoneMatcher.test(value)
-  return valid ? null : errorMessages.phone.characters
+  return valid ? "" : errorMessages.phone.characters
 }
 
 const messageValidator: Validator = (value) => {
   const valid = notEmpty(value)
-  return valid ? null : errorMessages.message.empty
+  return valid ? "" : errorMessages.message.empty
 }
 
 const displayNameValidator: Validator = (value) => {
   const valid = upto(20)(value) && notEmpty(value)
-  return valid ? null : errorMessages.display_name.empty
+  return valid ? "" : errorMessages.display_name.empty
 }
 
 export {
