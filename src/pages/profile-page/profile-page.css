@@ -1,43 +1,44 @@
 @import "../../shared/variables.css";
 
-.profile-page {
+.profilePage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--s-6);
   width: 1440px;
   height: 100%;
-  padding: var(--s-8);
+  padding-left: var(--s-5);
+  padding-right: var(--s-5);
+  padding-top: var(--s-5);
 }
 
-.profile-page__close-button {
+.profilePage__close-button {
   align-self: flex-end;
-  margin-bottom: var(--s-7);
+  margin-bottom: var(--s-5);
 }
 
-.profile-page__save-button {
+.profilePage__save-button {
   align-self: center;
 }
 
-.profile-page__action-buttons {
+.profilePage__action-buttons {
   width: 640px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: center;
   gap: var(--s-3);
 }
 
-.close-button {
+.closeButton {
   border: unset;
   background-color: unset;
   cursor: pointer;
 }
 
-.close-button__icon {
+.closeButton__icon {
   font-size: 45px;
   color: var(--text-colour-secondary);
 }
 
-.close-button__icon:hover {
+.closeButton__icon:hover {
   color: var(--colour-black);
 }
