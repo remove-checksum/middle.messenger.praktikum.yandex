@@ -1,0 +1,6 @@
+export { ProfilePage } from "./profile-page/profile-page"
+export { SignUpPage } from "./sign-up/sign-up"
+export { SignInPage } from "./sign-in/sign-in"
+export { NotFoundPage } from "./404/404"
+export { ServerErrorPage } from "./500/500"
+export { ChatPage } from "./chat/chat"
