@@ -10,7 +10,7 @@ export class NotFoundPage extends Block<EmptyObject> {
         <div class="errorPage">
           <h1 class="errorPage__code">400</h1>
           <h2 class="errorPage__subheading">Не туда попали</h2>
-          <a href="./chat">Назад к чатам</a>
+          <a href="/chat">Назад к чатам</a>
         </div>
       {{/PageLayout}}
     `

@@ -16,7 +16,7 @@ allComponents.forEach((component) => registerComponent(component))
 document.addEventListener("DOMContentLoaded", () => {
   const route = window.location.pathname as Routes
 
-  const CurrentPage = routes[route] || Pages.NotFoundPage
+  const CurrentPage = routes[route] || Pages.SignInPage
 
   renderDOM("#app", new CurrentPage({}))
 })
