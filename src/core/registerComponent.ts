@@ -23,7 +23,6 @@ export function registerComponent<Props extends EmptyObject = EmptyObject>(
        */
       Object.keys(hash).forEach((key: keyof Props) => {
         if (this[key] && typeof this[key] === "string") {
-          // eslint-disable-next-line
           hash[key] = hash[key].replace(
             new RegExp(`{{${key as string}}}`, "i"),
             this[key]

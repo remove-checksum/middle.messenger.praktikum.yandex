@@ -4,13 +4,21 @@ import { EventBus } from "./EventBus"
 
 type Events = Values<typeof Block.EVENTS>
 
+interface CorrectEventHandlers extends EventListener {
+  submit: (e: SubmitEvent) => void
+  click: (e: MouseEvent) => void
+  blur: (e: FocusEvent) => void
+  focus: (e: FocusEvent) => void
+}
 export interface BlockProps {
-  events?: Partial<Record<keyof HTMLElementEventMap, EventListener>>
+  events?: Partial<
+    Record<keyof HTMLElementEventMap, (e: any) => void> & CorrectEventHandlers
+  >
 }
 
 export abstract class Block<
   P extends AnyObject & BlockProps = EmptyObject,
-  R extends Record<string, Block<any>> = AnyObject
+  R extends Record<string, Block> = AnyObject
 > {
   static EVENTS = {
     INIT: "init",

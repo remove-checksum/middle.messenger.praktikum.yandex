@@ -1,18 +1,28 @@
 import { Block } from "../../core"
+import { onFormErrorSubmit } from "../../helpers/formValidation/formValidationHelpers"
 import "./sign-in.css"
 
-export class SignInPage extends Block {
+type SignInPageRefs = {
+  loginRef: Block
+  passwordRef: Block
+}
+
+export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
   static blockName = "SignIn"
 
-  constructor(props) {
+  constructor(props: EmptyObject) {
     super({
       ...props,
       events: {
         submit: (e: SubmitEvent) => {
           e.preventDefault()
-          console.log(e)
-
-          console.log({ ...new FormData(e.target) })
+          const { target } = e
+          if (target) {
+            const valid = onFormErrorSubmit(target as HTMLFormElement)
+            if (valid) {
+              window.location.pathname = "/chat"
+            }
+          }
         },
       },
     })
@@ -30,6 +40,7 @@ export class SignInPage extends Block {
               name="login"
               label="Логин"
               placeholder="Введите имя пользователя"
+              ref="loginRef"
             }}}
             {{{ ControlledInput
               hasLabel=true
@@ -37,9 +48,10 @@ export class SignInPage extends Block {
               name="password"
               label="Пароль"
               placeholder="Введите пароль"
+              ref="passwordRef"
             }}}
             {{{ Button text="Войти" type="submit" extraClass="signinForm__button" }}}
-            <a href="../sign-up/sign-up" class="signinForm__link">Зарегистрироваться</a>
+            <a href="/sign-up" class="signinForm__link">Зарегистрироваться</a>
           </form>
         </section>
       {{/PageLayout}}

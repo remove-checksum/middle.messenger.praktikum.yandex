@@ -13,15 +13,16 @@ import {
   SignUpFields,
   PasswordChangeFields,
   SignInFields,
-} from "../../models"
+} from "../../models/forms"
 
 export type InputFields =
   | UserCredentialsFields
   | SignInFields
   | SignUpFields
   | PasswordChangeFields
+  | "message"
 
-export const validators: Record<inputNames, Validator> = {
+export const validators: Record<InputFields, Validator> = {
   // user settings
   first_name: nameValidator,
   second_name: nameValidator,
