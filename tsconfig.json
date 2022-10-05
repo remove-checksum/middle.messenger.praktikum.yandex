@@ -7,6 +7,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
     "skipLibCheck": true,
     "typeRoots": ["node_modules/@types", "typings/app.d.ts"],
     "resolveJsonModule": true
