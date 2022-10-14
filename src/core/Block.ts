@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
 import { EventBus } from "./EventBus"
+import { addProxyHandler } from "../helpers"
 
 type Events = Values<typeof Block.EVENTS>
 
@@ -42,10 +43,12 @@ export abstract class Block<
   // @ts-expect-error 'R could be instantiated with a different subtype of Record<string, Block>
   protected refs: R = {}
 
-  public constructor(props?: P) {
+  public constructor(props: P = {} as P) {
     const eventBus = new EventBus<Events>()
 
-    this.props = this.makePropsProxy(props || ({} as P))
+    this.props = addProxyHandler(props, (newProps) =>
+      this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...newProps }, newProps)
+    ) as P
 
     this.eventBus = () => eventBus
 
@@ -146,25 +149,6 @@ export abstract class Block<
     }
 
     return this.element
-  }
-
-  private makePropsProxy(props: P): P {
-    return new Proxy(props as unknown as object, {
-      get(target: EmptyObject, prop: string) {
-        const value = Reflect.get(target, prop)
-        return typeof value === "function" ? value.bind(target) : value
-      },
-      // arrow function, 'this' inside is Block instance
-      set: (target: EmptyObject, prop: string, value: unknown) => {
-        Reflect.set(target, prop, value)
-
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
-        return true
-      },
-      deleteProperty() {
-        throw new Error("Нет доступа")
-      },
-    }) as unknown as P
   }
 
   private createDocumentElement(tagName: string) {
