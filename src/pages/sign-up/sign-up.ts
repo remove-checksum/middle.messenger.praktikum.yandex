@@ -44,12 +44,12 @@ export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
   render() {
     return /* html */ `
       {{#PageLayout}}
-        <section class="signup-card">
-            <h1 class="signup-card__heading">Регистрация</h1>
-            <form action="#" class="signup-form">
-              <ul class="signup-form__wrapper">
+        <section class="signupCard">
+            <h1 class="signupCard__heading">Регистрация</h1>
+            <form action="#" class="signupForm">
+              <ul class="signupForm__wrapper">
                 {{#each signUp.rows as |row|}}
-                <li class="signup-form__row">
+                <li class="signupForm__row">
                   {{#each row as |field|}}
                     {{{ ControlledInput
                       type=field.type
@@ -62,8 +62,8 @@ export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
                   </li>
                 {{/each}}
               </ul>
-              {{{ Button text="Зарегистрироваться" type="submit" extraClass="signup-form__button" }}}
-              <a href="/#sign-in" class="signup-form__link">Войти</a>
+              {{{ Button text="Зарегистрироваться" type="submit" extraClass="signupForm__button" }}}
+              <a href="#sign-in" class="signupForm__link">Войти</a>
             </form>
         </section>
       {{/PageLayout}}
