@@ -1,0 +1,53 @@
+@import '../../shared/variables.css';
+
+.activeChat {
+  overflow: scroll;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  justify-content: space-between;
+  padding: var(--s-2);
+  padding-inline: var(--s-3);
+  border-bottom: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
+  position: sticky;
+  top: 0;
+}
+
+.chatHeader__image {
+  height: 70px;
+  width: 70px;
+  border-radius: 9999px;
+}
+
+.chatHeader__chatName {
+  align-self: flex-start;
+}
+
+.chatHeader__actionButton {
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.chatHeader__actionButtonIcon {
+  font-size: 32px;
+  vertical-align: middle;
+}
+
+.chatHeader__actionButtonIcon:hover {
+  transform: rotate(90deg);
+}
+
+.activeChat__messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: var(--s-2);
+  padding: var(--s-3);
+}
+

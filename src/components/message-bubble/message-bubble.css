@@ -1,0 +1,32 @@
+@import '../../shared/variables.css';
+
+.messageBubble {
+  border: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
+  min-width: 30%;
+  max-width: 60%;
+  padding: var(--s-2);
+  display: flex;
+  flex-direction: column;
+}
+
+.messageBubble_own {
+  background-color: var(--colour-green);
+  align-self: flex-end;
+}
+
+.messageBubble__text {
+  font-size: var(--text-regular);
+  color: var(--text-colour);
+}
+
+.messageBubble__image {
+  display: block;
+  width: 100%;
+}
+
+.messageBubble__time {
+  color: var(--text-colour-secondary);
+  font-size: var(--text-smaller);
+  text-align: end;
+}
