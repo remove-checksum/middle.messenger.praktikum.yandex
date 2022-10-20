@@ -10,6 +10,10 @@
   border-top: 2px solid var(--colour-black);
 }
 
+.chatlistItem:nth-child(2) {
+  border: none;
+}
+
 .chatlistItem:hover {
   background-color: color-mod(
     var(--colour-green) blend(var(--colour-white) 20%)
