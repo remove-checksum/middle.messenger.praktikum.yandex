@@ -14,6 +14,10 @@
   gap: var(--s-6);
   flex-direction: column;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
 }
 
 .controlsBox__button {
