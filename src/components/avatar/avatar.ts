@@ -2,7 +2,7 @@ import { Block } from "../../core"
 import "./avatar.css"
 
 // @ts-expect-error 'resolving path to image
-const catPictureUrl = new URL("../../assets/catpix.jpeg", import.meta.url)
+const catPictureUrl = new URL("../../assets/catpix.jpeg", import.meta.url).href
 
 interface AvatarProps {
   avatarUrl: string
@@ -14,9 +14,7 @@ export class Avatar extends Block<AvatarProps> {
   static blockName = "Avatar"
 
   constructor(props: AvatarProps) {
-    const urlString = catPictureUrl as unknown as string
-
-    super({ ...props, avatarUrl: urlString })
+    super({ ...props, avatarUrl: catPictureUrl })
   }
 
   render(): string {
