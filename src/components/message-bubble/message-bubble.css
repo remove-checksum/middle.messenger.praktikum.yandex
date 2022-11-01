@@ -26,7 +26,7 @@
 }
 
 .messageBubble__time {
-  color: var(--text-colour-secondary);
+  color: var(--colour-mid-grey);
   font-size: var(--text-smaller);
   text-align: end;
 }
