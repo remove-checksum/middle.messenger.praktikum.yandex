@@ -12,9 +12,7 @@ export class ChatInputbox extends Block<ChatInputboxProps> {
   render() {
     return /* html */ `
       <form action="#" class="chatInputboxForm">
-        <button class="chatInputboxForm__button">
-          <i class="ph-paperclip chatInputboxForm__icon"></i>
-        </button>
+        {{{ ChatAdditionsPopup }}}
         {{{ ControlledInput
           name=inputName
           hasLabel=false

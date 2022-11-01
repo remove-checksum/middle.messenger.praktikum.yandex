@@ -14,7 +14,10 @@ export class ActiveChat extends Block<ActiveChatProps> {
   static blockName = "ActiveChat"
 
   constructor(props: ActiveChatProps) {
-    super({ ...props, image: catPictureUrl.href })
+    super({
+      ...props,
+      image: catPictureUrl.href,
+    })
   }
 
   render(): string {
@@ -23,9 +26,7 @@ export class ActiveChat extends Block<ActiveChatProps> {
         <div class="chatHeader">
           <img  src="{{image}}" alt="фото профиля" class="chatHeader__image">
           <h2 class="chatHeader__chatName">{{chatName}}</h2>
-          <button class="chatHeader__actionButton">
-            <i class="ph-dots-three-outline-vertical chatHeader__actionButtonIcon"></i>
-          </button>
+          {{{ ChatActionsPopup }}}
         </div>
         <ol class="activeChat__messages">
           {{#each messages as |message| }}

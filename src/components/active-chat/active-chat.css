@@ -24,23 +24,7 @@
 }
 
 .chatHeader__chatName {
-  align-self: flex-start;
-}
-
-.chatHeader__actionButton {
-  margin-left: auto;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.chatHeader__actionButtonIcon {
-  font-size: 32px;
-  vertical-align: middle;
-}
-
-.chatHeader__actionButtonIcon:hover {
-  transform: rotate(90deg);
+  font-weight: normal;
 }
 
 .activeChat__messages {

@@ -1,0 +1,35 @@
+.chatAdditions {
+  position: relative;
+}
+
+.chatAdditions__triggerButton {
+  border: 0;
+  background-color: unset;
+  cursor: pointer;
+}
+
+.chatAdditions__triggerIcon {
+  position: relative;
+  top: 2px;
+  font-size: var(--s-6);
+  pointer-events: none;
+}
+
+.chatAdditions__triggerIcon_open {
+  transform: rotate(45deg);
+}
+
+.chatAdditions__popup {
+  position: absolute;
+  border: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
+  padding: var(--s-2);
+  bottom: var(--s-9);
+  left: var(--s-2);
+}
+
+.chatAdditions__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
