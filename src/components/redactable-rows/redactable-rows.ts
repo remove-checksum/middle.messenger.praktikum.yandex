@@ -18,12 +18,6 @@ type RedactableRowsProps = InputValidationProps & InputDataProps
 export class RedactableRows extends Block<RedactableRowsProps> {
   static blockName = "RedactableRows"
 
-  constructor(props: RedactableRowsProps) {
-    super({
-      ...props,
-    })
-  }
-
   render(): string {
     return /* html */ `
       <ul class="redactableRowsUserInfo">
@@ -31,7 +25,8 @@ export class RedactableRows extends Block<RedactableRowsProps> {
           {{#if field.input_type}}
             <li class="redactableRowsUserInfo__row">
               <span class="redactableRowsUserInfo__text">{{field.label}}</span>
-              {{{ ControlledInput hasLabel=hasLabel
+              {{{ ControlledInput
+                hasLabel=hasLabel
                 disabled=@root.inactive
                 onFocus=@root.onFocus
                 onBlur=@root.onBlur
@@ -40,8 +35,7 @@ export class RedactableRows extends Block<RedactableRowsProps> {
                 placeholder=placeholder
                 id=field.label
                 name=field.name
-                extraClass="redactableRowsUserInfo__input"
-                ref="inputRef"
+                extraInputClass="redactableRowsUserInfo__input"
               }}}
           {{/if}}
         {{/each}}

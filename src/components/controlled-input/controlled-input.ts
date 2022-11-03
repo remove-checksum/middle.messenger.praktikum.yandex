@@ -12,13 +12,12 @@ interface ControlledInputProps {
   value?: string
   error?: true
   extraClass?: string
+  extraInputclass?: string
   extraLabelClass?: string
   dontValidate?: boolean
   disabled: boolean
-  onFocus: (e: FocusEvent) => void
-  onBlur: (e: FocusEvent) => void
-  onInput: (e: InputEvent) => void
 }
+
 export class ControlledInput extends Block<ControlledInputProps> {
   static blockName = "ControlledInput"
 
@@ -79,7 +78,7 @@ export class ControlledInput extends Block<ControlledInputProps> {
 
   render(): string {
     return /* html */ `
-        <div class="controlledInput">
+        <div class="controlledInput {{extraClass}}">
           {{#if hasLabel}}
            <label
             for="{{name}}"
@@ -94,7 +93,7 @@ export class ControlledInput extends Block<ControlledInputProps> {
             id="{{name}}"
             placeholder="{{placeholder}}"
             value="{{value}}"
-            class="controlledInput__input {{extraClass}}"
+            class="controlledInput__input {{extraInputClass}}"
             {{#if disabled}}disabled{{/if}}>
         </div>
       `

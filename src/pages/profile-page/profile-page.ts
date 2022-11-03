@@ -26,7 +26,6 @@ interface ProfilePageProps {
   endRedacting: VoidFunction
 }
 
-// has to be type, otherwise 'index signature is missing in type' error
 type ProfilePageRefs = {
   credentialsButtonRef: Block
   passwordButtonRef: Block
