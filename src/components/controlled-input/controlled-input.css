@@ -1,6 +1,50 @@
-.controlledInput__wrapper {
+@import "../../shared/variables.css";
+
+.controlledInput {
   display: flex;
   flex-direction: column;
   position: relative;
-  flex-grow: 1;
+}
+
+.controlledInput__input {
+  border: 2px solid var(--colour-input-border);
+  font-size: inherit;
+  line-height: 23px;
+  padding: var(--s-2) var(--s-2);
+  min-width: 15em;
+}
+
+.controlledInput__label {
+  position: absolute;
+  bottom: var(--s-8);
+  font-size: var(--text-regular);
+  color: var(--text-colour);
+  margin-left: var(--s-2);
+  padding-bottom: var(--s-1);
+}
+
+.controlledInput__input:disabled {
+  border-right: 2px solid transparent;
+  border-left: 2px solid transparent;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid var(--colour-black);
+  color: var(--text-colour-secondary);
+  padding-right: var(--s-2);
+}
+
+.controlledInput__input:focus {
+  outline: 3px solid var(--colour-focus);
+  box-shadow: inset 0 0 0 2px;
+}
+
+.controlledInput__input_error {
+  border: 2px solid var(--colour-error);
+}
+
+.controlledInput__input_error:focus {
+  border: 2px solid var(--colour-black);
+}
+
+.controlledInput__label_error {
+  color: var(--colour-error);
 }

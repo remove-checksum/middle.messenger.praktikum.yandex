@@ -1,7 +1,5 @@
 export { Button } from "./button/button"
 export { ControlledInput } from "./controlled-input/controlled-input"
-export { BaseInput } from "./controlled-input/base-input/base-input"
-export { InputLabel } from "./controlled-input/input-label/input-label"
 export { RedactableRows } from "./redactable-rows/redactable-rows"
 export { Chatlist } from "./chatlist/chatlist"
 export { ChatlistItem } from "./chatlist-item/chatlist-item"
