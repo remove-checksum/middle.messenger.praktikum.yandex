@@ -1,6 +1,5 @@
 import { Block } from "../../core"
-import { ChatActions } from "../chat-actions-popup/chat-actions-popup"
-import type { PopupItem } from "../chat-popup-item/chat-popup-item"
+import type { PopupItem, ModalVariant } from "../index"
 import "./active-chat.css"
 
 // @ts-expect-error parcel import url resolution mechanism
@@ -10,7 +9,7 @@ interface ActiveChatProps {
   chatName: string
   image?: string
   messages: AnyObject
-  openModal: (action: ChatActions) => void
+  openModal: (variant: ModalVariant) => void
 }
 
 interface ActiveChatState {
@@ -33,25 +32,35 @@ export class ActiveChat extends Block<ActiveChatState> {
         {
           iconClass: "ph-user-plus",
           text: "Добавить пользователя",
-          action: props.addUser,
+          action: () => {
+            this.togglePopup()
+            props.openModal("addUser")
+          },
         },
         {
           iconClass: "ph-user-minus",
           text: "Удалить пользователя",
-          action: props.deleteUser,
+          action: () => {
+            this.togglePopup()
+            props.openModal("deleteUser")
+          },
         },
         {
           iconClass: "ph-trash",
           text: "Удалить чат",
-          action: props.deleteChat,
+          action: () => {
+            this.togglePopup()
+            props.openModal("deleteChat")
+          },
         },
       ],
       events: {
         click: (e: MouseEvent) => {
-          if (
+          const isPopupTriggerButton =
             e.target instanceof HTMLButtonElement &&
             e.target.dataset.popupTrigger === this.props.popupName
-          ) {
+
+          if (isPopupTriggerButton) {
             this.togglePopup()
           }
         },

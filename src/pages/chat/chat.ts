@@ -2,7 +2,7 @@ import { Block } from "../../core"
 import "./chat.css"
 import { ChatMeta } from "../../models/chatMeta"
 import chatData from "./chat.json"
-import { ModalMode } from "../../components"
+import { ModalVariant } from "../../components"
 
 // @ts-expect-error parcel import url resolution mechanism
 const cameraImage = new URL("../../assets/camera_msg.jpg", import.meta.url)
@@ -30,12 +30,13 @@ const messages = [
 
 interface ChatPageState {
   chats: ChatMeta[]
-  modalMode: Nullable<ModalMode>
-  closeModal: VoidFunction
-  openModal: (mode: ModalMode) => void
+  modalVariant: Nullable<ModalVariant>
   openedChat: {
     messages: AnyObject[]
   }
+  dispatchModal: (variant: ModalVariant) => void
+  cancelModal: VoidFunction
+  confirmModal: VoidFunction
 }
 
 export class ChatPage extends Block<ChatPageState> {
@@ -45,14 +46,26 @@ export class ChatPage extends Block<ChatPageState> {
     super({
       chats: chatData as unknown as ChatMeta[],
       openedChat: { messages },
-      modalMode: null,
-      closeModal: () => {
-        this.setProps({ modalMode: null })
+      modalVariant: null,
+      dispatchModal: (variant: ModalVariant) => {
+        this.setProps({ modalVariant: variant })
       },
-      openModal: (mode: ModalMode) => {
-        this.setProps({ modalMode: mode })
+      cancelModal: () => {
+        this.closeModal()
+      },
+      confirmModal: () => {
+        console.log("confirm goes here")
+        this.closeModal()
       },
     })
+  }
+
+  openModal = (variant: ModalVariant) => {
+    this.setProps({ modalVariant: variant })
+  }
+
+  closeModal = () => {
+    this.setProps({ modalVariant: null })
   }
 
   render() {
@@ -64,13 +77,21 @@ export class ChatPage extends Block<ChatPageState> {
             {{{ ActiveChat
               chatName="coolChat"
               messages=openedChat.messages
-              openModal=openModal
+              openModal=dispatchModal
             }}}
-            {{{ ChatInputbox inputType=chats.input.type inputName=chats.input.name }}}
+            {{{ ChatInputbox
+              inputType=chats.input.type
+              inputName=chats.input.name
+              openModal=dispatchModal
+            }}}
           </section>
         </div>
-        {{#if modalMode }}
-          {{{ Modal mode=modalMode onCancel=closeModal }}}
+        {{#if modalVariant }}
+          {{{ Modal
+            variant=modalVariant
+            cancel=closeModal
+            confirm=confirmModal
+          }}}
         {{/if}}
       {{/PageLayout}}
     `

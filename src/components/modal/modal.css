@@ -1,0 +1,58 @@
+@import '../../shared/variables.css';
+
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.modal__backdrop {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: #000a;
+}
+
+.modal__content {
+  border: 2px solid var(--colour-black);
+  width: 522px;
+  height: 418px;
+  padding: var(--s-3);
+  background-color: var(--colour-light-grey);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__closeButton {
+  border: unset;
+  background-color: unset;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.modal__closeIcon {
+  font-size: var(--s-6);
+  pointer-events: none;
+  position: relative;
+}
+
+.modal__heading {
+  font-weight: normal;
+  font-size: var(--s-5);
+  margin-bottom: var(--s-6);
+}
+
+.modal__input {
+  width: 300px;
+}
+
+.modal__confirmButton {
+  margin-bottom: var(--s-6);
+  width: 300px;
+}

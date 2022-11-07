@@ -1,10 +1,12 @@
 import { Block } from "../../core"
+import { ModalVariant } from "../modal/modal"
 import { PopupItem } from "../popup/popup"
 import "./chat-inputbox.css"
 
 interface ChatInputboxProps {
   inputType: string
   inputName: string
+  openModal: (variant: ModalVariant) => void
 }
 
 interface ChatInputboxState {
@@ -25,17 +27,26 @@ export class ChatInputbox extends Block<ChatInputboxProps & ChatInputboxState> {
         {
           iconClass: "ph-image",
           text: "Фото или Видео",
-          action: props.addPhoto,
+          action: () => {
+            this.togglePopup()
+            props.openModal("addFile")
+          },
         },
         {
           iconClass: "ph-file",
           text: "Файл",
-          action: props.addFile,
+          action: () => {
+            this.togglePopup()
+            props.openModal("addFile")
+          },
         },
         {
           iconClass: "ph-map-pin",
           text: "Место",
-          action: props.addPlace,
+          action: () => {
+            this.togglePopup()
+            props.openModal("addFile")
+          },
         },
       ],
       events: {
@@ -59,9 +70,9 @@ export class ChatInputbox extends Block<ChatInputboxProps & ChatInputboxState> {
     return /* html */ `
       <form action="#" class="chatInputbox">
         <div class="chatInputbox__popupRoot">
-          <button class="chatAdditions__triggerButton" data-popup-trigger="{{popupName}}">
-            <i class="ph-paperclip chatAdditions__triggerIcon
-              {{~#if popupOpen}} chatAdditions__triggerIcon_open{{/if}}"
+          <button class="popupTrigger" data-popup-trigger="{{popupName}}">
+            <i class="ph-paperclip popupTrigger__icon
+              {{~#if popupOpen}} popupTrigger__icon_open{{/if}}"
             ></i>
           </button>
           {{#if popupOpen }}
