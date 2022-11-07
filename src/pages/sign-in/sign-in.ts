@@ -54,7 +54,12 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
               ref="passwordRef"
             }}}
             {{{ Button text="Войти" type="submit" extraClass="signinForm__button" }}}
-            <a href="/#sign-up" class="signinForm__link">Зарегистрироваться</a>
+            {{{ Link
+              router=false
+              to="#sign-up"
+              extraClass="signinForm__link"
+              text="Зарегистрироваться"
+            }}}
           </form>
         </section>
       {{/PageLayout}}

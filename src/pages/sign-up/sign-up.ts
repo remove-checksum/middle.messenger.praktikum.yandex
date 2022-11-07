@@ -63,7 +63,12 @@ export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
                 {{/each}}
               </ul>
               {{{ Button text="Зарегистрироваться" type="submit" extraClass="signupForm__button" }}}
-              <a href="#sign-in" class="signupForm__link">Войти</a>
+              {{{ Link
+                router=false
+                to="#sign-in"
+                extraClass="signupForm__link"
+                text="Войти"
+              }}}
             </form>
         </section>
       {{/PageLayout}}

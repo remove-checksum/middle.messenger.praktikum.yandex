@@ -1,20 +1,19 @@
-@import "./variables.css";
+@import "../../shared/variables.css";
 
-a {
+.link {
   color: var(--colour-blue);
 }
 
-a:visited {
+.link:visited {
   color: var(--colour-link-visited);
 }
 
-a:hover {
-  color: var(--colour-link-hover);
+.link:hover {
   text-decoration-thickness: 2px;
   outline: 0 transparent;
 }
 
-a:focus {
+.link:focus {
   color: var(--colour-focused);
   outline: 0 transparent;
   background-color: var(--colour-focus);
