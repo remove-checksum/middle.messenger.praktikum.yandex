@@ -1,0 +1,22 @@
+@import '../../shared/variables.css';
+
+.fileInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.fileInput__input {
+  display: none;
+}
+
+.fileInput__button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: var(--text-regular);
+}
+
+.fileInput__selectedName {
+  color: var(--colour-dark-grey);
+  margin-bottom: var(--s-6);
+}
