@@ -43,7 +43,7 @@ export abstract class Block<
   // @ts-expect-error 'R could be instantiated with a different subtype of Record<string, Block>
   protected refs: R = {}
 
-  public constructor(props: P = {} as P) {
+  public constructor(props: P & BlockProps = {} as P) {
     const eventBus = new EventBus<Events>()
 
     this.props = addProxyHandler(props, (newProps) =>
