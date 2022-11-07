@@ -1,0 +1,33 @@
+@import '../../shared/variables.css';
+
+.popup {
+  position: absolute;
+  border: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
+  padding: var(--s-2);
+}
+
+.popup__item {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  min-width: max-content;
+}
+
+.popup__icon {
+  font-size: var(--s-6);
+  margin-right: var(--s-2);
+}
+
+.popup__button {
+  font-size: var(--text-regular);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.popup__button:hover {
+  color: var(--colour-dark-blue);
+  text-decoration: underline;
+}
