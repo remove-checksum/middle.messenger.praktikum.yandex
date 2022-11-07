@@ -3,11 +3,12 @@ import "./controlled-input.css"
 import { validators } from "../../services"
 import { UserCredentialsFields } from "../../models/forms"
 
+type InputType = "text" | "tel" | "password" | "email"
 interface ControlledInputProps {
   hasLabel: boolean
-  label: string
+  label?: string
   placeholder: string
-  type: string
+  type: InputType
   name: UserCredentialsFields
   value?: string
   error?: true
@@ -15,7 +16,7 @@ interface ControlledInputProps {
   extraInputclass?: string
   extraLabelClass?: string
   dontValidate?: boolean
-  disabled: boolean
+  disabled?: boolean
 }
 
 export class ControlledInput extends Block<ControlledInputProps> {
