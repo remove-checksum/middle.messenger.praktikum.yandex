@@ -76,9 +76,3 @@ export class ChatPage extends Block<ChatPageState> {
     `
   }
 }
-
-// const on = {
-//   deleteUser: {
-//     title:
-//   }
-// }
