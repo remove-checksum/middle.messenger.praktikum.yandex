@@ -3,12 +3,7 @@ import { onFormErrorSubmit } from "../../helpers/formHelpers/formHelpers"
 import "./sign-in.css"
 import { printFormData } from "../../helpers"
 
-type SignInPageRefs = {
-  loginRef: Block
-  passwordRef: Block
-}
-
-export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
+export class SignInPage extends Block<EmptyObject> {
   static blockName = "SignIn"
 
   constructor(props: EmptyObject) {
@@ -43,7 +38,6 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
               name="login"
               label="Логин"
               placeholder="Введите имя пользователя"
-              ref="loginRef"
             }}}
             {{{ ControlledInput
               hasLabel=true
@@ -51,7 +45,6 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
               name="password"
               label="Пароль"
               placeholder="Введите пароль"
-              ref="passwordRef"
             }}}
             {{{ Button text="Войти" type="submit" extraClass="signinForm__button" }}}
             {{{ Link

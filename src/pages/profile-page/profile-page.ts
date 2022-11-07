@@ -26,14 +26,7 @@ interface ProfilePageProps {
   endRedacting: VoidFunction
 }
 
-type ProfilePageRefs = {
-  credentialsButtonRef: Block
-  passwordButtonRef: Block
-  logoutButtonRef: Block
-  endRedactingButtonRef: Block
-}
-
-export class ProfilePage extends Block<ProfilePageProps, ProfilePageRefs> {
+export class ProfilePage extends Block<ProfilePageProps> {
   static blockName = "ProfilePage"
 
   constructor(props: ProfilePageProps) {
@@ -90,24 +83,20 @@ export class ProfilePage extends Block<ProfilePageProps, ProfilePageRefs> {
                 {{{ Button text="Изменить данные"
                   extraClass="profilePage__button"
                   onClick=toggleCredentialsChange
-                  ref=credentialsButtonRef
                 }}}
                 {{{ Button text="Изменить пароль"
                   extraClass="profilePage__button"
                   onClick=togglePasswordChange
-                  ref=passwordButtonRef
                 }}}
                 {{{ Button text="Выйти"
                   kind="warning"
                   extraClass="profilePage__button"
                   onClick=logout
-                  ref=logoutButtonRef
                 }}}
               {{else}}
                 {{{ Button text="Сохранить"
                   extraClass="profilePage__button"
                   onClick=endRedacting
-                  ref=endRedactingButtonRef
                   type="submit"
                 }}}
               {{/if}}

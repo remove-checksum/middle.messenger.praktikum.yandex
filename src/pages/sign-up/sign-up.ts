@@ -8,11 +8,7 @@ interface SignUpPageProps extends BlockProps {
   signUp: typeof signupData
 }
 
-type SignUpPageRefs = {
-  inputRef: Block
-}
-
-export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
+export class SignUpPage extends Block<SignUpPageProps> {
   static blockName = "SignUpPage"
 
   constructor(props: SignUpPageProps) {
@@ -62,7 +58,11 @@ export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
                   </li>
                 {{/each}}
               </ul>
-              {{{ Button text="Зарегистрироваться" type="submit" extraClass="signupForm__button" }}}
+              {{{ Button
+                text="Зарегистрироваться"
+                type="submit"
+                extraClass="signupForm__button"
+              }}}
               {{{ Link
                 router=false
                 to="#sign-in"
