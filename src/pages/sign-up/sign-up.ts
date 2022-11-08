@@ -8,7 +8,7 @@ interface SignUpPageProps extends BlockProps {
   signUp: typeof signupData
 }
 
-export class SignUpPage extends Block<SignUpPageProps> {
+export class SignUpPage extends Block {
   static blockName = "SignUpPage"
 
   constructor(props: SignUpPageProps) {

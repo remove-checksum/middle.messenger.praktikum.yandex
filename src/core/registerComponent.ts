@@ -6,7 +6,7 @@ export interface BlockConstructable<Props extends BlockProps = AnyObject> {
   blockName: string
 }
 
-export function registerComponent<Props extends EmptyObject = AnyObject>(
+export function registerComponent<Props extends UnknownObject = AnyObject>(
   Component: BlockConstructable<Props>
 ) {
   Handlebars.registerHelper(

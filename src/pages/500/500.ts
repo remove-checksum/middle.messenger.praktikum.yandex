@@ -1,7 +1,7 @@
 import { Block } from "../../core"
 import "./500.css"
 
-export class ServerErrorPage extends Block<EmptyObject> {
+export class ServerErrorPage extends Block {
   static blockName = "ServerErrorPage"
 
   render() {

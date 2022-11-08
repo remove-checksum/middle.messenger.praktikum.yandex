@@ -5,7 +5,7 @@ interface PageLayoutProps {
   page: Block
 }
 
-export class PageLayout extends Block<EmptyObject> {
+export class PageLayout extends Block<UnknownObject> {
   static blockName = "PageLayout"
 
   constructor(props: PageLayoutProps) {

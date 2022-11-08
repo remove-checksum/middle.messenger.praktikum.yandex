@@ -46,7 +46,7 @@ const printFormData = (form: HTMLFormElement) => {
   const confirmMessage = Array.from(fd).reduce((acc, [key, value]) => {
     acc[key] = value
     return acc
-  }, {} as EmptyObject) as Record<InputFields, string>
+  }, {} as UnknownObject) as Record<InputFields, string>
   console.table(confirmMessage)
 }
 

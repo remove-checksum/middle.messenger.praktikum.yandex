@@ -18,7 +18,7 @@ export interface BlockProps {
 }
 
 export abstract class Block<
-  P extends AnyObject & BlockProps = EmptyObject,
+  P extends AnyObject & BlockProps = UnknownObject,
   R extends Record<string, Block> = AnyObject
 > {
   static EVENTS = {
@@ -36,7 +36,7 @@ export abstract class Block<
 
   static blockName: string
 
-  protected children: Record<string, Block<EmptyObject>> = {}
+  protected children: Record<string, Block<UnknownObject>> = {}
 
   eventBus: () => EventBus<Events>
 

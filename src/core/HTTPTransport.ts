@@ -1,4 +1,4 @@
-import { queryStringify } from "./queryStringify"
+import { queryStringify } from "../helpers"
 
 const METHODS = {
   GET: "GET",
@@ -10,17 +10,17 @@ const METHODS = {
 interface XHROptions {
   method: keyof typeof METHODS
   headers?: Record<string, string>
-  data?: EmptyObject
+  data?: UnknownObject
 }
 
-interface Fetcher {
+interface HTTPClient {
   get(url: string, options: XHROptions): Promise<unknown>
   put(url: string, options: XHROptions): Promise<unknown>
   post(url: string, options: XHROptions): Promise<unknown>
   delete(url: string, options: XHROptions): Promise<unknown>
 }
 
-export class HTTPTransport implements Fetcher {
+export class HTTPTransport implements HTTPClient {
   get(url: string, options: XHROptions) {
     if (options.data) {
       const queryParams = queryStringify(options.data)

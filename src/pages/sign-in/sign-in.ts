@@ -3,10 +3,10 @@ import { onFormErrorSubmit } from "../../helpers/formHelpers/formHelpers"
 import "./sign-in.css"
 import { printFormData } from "../../helpers"
 
-export class SignInPage extends Block<EmptyObject> {
+export class SignInPage extends Block {
   static blockName = "SignIn"
 
-  constructor(props: EmptyObject) {
+  constructor(props: UnknownObject) {
     super({
       ...props,
       events: {
