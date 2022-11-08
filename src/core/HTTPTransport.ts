@@ -1,4 +1,5 @@
 import { queryStringify } from "../helpers"
+import { API_URL } from "../config"
 
 const METHODS = {
   GET: "GET",
@@ -21,6 +22,12 @@ interface HTTPClient {
 }
 
 export class HTTPTransport implements HTTPClient {
+  private basename: string
+
+  constructor(basename: string = API_URL) {
+    this.basename = basename
+  }
+
   get(url: string, options: XHROptions) {
     if (options.data) {
       const queryParams = queryStringify(options.data)
@@ -43,9 +50,11 @@ export class HTTPTransport implements HTTPClient {
   }
 
   private request(url: string, options: XHROptions) {
+    const endpoint = `${this.basename}${url}`
+
     return new Promise((resolve, reject) => {
       const x = new XMLHttpRequest()
-      x.open(options.method, url)
+      x.open(options.method, endpoint)
 
       x.onerror = () => {
         reject(new Error("Loading error"))
