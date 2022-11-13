@@ -7,14 +7,15 @@ import { isBadRequest } from "./common"
 import { ResponseTransformer } from "../services/api/transformers"
 import { UserDto } from "../services/api/dto"
 
-const { router } =
-  window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED || {}
+const getRouter = () =>
+  window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.router
 
 const signOut: AppAction = async (dispatch) => {
   dispatch({ loading: true })
   await AuthService.signOut()
   dispatch({ loading: false, user: null })
 
+  const router = getRouter()
   router.go("/sign-in")
 }
 
@@ -22,7 +23,6 @@ const signUp: AppAction = async (dispatch, state, payload) => {
   dispatch({ loading: true })
 
   const signUpResponse = await AuthService.signUp(payload as SignUpCredentials)
-  console.log(signUpResponse)
   if (isBadRequest(dispatch, signUpResponse)) {
     return
   }
@@ -35,6 +35,7 @@ const signUp: AppAction = async (dispatch, state, payload) => {
 
   dispatch({ user: ResponseTransformer.GetUser(userResponse), loading: false })
 
+  const router = getRouter()
   router.go("/chats")
 }
 
@@ -46,6 +47,7 @@ const signIn: AppAction = async (dispatch, state, payload) => {
   if (isBadRequest(dispatch, signInResponse)) {
     return
   }
+  const router = getRouter()
 
   router.go("/chats")
 }
