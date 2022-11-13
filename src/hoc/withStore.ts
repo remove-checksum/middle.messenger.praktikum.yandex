@@ -1,5 +1,5 @@
 import { AppState, AppStore } from "../store/store"
-import { BlockConstructable, BlockProps } from "../core/Block"
+import { BlockProps } from "../core/Block"
 import { StoreEvents, Block } from "../core"
 
 export type StoreContext = { store: AppStore }
@@ -37,7 +37,7 @@ export function withStore<S extends StoreContext>(
 
     componentWillUnmount(props: P): void {
       super.componentWillUnmount(props)
-      this.props.store.on(StoreEvents.Updated, this.onStoreChange)
+      this.props.store.off(StoreEvents.Updated, this.onStoreChange)
     }
   }
 }
