@@ -1,17 +1,13 @@
 import { Block } from "../../core"
-import { BlockProps } from "../../core/Block"
 import "./button.css"
 
 type ButtonKind = "warning" | "secondary"
 
-interface ButtonProps extends BlockProps {
+interface ButtonProps {
   text: string
   kind?: ButtonKind
   small?: boolean
   extraClass?: string
-  events: {
-    click: EventListener
-  }
 }
 
 interface IncomingButtonProps {
@@ -20,6 +16,7 @@ interface IncomingButtonProps {
   small?: boolean
   extraClass?: string
   onClick: EventListener
+  disabled?: boolean
 }
 
 export class Button extends Block<ButtonProps> {
@@ -41,7 +38,8 @@ export class Button extends Block<ButtonProps> {
         {{#if extraClass}}
           {{extraClass}}
         {{/if}}"
-        type="{{type}}">
+        type="{{type}}"
+        {{#if disabled}}disabled{{/if}}>
         {{text}}
       </button>
     `

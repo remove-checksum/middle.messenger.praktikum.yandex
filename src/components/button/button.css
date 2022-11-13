@@ -1,31 +1,7 @@
 @import "../../shared/variables.css";
+@import './button-colors.css';
 
 .button {
-  --button-colour: var(--colour-green);
-  --button-hover-colour: color-mod(
-    var(--colour-green) blend(var(--util-darken) 20%)
-  );
-  --button-shadow-colour: color-mod(
-    var(--colour-green) blend(var(--util-darken) 60%)
-  );
-  --button-text-colour: var(--colour-white);
-  --secondary-button-colour: var(--colour-light-grey);
-  --secondary-button-hover-colour: color-mod(
-    var(--colour-light-grey) blend(var(--util-darken) 10%)
-  );
-  --secondary-button-shadow-colour: color-mod(
-    var(--colour-light-grey) blend(var(--util-darken) 40%)
-  );
-  --secondary-button-text-colour: var(--colour-black);
-  --warning-button-colour: var(--colour-red);
-  --warning-button-hover-colour: color-mod(
-    var(--colour-red) blend(var(--util-darken) 20%)
-  );
-  --warning-button-shadow-colour: color-mod(
-    var(--colour-red) blend(var(--util-darken) 40%)
-  );
-  --warning-button-text-colour: var(--colour-white);
-
   background-color: var(--button-colour);
   border: 0;
   padding: var(--s-2) var(--s-3);
@@ -43,6 +19,7 @@
 
 .button:disabled {
   opacity: 0.5;
+  cursor: auto;
 }
 
 .button:active:not(:disabled) {
