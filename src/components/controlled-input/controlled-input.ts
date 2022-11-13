@@ -1,7 +1,7 @@
 import { Block } from "../../core"
 import "./controlled-input.css"
-import { validators } from "../../services"
-import { UserCredentialsFields } from "../../models/forms"
+import { validate } from "../../services"
+import { UserCredentialsFieldName } from "../../models/forms"
 
 type InputType = "text" | "tel" | "password" | "email"
 interface ControlledInputProps {
@@ -9,7 +9,7 @@ interface ControlledInputProps {
   label?: string
   placeholder: string
   type: InputType
-  name: UserCredentialsFields
+  name: UserCredentialsFieldName
   value?: string
   error?: true
   extraClass?: string
@@ -27,18 +27,16 @@ export class ControlledInput extends Block<ControlledInputProps> {
       const { input } = this.getInputElements()
       const { dontValidate, name } = props
 
-      const validator = validators[name]
-
-      if (!validator || dontValidate) {
+      if (dontValidate) {
         return
       }
 
-      const error = validator(input.value)
+      const error = validate(name, input.value)
 
       if (error) {
-        this.setErrorState(error)
+        this.setError(error)
       } else {
-        this.removeErrorState()
+        this.clearError()
       }
     }
 
@@ -59,7 +57,7 @@ export class ControlledInput extends Block<ControlledInputProps> {
     return { label, input }
   }
 
-  setErrorState = (error: string) => {
+  setError = (error: string) => {
     const { label, input } = this.getInputElements()
 
     label.style.display = "initial"
@@ -67,14 +65,16 @@ export class ControlledInput extends Block<ControlledInputProps> {
     label.style.fontSize = "12px"
     label.classList.add("controlledInput__label_error")
     input.classList.add("controlledInput__input_error")
+    this.setProps({})
   }
 
-  removeErrorState = () => {
+  clearError = () => {
     const { label, input } = this.getInputElements()
     label.style.fontSize = "19px"
-    label.innerText = this.props.label
+    label.innerText = this.props.label || ""
     label.classList.remove("controlledInput__label_error")
     input.classList.remove("controlledInput__input_error")
+    this.setProps({})
   }
 
   render(): string {
@@ -96,7 +96,8 @@ export class ControlledInput extends Block<ControlledInputProps> {
             value="{{value}}"
             class="controlledInput__input {{extraInputClass}}"
             {{#if disabled}}disabled{{/if}}>
-        </div>
+            <span>{{error}}</span>
+          </div>
       `
   }
 }
