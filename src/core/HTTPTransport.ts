@@ -79,7 +79,7 @@ export class HTTPTransport implements HTTPHandles {
         }
 
         if (xhr.status === 400) {
-          reject(xhr.response)
+          resolve(xhr.response)
         }
 
         if (xhr.status === 401) {
