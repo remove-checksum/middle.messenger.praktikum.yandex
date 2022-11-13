@@ -1,40 +1,80 @@
 import { Block } from "../../core"
-import { BlockProps } from "../../core/Block"
+import signupFormData from "./sign-up.json"
 import "./sign-up.css"
-import signupData from "./sign-up.json"
-import { onFormErrorSubmit } from "../../helpers"
+import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
+import { signUp } from "../../actions/Auth"
+import { StoreContext, withStore } from "../../hoc/withStore"
 
-interface SignUpPageProps extends BlockProps {
-  signUp: typeof signupData
+interface SignUpPageState {
+  signUp: typeof signupFormData
 }
 
-export class SignUpPage extends Block {
+export class SignUpPage extends Block<StoreContext & SignUpPageState> {
   static blockName = "SignUpPage"
 
-  constructor(props: SignUpPageProps) {
+  constructor(props: StoreContext) {
     super({
       ...props,
-      signUp: signupData,
-      events: {
-        submit: (e: SubmitEvent) => {
-          e.preventDefault()
-          if (!(e.target instanceof HTMLFormElement)) {
-            return
-          }
-          const valid = onFormErrorSubmit(e.target)
-          if (valid) {
-            const formEntries = Array.from(new FormData(e.target).entries())
+      signUp: signupFormData,
+    })
 
-            const pretty = formEntries.reduce((acc, [name, value]) => {
-              Reflect.set(acc, name, value)
-              return acc
-            }, {})
-            console.table(pretty)
-            window.location.hash = "#chat"
-          }
-        },
+    this.setProps({
+      events: {
+        submit: this.onFormSubmit,
+        input: this.onFormInput,
       },
     })
+  }
+
+  onFormSubmit = (e: SubmitEvent) => {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+
+    const credentials = formToFieldData(form)
+    console.log(this.props.store)
+
+    this.props.store.dispatch(signUp, credentials)
+  }
+
+  onFormInput = () => {
+    this.checkRepeatPassword()
+    this.activateFormSubmit()
+  }
+
+  checkRepeatPassword = () => {
+    const [password, repeatPassword] = this.getContent().querySelectorAll(
+      "input[type=password]"
+    ) as NodeListOf<HTMLInputElement>
+    const passwordsMatch = password.value === repeatPassword.value
+
+    if (!passwordsMatch) {
+      const label = repeatPassword.previousElementSibling as HTMLLabelElement
+      const labelError = label.classList.contains(
+        "controlledInput__label_error"
+      )
+      if (label && labelError) {
+        label.innerText = "Пароли не совпадают"
+      }
+    }
+  }
+
+  activateFormSubmit = () => {
+    const inputs = Array.from(this.getContent().querySelectorAll("input"))
+    const submitButton = this.getContent().querySelector("button[type=submit]")
+
+    const isEveryInputValid = inputs.every((input) => {
+      const inputFilled = Boolean(input.value)
+      const inputErrored = input.classList.contains(
+        "controlledInput__input_error"
+      )
+      return inputFilled && !inputErrored
+    })
+
+    if (isEveryInputValid) {
+      submitButton?.removeAttribute("disabled")
+    } else {
+      submitButton?.setAttribute("disabled", "true")
+    }
   }
 
   render() {
@@ -62,10 +102,10 @@ export class SignUpPage extends Block {
                 text="Зарегистрироваться"
                 type="submit"
                 extraClass="signupForm__button"
+                disabled=true
               }}}
               {{{ Link
-                router=false
-                to="#sign-in"
+                to="/sign-in"
                 extraClass="signupForm__link"
                 text="Войти"
               }}}
@@ -75,3 +115,5 @@ export class SignUpPage extends Block {
     `
   }
 }
+
+export default withStore(SignUpPage, () => ({}))

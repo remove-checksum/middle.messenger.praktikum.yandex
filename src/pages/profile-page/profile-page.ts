@@ -2,8 +2,10 @@ import { Block } from "../../core"
 import "./profile-page.css"
 import userChangeData from "./user-data.json"
 import passwordChangeData from "./password-change.json"
-import { onFormErrorSubmit } from "../../helpers"
 import { printFormData } from "../../helpers/formHelpers/formHelpers"
+import { StoreContext, withStore } from "../../hoc/withStore"
+import { AuthActions } from "../../actions"
+import { User } from "../../services/api/User"
 
 const userDisplayName = userChangeData.fields.display_name.value
 const userFields = userChangeData.fields
@@ -16,53 +18,54 @@ const avatarData = {
 }
 
 interface ProfilePageProps {
-  avatarData: typeof avatarData
+  user: User
+}
+
+interface ProfilePageState {
+  redactable: boolean
   fields: typeof userFields | typeof passwordFields
-  heading: string
-  inactive: boolean
   logout: VoidFunction
   toggleCredentialsChange: VoidFunction
   togglePasswordChange: VoidFunction
   endRedacting: VoidFunction
 }
 
-export class ProfilePage extends Block<ProfilePageProps> {
+export class ProfilePage extends Block<
+  ProfilePageState & StoreContext & ProfilePageProps
+> {
   static blockName = "ProfilePage"
 
-  constructor(props: ProfilePageProps) {
+  constructor(props: ProfilePageProps & StoreContext) {
     super({
       ...props,
-      inactive: true,
+      redactable: true,
       fields: userFields,
-      heading: userDisplayName,
-      avatarData,
       toggleCredentialsChange: () => {
         this.setProps({
           fields: userFields,
-          inactive: !this.props.inactive,
+          redactable: !this.props.redactable,
         })
       },
       endRedacting: () => {
-        const form = this.getContent().querySelector("form")
-        if (!form) {
-          console.error("No form element found")
-          return
-        }
-        const valid = onFormErrorSubmit(form)
-        if (valid) {
+        const form = this.getContent().querySelector("form") as HTMLFormElement
+
+        const formInvalid = Array.from(form.elements).some((element) =>
+          element.classList.contains("controlledInput__input_error")
+        )
+        if (!formInvalid) {
           printFormData(form)
         }
 
-        this.setProps({ inactive: !this.props.inactive })
+        this.setProps({ redactable: !this.props.redactable })
       },
       togglePasswordChange: () => {
         this.setProps({
           fields: passwordFields,
-          inactive: !this.props.inactive,
+          redactable: !this.props.redactable,
         })
       },
       logout: () => {
-        window.location.hash = "#sign-in"
+        this.props.store.dispatch(AuthActions.signOut)
       },
     })
   }
@@ -75,11 +78,11 @@ export class ProfilePage extends Block<ProfilePageProps> {
             <i class="ph-x closeButton__icon"></i>
           </button>
           {{{ Avatar inputLabel=avatarData.inputLabel inputName="avatar" imgUrl=avatarData.url }}}
-          <h2 class="profilePage__username">{{heading}}</h2>
+          <h2 class="profilePage__username">{{ user.display_name }}</h2>
           <form action="#">
-            {{{ RedactableRows fields=fields inactive=inactive }}}
+            {{{ RedactableRows fields=fields inactive=redactable }}}
             <div class="profilePage__action-buttons">
-              {{#if inactive}}
+              {{#if redactable}}
                 {{{ Button text="Изменить данные"
                   extraClass="profilePage__button"
                   onClick=toggleCredentialsChange
@@ -107,3 +110,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
     `
   }
 }
+
+export default withStore(ProfilePage, (state) => ({
+  user: state.user,
+}))
