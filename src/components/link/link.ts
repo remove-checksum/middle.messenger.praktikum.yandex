@@ -1,38 +1,36 @@
-import { Block } from "../../core"
+import { Block, PathRouter } from "../../core"
+import { withRouter } from "../../hoc/withRouter"
 import "./link.css"
 
+interface LinkContext {
+  router: PathRouter
+}
 interface LinkProps {
-  router: boolean
   to: string
   text: string
   extraClass: string
 }
 
-export class Link extends Block<LinkProps> {
+export class Link extends Block<LinkProps & LinkContext> {
   static blockName = "Link"
 
-  constructor(props: LinkProps) {
-    const innerProps = props.router
-      ? {
-          ...props,
-          events: {
-            click: (e: MouseEvent) => {
-              router.go(props.to)
-            },
-          },
-        }
-      : props
-
-    super(innerProps)
+  constructor(props: LinkProps & LinkContext) {
+    super({
+      ...props,
+      events: {
+        click: () => {
+          console.log(`going to ${this.props.to}`)
+          this.props.router.go(this.props.to)
+        },
+      },
+    })
   }
 
   render() {
     return /* html */ `
-      {{#if router}}
-        <button class="link {{extraClass}}">{{text}}</button>
-      {{else}}
-        <a href="{{to}}" class="link {{extraClass}}">{{text}}</a>
-      {{/if}}
+      <button class="link {{extraClass}}">{{text}}</button>
     `
   }
 }
+
+export default withRouter(Link)

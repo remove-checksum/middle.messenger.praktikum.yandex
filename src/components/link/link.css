@@ -2,6 +2,9 @@
 
 .link {
   color: var(--colour-blue);
+  border: none;
+  background-color: unset;
+  font-size: (var(--text-regular));
 }
 
 .link:visited {
@@ -9,7 +12,10 @@
 }
 
 .link:hover {
+  text-decoration: underline;
   text-decoration-thickness: 2px;
+  color: var(--colour-link-hover);
+  cursor: pointer;
   outline: 0 transparent;
 }
 
