@@ -1,29 +1,43 @@
-import { renderDOM, registerComponent } from "./core"
-import * as Components from "./components"
-import { PageLayout } from "./layouts"
-import * as Pages from "./pages"
-import { routes, Routes } from "./routes"
+import { registerComponents } from "./helpers" // !!! This import must be first
+import { PathRouter } from "./core/Router"
+import { Store, StoreEvents } from "./core/Store"
+import { FALLBACK_ROUTE, initRouter } from "./router"
+import { AppState, initialAppState } from "./store/store"
 import "./shared/main.css"
+import { appInit } from "./actions/AppInit"
+import { renderDOM } from "./core"
+import { Loader } from "./components"
 
-const allComponents = [
-  ...Object.values(Components),
-  ...Object.values(Pages),
-  PageLayout,
-]
+registerComponents()
 
-// @ts-expect-error 'every block generic should be instantiated with its props'
-allComponents.forEach((component) => registerComponent(component))
+const logStore = (prevState, nextState) => {
+  console.log(
+    `%cstore updated`,
+    "background: hotpink; color: black;",
+    prevState,
+    nextState
+  )
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  // const route = window.location.hash as Routes
-  // const CurrentPage = routes[route] || Pages.SignInPage
-  // console.log(route, CurrentPage)
-  renderDOM("#app", new Pages.SignInPage({}))
+const bootstrapApplication = () => {
+  const router = new PathRouter(FALLBACK_ROUTE.path)
+  const store = new Store<AppState>(initialAppState)
 
-  window.addEventListener("hashchange", () => {
-    const route = window.location.hash as Routes
-    const CurrentPage = routes[route] || Pages.SignInPage
-    // @ts-expect-error 'every block generic should be instantiated with its props'
-    renderDOM("#app", new CurrentPage({}))
-  })
-})
+  const loader = new Loader({})
+
+  window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = {
+    router,
+    store,
+    blockInstance: loader,
+  }
+
+  store.on(StoreEvents.Updated, logStore)
+
+  renderDOM("#app", loader)
+
+  initRouter(router, store)
+
+  store.dispatch(appInit)
+}
+
+document.addEventListener("DOMContentLoaded", bootstrapApplication)
