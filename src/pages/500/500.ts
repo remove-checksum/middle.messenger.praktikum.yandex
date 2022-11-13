@@ -10,7 +10,7 @@ export class ServerErrorPage extends Block {
         <div class="errorPage">
           <h1 class="errorPage__code">500</h1>
           <h2 class="errorPage__subheading">Ошибка на сервере</h2>
-          {{{ Link router=false to="#chat" text="Назад к чатам" }}}
+          {{{ Link to="/chat" text="Назад к чатам" }}}
         </div>
       {{/PageLayout}}
     `
