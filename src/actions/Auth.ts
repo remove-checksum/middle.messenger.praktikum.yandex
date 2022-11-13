@@ -62,4 +62,9 @@ const getUser: AppAction = async (dispatch) => {
   dispatch({ user: ResponseTransformer.GetUser(userResponse as UserDto) })
 }
 
-export { signIn, signUp, signOut, getUser }
+export const AuthActions = {
+  getUser,
+  signOut,
+  signIn,
+  signUp,
+}

@@ -1,48 +1,10 @@
 import { ChangeUser } from "../services/api/User"
 import { UserService } from "../services/api"
 import { AppAction } from "../store/store"
-import { getUser } from "./Auth"
-import { errorResponse } from "../helpers"
+import { AuthActions } from "./Auth"
+import { onResponseSuccess } from "./common"
 
-/*
-  changeProfile
-  changePassword
-  changeAvatar
-  getById
-  searchByLogin
-*/
-
-type apiCallPayload = {
-  apiResponse: Promise<any>
-  onSuccess: { action: AppAction; payload: any }
-}
-
-const onResponseSuccess: AppAction = async (
-  dispatch,
-  state,
-  payload: apiCallPayload
-) => {
-  dispatch({ loading: true })
-
-  const response = await payload.apiResponse
-
-  if (errorResponse(response)) {
-    dispatch({ loading: false, errorReason: response.reason })
-    return
-  }
-
-  if (payload.onSuccess) {
-    const onSuccessPayload = payload.onSuccess.payload
-      ? payload.onSuccess.payload
-      : payload
-
-    dispatch(payload.onSuccess.action, onSuccessPayload)
-  }
-
-  dispatch({ loading: false })
-}
-
-const changeProfile: AppAction = async (
+const changePublicInfo: AppAction = async (
   dispatch,
   state,
   payload: ChangeUser
@@ -50,7 +12,7 @@ const changeProfile: AppAction = async (
   dispatch(onResponseSuccess, {
     apiResponse: UserService.changePublicInfo(payload),
     onSuccess: {
-      action: getUser,
+      action: AuthActions.getUser,
     },
   })
 }
@@ -68,17 +30,40 @@ const changePassword: AppAction = async (
   })
 }
 
-// const getOneById: AppAction = async (
-//   dispatch,
-//   state,
-//   payload: {
-//     userId: number
-//   }
-// ) => {
-//   dispatch(onResponseSuccess, {
-//     apiResponse: UserService.getOneById(payload.userId),
-//     onSuccess: {
-//       action: {},
-//     },
-//   })
-// }
+const changeAvatar: AppAction = async (
+  dispatch,
+  state,
+  payload: {
+    formData: FormData
+  }
+) => {
+  dispatch(onResponseSuccess, {
+    apiResponse: UserService.changeAvatar(payload.formData),
+    onSuccess: {
+      action: AuthActions.getUser,
+    },
+  })
+}
+
+// TODO add field for user search
+const getOneById: AppAction = async (
+  dispatch,
+  state,
+  payload: {
+    userId: number
+  }
+) => {
+  dispatch(onResponseSuccess, {
+    apiResponse: UserService.getOneById(payload.userId),
+    onSuccess: {
+      action: {},
+    },
+  })
+}
+
+export const ProfileActions = {
+  changeAvatar,
+  changePassword,
+  changePublicInfo,
+  getOneById,
+}

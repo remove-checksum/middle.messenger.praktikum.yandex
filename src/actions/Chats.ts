@@ -119,7 +119,7 @@ const getChatMessageToken: AppAction = async (
   })
 }
 
-export {
+export const ChatActions = {
   createChat,
   deleteChat,
   addUserToChat,
