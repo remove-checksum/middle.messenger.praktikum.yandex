@@ -10,7 +10,12 @@ interface WSClient {
   close(): void
 }
 
-interface WSHandlers {
+interface WSCredentials {
+  token: string
+  chatId: number
+}
+
+export interface WSHandlers {
   onOpen: (e: Event) => void
   onClose: (e: CloseEvent) => void
   onMessage: (e: MessageEvent) => void
@@ -25,16 +30,18 @@ export class WSTransport implements WSClient {
   // @ts-expect-error interval initialized inside 'augmentHandlers'
   private intervalId: number
 
-  constructor(query: string, handlers: WSHandlers) {
+  constructor(credentials: WSCredentials, handlers: WSHandlers) {
     this.handlers = handlers
-    this.socket = new WebSocket(`${WS_URL}/${query}`)
+    this.socket = new WebSocket(
+      `${WS_URL}${credentials.token}/${credentials.chatId}`
+    )
 
-    this.augmentHandlers()
+    this.attachPing()
 
     this.bindEvents()
   }
 
-  private augmentHandlers() {
+  private attachPing() {
     const rawOnOpen = this.handlers.onOpen
 
     this.handlers.onOpen = (e: Event) => {
