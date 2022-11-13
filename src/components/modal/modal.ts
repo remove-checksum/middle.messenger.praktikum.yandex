@@ -34,7 +34,7 @@ const variants = {
   addFile: {
     title: "Загрузите файл",
     buttonText: "Подтвердить",
-    content: new FileInput(),
+    content: new FileInput({}),
   },
   deleteChat: {
     title: "Удалить чат",
@@ -61,7 +61,6 @@ export class Modal extends Block<ModalProps & ModalState> {
 
   constructor(props: ModalProps) {
     const { content, title, buttonText } = variants[props.variant]
-
     const replacer = content && content.getContent()
 
     super({
