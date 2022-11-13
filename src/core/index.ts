@@ -1,4 +1,7 @@
 export { Block } from "./Block"
 export type { BlockConstructable } from "./Block"
+export { registerComponent } from "./registerComponent"
 export { renderDOM } from "./renderDOM"
+export { EventBus } from "./EventBus"
+export { PathRouter } from "./Router"
 export { Store, StoreEvents } from "./Store"

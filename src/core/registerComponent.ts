@@ -1,10 +1,5 @@
 import Handlebars, { HelperOptions } from "handlebars"
-import { Block, BlockProps } from "./Block"
-
-export interface BlockConstructable<Props extends BlockProps = AnyObject> {
-  new (props: Props): Block<Props>
-  blockName: string
-}
+import { BlockConstructable } from "./Block"
 
 export function registerComponent<Props extends UnknownObject = AnyObject>(
   Component: BlockConstructable<Props>
