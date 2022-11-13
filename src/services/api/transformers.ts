@@ -1,6 +1,7 @@
+import { ItemMessage } from "../../components/message-bubble/message-bubble"
 import { CreatedUserId } from "./Auth"
 import { Chat } from "./Chats"
-import { ChatDto, LastMessage, UserDto } from "./dto"
+import { ChatDto, LastMessage, MessageDto, UserDto } from "./dto"
 import { User } from "./User"
 
 export const ResponseTransformer = {
@@ -37,4 +38,10 @@ export const ResponseTransformer = {
       unread_count: chat.unread_count,
       last_message: ResponseTransformer.LastMessage(chat.last_message),
     })),
+  ChatMessage: (res: MessageDto, myId: number): ItemMessage => ({
+    image: (res.file && res.file.path) || null,
+    own: res.user_id === myId,
+    text: res.content,
+    time: res.time,
+  }),
 }
