@@ -22,7 +22,7 @@ const inputsWithErrors = (form: HTMLFormElement) =>
       }
     }) as unknown as InputWithError[]
 
-const onFormErrorSubmit = (form: HTMLFormElement) => {
+export const toggleErrorState = (form: HTMLFormElement) => {
   const elements = inputsWithErrors(form) as InputWithError[]
   elements.forEach(({ label, input, error }) => {
     if (error) {
@@ -38,10 +38,16 @@ const onFormErrorSubmit = (form: HTMLFormElement) => {
     }
   })
 
-  return elements.every((e) => e.error === "")
+  return elements.every((e) => !e.error)
 }
 
-const printFormData = (form: HTMLFormElement) => {
+export const formToFieldData = (form: HTMLFormElement) =>
+  Array.from(new FormData(form)).reduce((dto, [key, value]) => {
+    dto[key] = value
+    return dto
+  }, {} as Indexed)
+
+export const printFormData = (form: HTMLFormElement) => {
   const fd = new FormData(form).entries()
   const confirmMessage = Array.from(fd).reduce((acc, [key, value]) => {
     acc[key] = value
@@ -49,5 +55,3 @@ const printFormData = (form: HTMLFormElement) => {
   }, {} as UnknownObject) as Record<InputFields, string>
   console.table(confirmMessage)
 }
-
-export { onFormErrorSubmit, printFormData }
