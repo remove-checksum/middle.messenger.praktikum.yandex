@@ -17,8 +17,13 @@ export interface BlockProps {
   >
 }
 
+export interface BlockConstructable<P extends AnyObject = AnyObject> {
+  new (props: P): Block<P>
+  blockName: string
+}
+
 export abstract class Block<
-  P extends AnyObject & BlockProps = UnknownObject,
+  P extends AnyObject & BlockProps = AnyObject & BlockProps,
   R extends Record<string, Block> = AnyObject
 > {
   static EVENTS = {
@@ -26,9 +31,12 @@ export abstract class Block<
     FLOW_CDM: "flow:component-did-mount",
     FLOW_CDU: "flow:component-did-update",
     FLOW_RENDER: "flow:render",
+    FLOW_CWU: "flow-component-will-unmount",
   } as const
 
   public id = nanoid(6)
+
+  private blockListeners = new Map()
 
   protected _element: Nullable<HTMLElement> = null
 
@@ -64,6 +72,8 @@ export abstract class Block<
     // @ts-expect-error 'P could be instantiated with arbitrary type'
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
+    // @ts-expect-error 'P could be instantiated with arbitrary type'
+    eventBus.on(Block.EVENTS.FLOW_CWU, this.componentWillUnmount.bind(this))
   }
 
   private _createResources() {
@@ -83,9 +93,17 @@ export abstract class Block<
     this.eventBus().emit(Block.EVENTS.FLOW_CDM, this.props)
   }
 
+  dispatchComponentWillUnmount() {
+    this.eventBus().emit(Block.EVENTS.FLOW_CWU, this.props)
+  }
+
   // This method meant to be overriden
   // eslint-disable-next-line
   componentDidMount(props: P) {}
+
+  // This method meant to be overriden
+  // eslint-disable-next-line
+  componentWillUnmount(props: P) {}
 
   private _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps)
@@ -101,7 +119,7 @@ export abstract class Block<
     return true
   }
 
-  setProps = (nextProps: Partial<P>) => {
+  setProps = (nextProps: Partial<P> & BlockProps) => {
     if (!nextProps) {
       return
     }
@@ -178,6 +196,8 @@ export abstract class Block<
 
     Object.entries(events).forEach(([event, listener]) => {
       if (this._element) {
+        this.blockListeners.set(event, listener)
+
         this._element.addEventListener(event, listener)
       }
     })

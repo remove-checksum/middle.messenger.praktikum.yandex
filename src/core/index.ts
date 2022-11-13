@@ -1,4 +1,4 @@
 export { Block } from "./Block"
-export { registerComponent, BlockConstructable } from "./registerComponent"
+export type { BlockConstructable } from "./Block"
 export { renderDOM } from "./renderDOM"
 export { Store, StoreEvents } from "./Store"
