@@ -40,7 +40,7 @@ export class FileInput extends Block<FileInputProps & FileInputState> {
   render() {
     return /* html */ `
     <div class="fileInput">
-      <input type="file" class="fileInput__input">
+      <input type="file" class="fileInput__input" accept="image/*">
       {{#if selectedFile}}
         <span class="fileInput__selectedName">{{selectedFile}}</span>
       {{/if}}
