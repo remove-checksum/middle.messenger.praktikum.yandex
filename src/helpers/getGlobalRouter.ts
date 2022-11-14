@@ -3,4 +3,6 @@ export const getGlobalRouter = () => {
   if (!router) {
     throw new Error("Router not in global")
   }
+
+  return router
 }

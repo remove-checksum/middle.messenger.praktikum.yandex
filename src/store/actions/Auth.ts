@@ -5,14 +5,15 @@ import AuthService, {
 import { AppAction } from "../store"
 import { withException, isBadRequest } from "./common"
 import { ResponseTransformer } from "../../services/api/transformers"
-import { isWrongRequest } from "../../helpers/isWrongRequest"
+import { withErrorReason } from "../../helpers/isWrongRequest"
+import { getGlobalRouter } from "../../helpers"
 
 const getUser: AppAction = async (dispatch) => {
   dispatch({ loading: true })
 
   const userResponse = await AuthService.getUser()
 
-  if (isWrongRequest(userResponse)) {
+  if (withErrorReason(userResponse)) {
     dispatch(signOut)
     return
   }
@@ -36,14 +37,14 @@ const signUp: AppAction = async (dispatch, state, payload) => {
 
   dispatch({ user: ResponseTransformer.GetUser(userResponse), loading: false })
 
-  const router = getRouter()
+  const router = getGlobalRouter()
   router.go("/chats")
 }
 
 const signIn: AppAction = async (dispatch, state, payload) => {
   dispatch({ loading: true })
 
-  const router = getRouter()
+  const router = getGlobalRouter()
 
   router.go("/chats")
 
@@ -60,7 +61,7 @@ const signOut: AppAction = async (dispatch) => {
   await AuthService.signOut()
   dispatch({ loading: false, user: null })
 
-  const router = getRouter()
+  const router = getGlobalRouter()
   router.go("/sign-in")
 }
 

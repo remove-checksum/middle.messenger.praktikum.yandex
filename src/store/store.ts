@@ -1,31 +1,55 @@
-import { Loader } from "../components"
+import { ItemMessage } from "../components/message-bubble/message-bubble"
 import { BlockConstructable, Store } from "../core"
 import { Action, Dispatch } from "../core/Store"
-import { Chat } from "../services/api/Chats"
+import { WSTransport } from "../core/WSTransport"
+import { ChatUserDto } from "../services/api/dto"
 import { User } from "../services/api/User"
+import { Chat } from "../services/api/Chats"
 
 export interface AppState {
-  initialLoad: boolean
+  appIsInited: boolean
   loading: boolean
-  errorReason: Nullable<string>
-  page: BlockConstructable
-  user: Nullable<User>
+  errorReason: string | null
+  page: BlockConstructable | null
+  user: User | null
   currentChat: Nullable<{
     id: number
     token: string
-    messages: Nullable<any>
+    chatUsers: ChatUserDto[]
+    messages: ItemMessage
+    socket: WSTransport
   }>
-  chats: Nullable<Chat[]>
+  chats: Chat[] | null
+  errors: {
+    signIn: string | null
+    signUp: string | null
+    chatAddUser: string | null
+    chatDeleteUser: string | null
+    chatAddFile: string | null
+    userChangePublicInfo: string | null
+    userChangePassword: string | null
+    userChangeAvatar: string | null
+  }
 }
 
 export const initialAppState: AppState = {
-  initialLoad: true,
+  appIsInited: true,
   loading: false,
   errorReason: null,
-  page: Loader,
+  page: null,
   user: null,
   currentChat: null,
   chats: null,
+  errors: {
+    signIn: null,
+    signUp: null,
+    chatAddUser: null,
+    chatDeleteUser: null,
+    chatAddFile: null,
+    userChangeAvatar: null,
+    userChangePassword: null,
+    userChangePublicInfo: null,
+  },
 }
 
 export type AppStore = Store<AppState>
