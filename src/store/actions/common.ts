@@ -1,5 +1,20 @@
-import { errorResponse } from "../helpers"
-import { AppDispatch, AppAction } from "../store/store"
+import { errorResponse } from "../../helpers"
+import { AppDispatch, AppAction } from "../store"
+
+export const withException =
+  (action: AppAction): AppAction =>
+  (dispatch, state, payload) => {
+    try {
+      action(dispatch, state, payload)
+    } catch (e) {
+      console.error(`
+        Error in action ${action.name}
+        State -> ${JSON.stringify(state, null, 2)}
+        Payload -> ${JSON.stringify(state, null, 2)}
+        Error -> ${e}
+      `)
+    }
+  }
 
 export const isBadRequest = (dispatch: AppDispatch, response: any) => {
   if (errorResponse(response)) {

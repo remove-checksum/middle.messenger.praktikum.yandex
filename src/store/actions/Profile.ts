@@ -1,6 +1,6 @@
-import { ChangeUser } from "../services/api/User"
-import { UserService } from "../services/api"
-import { AppAction } from "../store/store"
+import { ChangeUser } from "../../services/api/User"
+import { UserService } from "../../services/api"
+import { AppAction } from "../store"
 import { AuthActions } from "./Auth"
 import { onResponseSuccess } from "./common"
 

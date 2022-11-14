@@ -1,13 +1,13 @@
-import { ChatsService } from "../services/api"
-import { AppAction } from "../store/store"
+import { ChatsService } from "../../services/api"
 import { isBadRequest } from "./common"
-import { ResponseTransformer } from "../services/api/transformers"
-import { ChatDto, ChatTokenDto } from "../services/api/dto"
+import { AppAction } from "../store"
+import { ResponseTransformer } from "../../services/api/transformers"
+import { ChatDto } from "../../services/api/dto"
 
 const getChats: AppAction = async (dispatch) => {
   dispatch({ loading: true })
 
-  const chatsResponse = await ChatsService.getAllChats()
+  const chatsResponse = await ChatsService.getChats()
 
   if (isBadRequest(dispatch, chatsResponse)) {
     return
