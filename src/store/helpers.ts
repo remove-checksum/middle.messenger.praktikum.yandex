@@ -1,13 +1,13 @@
 import { AppState } from "./store"
+import { ApiErrorDto } from "../services/api/dto"
 
-const toKeyvalString = (hash: AnyObject) =>
+const toReadable = (hash: AnyObject) =>
   Object.entries(hash)
     .map(([key, val]) => {
       let displayVal = val
-
       if (val && val.blockName) {
         // val block
-        displayVal = val.blocnName
+        displayVal = val.blockName
       }
 
       if (typeof val === "object" && val !== null) {
@@ -22,6 +22,13 @@ export function logStore(prevState: AppState, nextState: AppState) {
   console.log(
     "%cstore updated",
     "background-color: #cccddd; color: #112233",
-    toKeyvalString(nextState)
+    `\n--------OLD STATE----------------${toReadable(prevState)}`,
+    `\n--------NEW STATE----------------${toReadable(nextState)}`
+  )
+}
+
+export function checkForError(response: unknown): response is ApiErrorDto {
+  return (
+    typeof response === "object" && response !== null && "reason" in response
   )
 }
