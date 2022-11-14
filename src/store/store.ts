@@ -1,16 +1,16 @@
 import { ItemMessage } from "../components/message-bubble/message-bubble"
-import { BlockConstructable, Store } from "../core"
+import { Store } from "../core"
 import { Action, Dispatch } from "../core/Store"
 import { WSTransport } from "../core/WSTransport"
 import { ChatUserDto } from "../services/api/dto"
 import { User } from "../services/api/User"
 import { Chat } from "../services/api/Chats"
+import { Page } from "../pages"
 
 export interface AppState {
   appIsInited: boolean
   loading: boolean
-  errorReason: string | null
-  page: BlockConstructable | null
+  page: Page | null
   user: User | null
   currentChat: Nullable<{
     id: number
@@ -23,6 +23,7 @@ export interface AppState {
   errors: {
     signIn: string | null
     signUp: string | null
+    getUser: string | null
     chatAddUser: string | null
     chatDeleteUser: string | null
     chatAddFile: string | null
@@ -33,9 +34,8 @@ export interface AppState {
 }
 
 export const initialAppState: AppState = {
-  appIsInited: true,
+  appIsInited: false,
   loading: false,
-  errorReason: null,
   page: null,
   user: null,
   currentChat: null,
@@ -43,6 +43,7 @@ export const initialAppState: AppState = {
   errors: {
     signIn: null,
     signUp: null,
+    getUser: null,
     chatAddUser: null,
     chatDeleteUser: null,
     chatAddFile: null,

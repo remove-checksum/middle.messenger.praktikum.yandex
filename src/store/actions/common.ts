@@ -1,7 +1,6 @@
-import { errorResponse } from "../../helpers"
-import { AppDispatch, AppAction } from "../store"
+import { AppAction } from "../store"
 
-export const withException =
+export const withLogException =
   (action: AppAction): AppAction =>
   (dispatch, state, payload) => {
     try {
@@ -15,14 +14,6 @@ export const withException =
       `)
     }
   }
-
-export const isBadRequest = (dispatch: AppDispatch, response: any) => {
-  if (errorResponse(response)) {
-    dispatch({ loading: false, errorReason: response.reason })
-    return false
-  }
-  return true
-}
 
 type apiCallPayload = {
   apiResponse: Promise<unknown>

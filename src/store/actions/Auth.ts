@@ -1,73 +1,88 @@
-import AuthService, {
-  SignUpCredentials,
-  SignInCredentials,
-} from "../../services/api/Auth"
+import { AuthService } from "../../services/api"
 import { AppAction } from "../store"
-import { withException, isBadRequest } from "./common"
+import { withLogException } from "./common"
 import { ResponseTransformer } from "../../services/api/transformers"
-import { withErrorReason } from "../../helpers/isWrongRequest"
 import { getGlobalRouter } from "../../helpers"
-
-const getUser: AppAction = async (dispatch) => {
-  dispatch({ loading: true })
-
-  const userResponse = await AuthService.getUser()
-
-  if (withErrorReason(userResponse)) {
-    dispatch(signOut)
-    return
-  }
-
-  dispatch({ user: ResponseTransformer.GetUser(userResponse) })
-}
-
-const signUp: AppAction = async (dispatch, state, payload) => {
-  dispatch({ loading: true })
-
-  const signUpResponse = await AuthService.signUp(payload as SignUpCredentials)
-  if (isBadRequest(dispatch, signUpResponse)) {
-    return
-  }
-
-  const userResponse = await AuthService.getUser()
-
-  if (isBadRequest(dispatch, userResponse)) {
-    return
-  }
-
-  dispatch({ user: ResponseTransformer.GetUser(userResponse), loading: false })
-
-  const router = getGlobalRouter()
-  router.go("/chats")
-}
-
-const signIn: AppAction = async (dispatch, state, payload) => {
-  dispatch({ loading: true })
-
-  const router = getGlobalRouter()
-
-  router.go("/chats")
-
-  const signInResponse = await AuthService.signIn(payload as SignInCredentials)
-
-  if (isBadRequest(dispatch, signInResponse)) {
-    return
-  }
-  dispatch({ loading: false })
-}
+import { checkForError } from "../helpers"
 
 const signOut: AppAction = async (dispatch) => {
   dispatch({ loading: true })
   await AuthService.signOut()
   dispatch({ loading: false, user: null })
 
-  const router = getGlobalRouter()
+  const router = getGlobalRouter() // TODO: call getGlobalRouter on module import
   router.go("/sign-in")
 }
 
+const getUser: AppAction = async (dispatch, state) => {
+  const getUserResponse = await AuthService.getUser()
+
+  if (!checkForError(getUserResponse)) {
+    const user = ResponseTransformer.GetUser(getUserResponse)
+    dispatch({
+      user,
+      errors: {
+        ...state.errors,
+        getUser: null,
+      },
+    })
+  } else {
+    dispatch({
+      errors: {
+        ...state.errors,
+        getUser: getUserResponse.reason,
+      },
+    })
+  }
+}
+
+const signUp: AppAction = async (dispatch, state, payload) => {
+  dispatch({ loading: true })
+
+  const signUpResponse = await AuthService.signUp(payload)
+
+  if (checkForError(signUpResponse)) {
+    dispatch({
+      loading: false,
+      errors: { ...state.errors, signUp: signUpResponse.reason },
+    })
+  }
+
+  await getUser(dispatch, state, payload)
+
+  if (!state.errors.getUser) {
+    const router = getGlobalRouter()
+    router.go("/chats")
+  } else {
+    dispatch(signOut)
+  }
+}
+
+const signIn: AppAction = async (dispatch, state, payload) => {
+  dispatch({ loading: true })
+
+  const signInResponse = await AuthService.signIn(payload)
+
+  if (checkForError(signInResponse)) {
+    dispatch({
+      loading: false,
+      errors: { ...state.errors, signIn: signInResponse.reason },
+    })
+  }
+
+  await getUser(dispatch, state, payload)
+
+  if (!state.errors.getUser) {
+    const router = getGlobalRouter()
+    router.go("/chats")
+  } else {
+    dispatch(signOut)
+  }
+}
+
 export const AuthActions = {
-  getUser: withException(getUser),
-  signIn: withException(signIn),
-  signUp: withException(signUp),
-  signOut: withException(signOut),
+  getUser: withLogException(getUser),
+  signIn: withLogException(signIn),
+  signUp: withLogException(signUp),
+  signOut: withLogException(signOut),
 }

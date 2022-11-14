@@ -1,59 +1,50 @@
-import { renderDOM, PathRouter, BlockConstructable, Store } from "./core"
+import { renderDOM, PathRouter, Store } from "./core"
 import { StoreEvents } from "./core/Store"
 
-import * as Pages from "./pages"
+import { getBlockByPage, Page } from "./pages"
+
 import { AppState } from "./store/store"
 
 interface Route {
   path: `/${string}`
-  block: BlockConstructable<AnyObject>
+  block: Page
   isProtected: boolean
-}
-
-export const FALLBACK_ROUTE: Route = {
-  path: "/*",
-  block: Pages.SignInPage,
-  isProtected: false,
 }
 
 const routes: Route[] = [
   {
-    path: "/",
-    block: Pages.SignInPage,
-    isProtected: false,
-  },
-  {
     path: "/sign-in",
-    block: Pages.SignInPage,
+    block: Page.SignIn,
     isProtected: false,
   },
   {
     path: "/sign-up",
-    block: Pages.SignUpPage,
+    block: Page.SignUp,
     isProtected: false,
   },
   {
     path: "/profile",
-    block: Pages.ProfilePage,
+    block: Page.Profile,
     isProtected: true,
   },
   {
-    path: "/chats",
-    block: Pages.ChatPage,
+    path: "/chat",
+    block: Page.Chat,
     isProtected: true,
   },
   {
     path: "/not-found",
-    block: Pages.NotFoundPage,
+    block: Page.NotFound,
     isProtected: false,
   },
   {
     path: "/server-error",
-    block: Pages.ServerErrorPage,
+    block: Page.ServerError,
     isProtected: false,
   },
-  FALLBACK_ROUTE,
 ]
+
+export const FALLBACK_ROUTE = routes[1]
 
 export const initRouter = (router: PathRouter, store: Store<AppState>) => {
   routes.forEach((route) => {
@@ -66,8 +57,13 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
         return
       }
 
-      if (isAuthorized && route.isProtected) {
-        store.dispatch({ page: FALLBACK_ROUTE.block })
+      if (!isAuthorized && route.isProtected) {
+        store.dispatch({ page: Page.SignIn })
+      }
+
+      if (!hasCurrentPage) {
+        console.log("fallback")
+        store.dispatch({ page: Page.SignIn })
       }
     })
   })
@@ -76,15 +72,20 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
     StoreEvents.Updated,
     (prevState: Partial<AppState>, nextState: Partial<AppState>) => {
       const shouldInit = !prevState.appIsInited && nextState.appIsInited
+      console.log(
+        `WAS INITED? ${prevState.appIsInited} | WILL BE INITED? ${nextState.appIsInited}`
+      )
+
       if (shouldInit) {
         router.start()
       }
 
       const pageChanged = prevState.page !== nextState.page
       if (pageChanged) {
-        const Page = nextState.page
-        renderDOM("#app", new Page({}))
-        document.title = `ChatApp / ${Page.blockName}`
+        const MatchBlock = getBlockByPage(nextState.page)
+
+        renderDOM("#app", new MatchBlock({}))
+        document.title = `ChatApp / ${MatchBlock.blockName}`
       }
     }
   )

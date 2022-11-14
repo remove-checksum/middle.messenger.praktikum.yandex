@@ -1,17 +1,24 @@
-import { AuthService } from "../../services/api"
-import { User } from "../../services/api/User"
 import { AppAction } from "../store"
+import { withLogException } from "./common"
+import { getGlobalRouter } from "../../helpers"
+import { FALLBACK_ROUTE } from "../../router"
+import { AuthService } from "../../services/api"
+import { checkForError } from "../helpers"
+import { ResponseTransformer } from "../../services/api/transformers"
 
-const getRouter = () =>
-  window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.router
-
-const appInit: AppAction = async (dispatch, state, payload) => {
+export const appInit: AppAction = withLogException(async (dispatch, state) => {
+  const router = getGlobalRouter()
   dispatch({ loading: true })
-  const user = (await AuthService.getUser()) as User
-  console.log(`Logged in with ${JSON.stringify(user, null, 2)}`)
 
-  dispatch({ user, loading: false, appIsInited: false })
-  // getRouter().go("/sign-in")
-}
+  const getUserResponse = await AuthService.getUser()
 
-export { appInit }
+  if (!checkForError(getUserResponse)) {
+    const user = ResponseTransformer.GetUser(getUserResponse)
+    dispatch({ user })
+    router.go("/chats")
+    dispatch({ appIsInited: true })
+  } else {
+    router.go(FALLBACK_ROUTE.path)
+    dispatch({ appIsInited: true })
+  }
+})
