@@ -1,6 +1,7 @@
 import { HTTPTransport } from "../../core/HTTPTransport"
 import { Headers } from "./common"
 import { API_URL } from "../../config"
+import { ApiErrorDto, GetUserDto, SignUpDto } from "./dto"
 
 export type SignUpCredentials = {
   first_name: string
@@ -16,20 +17,16 @@ export type SignInCredentials = {
   password: string
 }
 
-export type CreatedUserId = {
-  id: number
-}
-
 class AuthService {
   private client = new HTTPTransport(API_URL)
 
-  signUp(credentials: SignUpCredentials) {
+  signUp(credentials: SignUpCredentials): Promise<SignUpDto | ApiErrorDto> {
     return this.client.post("auth/signup", {
       headers: {
         ...Headers.ContentType.JSON,
       },
       body: credentials,
-    })
+    }) as Promise<SignUpDto | ApiErrorDto>
   }
 
   signIn(credentials: SignInCredentials) {
@@ -41,8 +38,8 @@ class AuthService {
     })
   }
 
-  getUser() {
-    return this.client.get("auth/user")
+  getUser(): Promise<GetUserDto | ApiErrorDto> {
+    return this.client.get("auth/user") as Promise<GetUserDto | ApiErrorDto>
   }
 
   signOut() {

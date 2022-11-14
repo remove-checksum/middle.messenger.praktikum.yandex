@@ -1,20 +1,33 @@
+/* --------- AUTH --------- */
+
+export type GetUserDto = {
+  id: number
+  first_name: string
+  second_name: string
+  dispay_name: string
+  login: string
+  email: string
+  phone: string
+  avatar: string
+}
+
+export type SignUpDto = {
+  id: number
+}
+
 export type ApiErrorDto = {
   reason: string
 }
 
-export type UserDto = {
-  id: number
-  login: string
-  first_name: string
-  second_name: string
-  display_name: string
-  avatar: string
-  phone: string
-  email: string
-}
+/* --------- CHAT --------- */
 
-export type LastMessage = {
-  user: Omit<UserDto, "id" | "display_name">
+type UserPublicInfo = Pick<
+  GetUserDto,
+  "first_name" | "second_name" | "avatar" | "email" | "login" | "phone"
+>
+
+type LastMessage = {
+  user: UserPublicInfo
   time: string
   content: string
 }
@@ -27,10 +40,6 @@ export type ChatDto = {
   last_message: LastMessage
 }
 
-export type ChatTokenDto = {
-  token: string
-}
-
 export type ChatDeletedDto = {
   userId: number
   result: {
@@ -39,6 +48,34 @@ export type ChatDeletedDto = {
     avatar: string
   }
 }
+
+export type ChatUserDto = {
+  id: number
+  first_name: string
+  second_name: string
+  display_name: string
+  login: string
+  email: string
+  phone: string
+  avatar: string
+  role: "admin" | "user"
+}
+
+export type ChatAddUsersDto = {
+  users: number[]
+  chatId: number
+}
+
+export type ChatRemovedUsersDto = {
+  users: number[]
+  chatId: number
+}
+
+export type ChatTokenDto = {
+  token: string
+}
+
+/* --------- MESSAGES --------- */
 
 export type MessageDto = {
   chat_id: number

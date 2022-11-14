@@ -2,6 +2,7 @@ import { API_URL } from "../../config"
 import { HTTPTransport } from "../../core/HTTPTransport"
 import { User } from "./User"
 import { Headers } from "./common"
+import { ChatDeletedDto, ChatDto, ChatTokenDto, ChatUserDto } from "./dto"
 
 export type Chat = {
   id: number
@@ -36,8 +37,8 @@ export type ChatWSToken = {
 class ChatsService {
   private client = new HTTPTransport(API_URL)
 
-  getAllChats() {
-    return this.client.get("chats")
+  getChats() {
+    return this.client.get("chats") as Promise<ChatDto[]>
   }
 
   createChat(chatTitle: string) {
@@ -57,11 +58,11 @@ class ChatsService {
         ...Headers.ContentType.JSON,
       },
       body: { chatId },
-    })
+    }) as Promise<ChatDeletedDto>
   }
 
   getChatUsers(chatId: number) {
-    return this.client.get(`chats/${chatId}/users`)
+    return this.client.get(`chats/${chatId}/users`) as Promise<ChatUserDto[]>
   }
 
   addUsersToChat(userIds: number[], chatId: number) {
@@ -85,11 +86,11 @@ class ChatsService {
         users: userIds,
         chatId,
       },
-    })
+    }) as Promise<ChatDeletedDto>
   }
 
   async getMessageServerToken(chatId: number) {
-    return this.client.post(`chats/token/${chatId}`)
+    return this.client.post(`chats/token/${chatId}`) as Promise<ChatTokenDto>
   }
 }
 

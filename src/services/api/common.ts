@@ -8,5 +8,3 @@ export const Headers = {
     },
   },
 } as const
-
-export type ApiError = { reason: string }

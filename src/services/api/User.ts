@@ -1,6 +1,7 @@
 import { API_URL } from "../../config"
 import { HTTPTransport } from "../../core/HTTPTransport"
 import { Headers } from "./common"
+import { ApiErrorDto } from "./dto"
 
 export interface User {
   id: number
@@ -13,31 +14,30 @@ export interface User {
   avatar: string
 }
 
-export type ChangeUser = Partial<Omit<User, "id" | "avatar">>
-
-export interface FindUser {
-  login: string
-}
+type ChangeUser = Omit<User, "id" | "avatar">
 
 export class UserService {
   private client = new HTTPTransport(API_URL)
 
-  changePublicInfo(newInfo: ChangeUser) {
+  changePublicInfo(newInfo: ChangeUser): Promise<Partial<User | ApiErrorDto>> {
     return this.client.put("user/profile", {
       headers: {
         ...Headers.ContentType.JSON,
       },
       body: newInfo,
-    })
+    }) as Promise<Partial<User | ApiErrorDto>>
   }
 
-  changeAvatar(formData: FormData) {
+  changeAvatar(formData: FormData): Promise<unknown | ApiErrorDto> {
     return this.client.put("user/profile/avatar", {
       body: formData,
     })
   }
 
-  changePassword(oldPassword: string, newPassword: string) {
+  changePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<unknown | ApiErrorDto> {
     return this.client.put("user/profile/password", {
       headers: {
         ...Headers.ContentType.JSON,
@@ -49,17 +49,17 @@ export class UserService {
     })
   }
 
-  getOneById(id: number) {
-    return this.client.get(`user/${id}`)
+  getOneById(id: number): Promise<User> {
+    return this.client.get(`user/${id}`) as Promise<User>
   }
 
-  getUsersByLogin(login: string) {
+  getUsersByLogin(login: string): Promise<User[]> {
     return this.client.post("user/search", {
       headers: {
         ...Headers.ContentType.JSON,
       },
       body: { login },
-    })
+    }) as Promise<User[]>
   }
 }
 

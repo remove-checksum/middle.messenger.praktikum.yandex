@@ -1,14 +1,14 @@
 import { ItemMessage } from "../../components/message-bubble/message-bubble"
 import { CreatedUserId } from "./Auth"
 import { Chat } from "./Chats"
-import { ChatDto, LastMessage, MessageDto, UserDto } from "./dto"
+import { ChatDto, LastMessage, MessageDto, SignUpUserDto } from "./dto"
 import { User } from "./User"
 
 export const ResponseTransformer = {
   SignUp: (res: any): CreatedUserId => ({
     id: res.id,
   }),
-  GetUser: (res: UserDto): User => ({
+  GetUser: (res: SignUpUserDto): User => ({
     id: res.id,
     first_name: res.first_name,
     second_name: res.second_name,
