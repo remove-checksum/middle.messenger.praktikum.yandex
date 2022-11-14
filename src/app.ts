@@ -3,37 +3,26 @@ import { PathRouter } from "./core/Router"
 import { Store, StoreEvents } from "./core/Store"
 import { FALLBACK_ROUTE, initRouter } from "./router"
 import { AppState, initialAppState } from "./store/store"
-import "./shared/main.css"
-import { appInit } from "./actions/AppInit"
 import { renderDOM } from "./core"
+import { appInit } from "./store/actions/Init"
 import { Loader } from "./components"
+import { logStore } from "./store/helpers"
+import "./shared/main.css"
 
 registerComponents()
-
-const logStore = (prevState, nextState) => {
-  console.log(
-    `%cstore updated`,
-    "background: hotpink; color: black;",
-    prevState,
-    nextState
-  )
-}
 
 const bootstrapApplication = () => {
   const router = new PathRouter(FALLBACK_ROUTE.path)
   const store = new Store<AppState>(initialAppState)
 
-  const loader = new Loader({})
+  store.on(StoreEvents.Updated, logStore)
 
   window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = {
     router,
     store,
-    blockInstance: loader,
   }
 
-  store.on(StoreEvents.Updated, logStore)
-
-  renderDOM("#app", loader)
+  renderDOM("#app", new Loader({}))
 
   initRouter(router, store)
 

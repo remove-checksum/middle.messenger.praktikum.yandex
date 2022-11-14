@@ -1,4 +1,3 @@
-import { Loader } from "./components"
 import { renderDOM, PathRouter, BlockConstructable, Store } from "./core"
 import { StoreEvents } from "./core/Store"
 
@@ -12,7 +11,7 @@ interface Route {
 }
 
 export const FALLBACK_ROUTE: Route = {
-  path: "/sign-in",
+  path: "/*",
   block: Pages.SignInPage,
   isProtected: false,
 }
@@ -57,56 +56,36 @@ const routes: Route[] = [
 ]
 
 export const initRouter = (router: PathRouter, store: Store<AppState>) => {
-  routes.forEach(({ path, block, isProtected }) => {
-    router.use(path, () => {
+  routes.forEach((route) => {
+    router.use(route.path, () => {
       const isAuthorized = Boolean(store.getState().user)
       const hasCurrentPage = Boolean(store.getState().page)
 
-      if (isAuthorized || !isProtected) {
-        store.dispatch({ page: block })
+      if (isAuthorized || !route.isProtected) {
+        store.dispatch({ page: route.block })
         return
       }
 
-      if (!hasCurrentPage || isProtected) {
+      if (isAuthorized && route.isProtected) {
         store.dispatch({ page: FALLBACK_ROUTE.block })
-        return
       }
-
-      router.go(FALLBACK_ROUTE.path)
     })
   })
 
-  store.on(StoreEvents.Updated, (prevState: any, nextState: any) => {
-    const isAppInited = !prevState.initialLoad && nextState.initialLoad
-    if (!isAppInited) {
-      router.start()
-    }
-    console.log(
-      `PREV PAGE: ${prevState.page.blockName} | NEW PAGE: ${nextState.page.blockName}`
-    )
-    const isSamePage = prevState.page === nextState.page
-
-    if (store.getState().loading) {
-      renderDOM("#app", new Loader({}))
-    }
-
-    if (!isSamePage) {
-      const { blockInstance: previousBlock } =
-        window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-
-      if (previousBlock) {
-        previousBlock.dispatchComponentWillUnmount()
+  store.on(
+    StoreEvents.Updated,
+    (prevState: Partial<AppState>, nextState: Partial<AppState>) => {
+      const shouldInit = !prevState.appIsInited && nextState.appIsInited
+      if (shouldInit) {
+        router.start()
       }
 
-      const Page = nextState.page
-
-      const blockInstance = new Page({})
-
-      window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.blockInstance =
-        blockInstance
-
-      renderDOM("#app", new Page({}))
-      document.title = `ChatApp / ${Page.blockName}`
+      const pageChanged = prevState.page !== nextState.page
+      if (pageChanged) {
+        const Page = nextState.page
+        renderDOM("#app", new Page({}))
+        document.title = `ChatApp / ${Page.blockName}`
+      }
     }
-  })
+  )
 }

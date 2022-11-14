@@ -31,11 +31,11 @@ export class PathRouter implements Router {
   }
 
   private onRouteChange(pathname: string = this.location.pathname) {
-    console.log(`router pathname ${pathname}`)
     const matchingRoute = Object.entries(this.routes).find(
       ([route]) => pathname === route
     )
 
+    console.log(`found route ${pathname}`)
     if (!matchingRoute) {
       const onRouteFallback = this.routes[this.fallbackPath]
       onRouteFallback()
