@@ -17,13 +17,13 @@ export interface BlockProps {
   >
 }
 
-export interface BlockConstructable<P extends AnyObject = AnyObject> {
+export interface BlockConstructable<P extends AnyObject = any> {
   new (props: P): Block<P>
   blockName: string
 }
 
 export abstract class Block<
-  P extends AnyObject & BlockProps = AnyObject & BlockProps,
+  P extends AnyObject & BlockProps = any & BlockProps,
   R extends Record<string, Block> = AnyObject
 > {
   static EVENTS = {
