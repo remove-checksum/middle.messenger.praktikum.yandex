@@ -70,24 +70,22 @@ export class HTTPTransport implements HTTPHandles {
       xhr.responseType = "json"
 
       xhr.onerror = () => {
-        reject(new Error("Loading error"))
+        if (xhr.status === 400) {
+          reject(xhr.response)
+        }
+
+        if (xhr.status === 401) {
+          reject(xhr.response)
+        }
+
+        if (xhr.status === 500) {
+          reject(new Error("Server Error"))
+        }
       }
 
       xhr.onload = () => {
         if (xhr.status === 200) {
           resolve(xhr.response)
-        }
-
-        if (xhr.status === 400) {
-          resolve(xhr.response)
-        }
-
-        if (xhr.status === 401) {
-          reject(new Error("Unauthorized"))
-        }
-
-        if (xhr.status === 500) {
-          reject(new Error("Server Error"))
         }
       }
 
