@@ -4,7 +4,7 @@ import userChangeData from "./user-data.json"
 import passwordChangeData from "./password-change.json"
 import { printFormData } from "../../helpers/formHelpers/formHelpers"
 import { StoreContext, withStore } from "../../hoc/withStore"
-import { AuthActions } from "../../actions"
+import { AuthActions } from "../../store/actions"
 import { User } from "../../services/api/User"
 
 const userDisplayName = userChangeData.fields.display_name.value

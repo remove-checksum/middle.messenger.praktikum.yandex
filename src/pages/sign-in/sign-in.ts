@@ -2,7 +2,7 @@ import { Block } from "../../core"
 import { targetHelper } from "../../helpers"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { SignInCredentials } from "../../services/api/Auth"
-import { AuthActions } from "../../actions/Auth"
+import { AuthActions } from "../../store/actions"
 import { withStore, StoreContext } from "../../hoc/withStore"
 
 import "./sign-in.css"

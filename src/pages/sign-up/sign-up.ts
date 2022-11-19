@@ -2,7 +2,7 @@ import { Block } from "../../core"
 import signupFormData from "./sign-up.json"
 import "./sign-up.css"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
-import { signUp } from "../../actions/Auth"
+import { AuthActions } from "../../store/actions"
 import { StoreContext, withStore } from "../../hoc/withStore"
 
 interface SignUpPageState {
@@ -33,7 +33,7 @@ export class SignUpPage extends Block<StoreContext & SignUpPageState> {
     const credentials = formToFieldData(form)
     console.log(this.props.store)
 
-    this.props.store.dispatch(signUp, credentials)
+    this.props.store.dispatch(AuthActions.signUp, credentials)
   }
 
   onFormInput = () => {
