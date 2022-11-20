@@ -1,7 +1,7 @@
 import { Block } from "../../core"
 import "./404.css"
 
-export class NotFoundPage extends Block {
+export default class NotFoundPage extends Block {
   static blockName = "NotFoundPage"
 
   render() {

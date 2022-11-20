@@ -1,12 +1,11 @@
-import { renderDOM, PathRouter, Store } from "./core"
-import { StoreEvents } from "./core/Store"
+import { renderDOM, PathRouter, Store, StoreEvents } from "../core"
 
 import { getBlockByPage, Page } from "./pages"
 
-import { AppState } from "./store/store"
+import { AppState } from "../store/store"
 
 interface Route {
-  path: `/${string}`
+  path: string
   block: Page
   isProtected: boolean
 }
@@ -42,15 +41,25 @@ const routes: Route[] = [
     block: Page.ServerError,
     isProtected: false,
   },
+  /*
+    -------------
+    Default route
+    -------------
+  */
+  {
+    path: "/*",
+    block: Page.SignIn,
+    isProtected: false,
+  },
 ]
-
-export const FALLBACK_ROUTE = routes[1]
 
 export const initRouter = (router: PathRouter, store: Store<AppState>) => {
   routes.forEach((route) => {
     router.use(route.path, () => {
       const isAuthorized = Boolean(store.getState().user)
       const hasCurrentPage = Boolean(store.getState().page)
+
+      console.log("inside handler")
 
       if (isAuthorized || !route.isProtected) {
         store.dispatch({ page: route.block })
@@ -83,6 +92,7 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
       const pageChanged = prevState.page !== nextState.page
       if (pageChanged) {
         const MatchBlock = getBlockByPage(nextState.page)
+        console.log({ MatchBlock, name: MatchBlock.blockName })
 
         renderDOM("#app", new MatchBlock({}))
         document.title = `ChatApp / ${MatchBlock.blockName}`

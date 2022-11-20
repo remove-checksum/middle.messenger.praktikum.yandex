@@ -1,7 +1,7 @@
 import { registerComponents } from "./helpers" // !!! This import must be first
 import { PathRouter } from "./core/Router"
 import { Store, StoreEvents } from "./core/Store"
-import { FALLBACK_ROUTE, initRouter } from "./router"
+import { initRouter } from "./router/router"
 import { AppState, initialAppState } from "./store/store"
 import { renderDOM } from "./core"
 import { appInit } from "./store/actions/Init"
@@ -13,12 +13,12 @@ import "./shared/main.css"
 registerComponents()
 
 const bootstrapApplication = () => {
-  const router = new PathRouter(FALLBACK_ROUTE.path)
+  const router = new PathRouter()
   const store = new Store<AppState>(initialAppState)
 
   store.on(StoreEvents.Updated, logStore as Listener)
 
-  window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = {
+  window.__internals = {
     router,
     store,
   }

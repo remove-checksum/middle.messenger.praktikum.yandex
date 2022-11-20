@@ -30,7 +30,7 @@ interface ProfilePageState {
   endRedacting: VoidFunction
 }
 
-export class ProfilePage extends Block<
+export default class ProfilePage extends Block<
   ProfilePageState & StoreContext & ProfilePageProps
 > {
   static blockName = "ProfilePage"
@@ -110,7 +110,3 @@ export class ProfilePage extends Block<
     `
   }
 }
-
-export default withStore(ProfilePage, (state) => ({
-  user: state.user,
-}))

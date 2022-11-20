@@ -1,17 +1,18 @@
 import {
   ChatPage,
   ProfilePage,
-  SignInPage,
   SignUpPage,
   NotFoundPage,
   ServerErrorPage,
-} from "."
+  SignInPage,
+} from "../pages"
+
 import { BlockConstructable } from "../core"
 
 export const Page = {
   SignIn: "/sign-in",
   SignUp: "/sign-up",
-  Chat: "/chat",
+  Chat: "/chats",
   Profile: "/profile",
   NotFound: "/not-found",
   ServerError: "/server-error",

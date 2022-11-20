@@ -15,7 +15,7 @@ export class PathRouter implements Router {
 
   private location = window.location
 
-  constructor(private fallbackPath: string) {
+  constructor(private fallbackPath = "/*") {
     this.onRouteChange = this.onRouteChange.bind(this)
   }
 

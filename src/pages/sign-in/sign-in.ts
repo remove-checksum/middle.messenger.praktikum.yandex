@@ -11,7 +11,7 @@ interface SignInPageState {
   formInvalid: boolean
 }
 
-export class SignInPage extends Block<StoreContext & SignInPageState> {
+export default class SignInPage extends Block<StoreContext & SignInPageState> {
   static blockName = "SignIn"
 
   constructor(props: StoreContext) {
@@ -19,6 +19,8 @@ export class SignInPage extends Block<StoreContext & SignInPageState> {
       ...props,
       formInvalid: false,
     })
+
+    console.log(this.props)
 
     this.setProps({
       events: {
@@ -87,5 +89,3 @@ export class SignInPage extends Block<StoreContext & SignInPageState> {
     `
   }
 }
-
-export default withStore(SignInPage, () => ({}))

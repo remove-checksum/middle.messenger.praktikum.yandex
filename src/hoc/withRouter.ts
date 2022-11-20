@@ -11,8 +11,7 @@ export function withRouter<P extends RouterContext>(
     static blockName = WrappedBlock.blockName
 
     constructor(props: P) {
-      const { router } =
-        window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+      const { router } = window.__internals
       super({ ...props, router })
     }
   }

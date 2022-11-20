@@ -4,6 +4,12 @@ import { BlockConstructable } from "./Block"
 export function registerComponent<Props extends UnknownObject = AnyObject>(
   Component: BlockConstructable<Props>
 ) {
+  // console.log(
+  //   Component.blockName === "" ? Component.toString() : Component.blockName
+  // )
+
+  //   console.log({ Component: Component.blockName })
+
   Handlebars.registerHelper(
     Component.blockName,
     function componentFactory(

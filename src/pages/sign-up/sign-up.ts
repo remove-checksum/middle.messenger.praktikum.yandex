@@ -9,7 +9,7 @@ interface SignUpPageState {
   signUp: typeof signupFormData
 }
 
-export class SignUpPage extends Block<StoreContext & SignUpPageState> {
+export default class SignUpPage extends Block<StoreContext & SignUpPageState> {
   static blockName = "SignUpPage"
 
   constructor(props: StoreContext) {
@@ -115,5 +115,3 @@ export class SignUpPage extends Block<StoreContext & SignUpPageState> {
     `
   }
 }
-
-export default withStore(SignUpPage, () => ({}))

@@ -1,5 +1,5 @@
 export const getGlobalRouter = () => {
-  const { router } = window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+  const { router } = window.__internals
   if (!router) {
     throw new Error("Router not in global")
   }
@@ -8,7 +8,7 @@ export const getGlobalRouter = () => {
 }
 
 export const getGlobalStore = () => {
-  const { store } = window.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+  const { store } = window.__internals
   if (!store) {
     throw new Error("Router not in global")
   }

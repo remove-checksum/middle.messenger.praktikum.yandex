@@ -39,7 +39,7 @@ interface ChatPageState {
   confirmModal: VoidFunction
 }
 
-export class ChatPage extends Block<ChatPageState> {
+export default class ChatPage extends Block<ChatPageState> {
   static blockName = "ChatPage"
 
   constructor() {
