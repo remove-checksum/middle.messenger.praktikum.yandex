@@ -35,11 +35,17 @@ export class PathRouter implements Router {
       ([route]) => pathname === route
     )
 
-    console.log(`found route ${pathname}`)
+    console.log(`trying route ${pathname}`)
+
     if (!matchingRoute) {
+      console.log(
+        `not found route ${pathname}, using fallback route ${this.fallbackPath}`
+      )
+
       const onRouteFallback = this.routes[this.fallbackPath]
       onRouteFallback()
     } else {
+      console.log(`found route ${pathname}`)
       const [route, onRoute] = matchingRoute
       if (route === pathname) {
         onRoute()
