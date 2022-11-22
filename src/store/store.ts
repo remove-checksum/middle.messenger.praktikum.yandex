@@ -5,7 +5,7 @@ import { WSTransport } from "../core/WSTransport"
 import { ChatUserDto } from "../services/api/dto"
 import { User } from "../services/api/User"
 import { Chat } from "../services/api/Chats"
-import { Page } from "../pages"
+import { Page } from "../router/pages"
 
 export interface AppState {
   appIsInited: boolean
@@ -26,6 +26,7 @@ export interface AppState {
     getUser: string | null
     chatAddUser: string | null
     chatDeleteUser: string | null
+    chatCreate: string | null
     chatAddFile: string | null
     userChangePublicInfo: string | null
     userChangePassword: string | null
@@ -46,6 +47,7 @@ export const initialAppState: AppState = {
     getUser: null,
     chatAddUser: null,
     chatDeleteUser: null,
+    chatCreate: null,
     chatAddFile: null,
     userChangeAvatar: null,
     userChangePassword: null,

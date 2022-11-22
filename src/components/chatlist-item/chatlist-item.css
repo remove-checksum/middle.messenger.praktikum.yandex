@@ -3,7 +3,7 @@
 .chatlistItem {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   height: 115px;
   padding: var(--s-3);
   gap: var(--s-3);

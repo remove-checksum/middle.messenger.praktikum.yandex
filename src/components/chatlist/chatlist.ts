@@ -1,24 +1,21 @@
 import { Block } from "../../core"
-import { ChatMeta } from "../../models/chatMeta"
+import { Page } from "../../router/pages"
+import { Chat } from "../../services/api/Chats"
 import "./chatlist.css"
 
 interface ChatlistProps {
-  chats: ChatMeta[]
+  chats: Chat[]
   goProfile: VoidFunction
-}
-
-interface IncomingChatlistProps {
-  chats: ChatMeta[]
 }
 
 export class Chatlist extends Block<ChatlistProps> {
   static blockName = "Chatlist"
 
-  constructor(props: IncomingChatlistProps) {
+  constructor(props: ChatlistProps) {
     super({
       ...props,
       goProfile: () => {
-        window.location.hash = "#profile"
+        window.__internals.router.go(Page.Profile)
       },
     })
   }
@@ -34,8 +31,8 @@ export class Chatlist extends Block<ChatlistProps> {
           }}}
           {{{ ControlledInput placeholder="Поиск" }}}
         </div>
-        {{#each chats}}
-          {{{ChatlistItem chatMeta=this }}}
+        {{#each chats as |chat| }}
+          {{{ChatlistItem chatMeta=chat }}}
         {{/each}}
       </aside>
     `

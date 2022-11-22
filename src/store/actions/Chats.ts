@@ -1,22 +1,23 @@
 import { ChatsService } from "../../services/api"
-import { isBadRequest } from "./common"
 import { AppAction } from "../store"
-import { ResponseTransformer } from "../../services/api/transformers"
-import { ChatDto } from "../../services/api/dto"
+import { checkForError } from "../helpers"
 
-const getChats: AppAction = async (dispatch) => {
-  dispatch({ loading: true })
+const getAllChats: AppAction = async (dispatch) => {
+  try {
+    dispatch({ loading: true })
+    const chatsResponse = await ChatsService.getChats()
 
-  const chatsResponse = await ChatsService.getChats()
-
-  if (isBadRequest(dispatch, chatsResponse)) {
-    return
+    if (checkForError(chatsResponse)) {
+      dispatch({ loading: false })
+    } else {
+      dispatch({
+        chats: chatsResponse,
+        loading: false,
+      })
+    }
+  } catch (error) {
+    console.log(error)
   }
-
-  dispatch({
-    chats: ResponseTransformer.GetChats(chatsResponse as ChatDto[]),
-    loading: false,
-  })
 }
 
 const createChat: AppAction = async (
@@ -24,16 +25,24 @@ const createChat: AppAction = async (
   state,
   payload: { title: string }
 ) => {
-  dispatch({ loading: true })
-  const createChatResponse = await ChatsService.createChat(payload.title)
+  try {
+    dispatch({ loading: true })
+    const createChatResponse = await ChatsService.createChat(payload.title)
 
-  if (isBadRequest(dispatch, createChatResponse)) {
-    return
+    if (checkForError(createChatResponse)) {
+      dispatch({
+        loading: false,
+        errors: {
+          ...state.errors,
+          chatCreate: createChatResponse.reason,
+        },
+      })
+    } else {
+      dispatch({ loading: false })
+    }
+  } catch (error) {
+    console.error(error)
   }
-
-  await getChats(dispatch, state, payload)
-
-  dispatch({ loading: false })
 }
 
 const deleteChat: AppAction = async (

@@ -81,17 +81,15 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
     StoreEvents.Updated,
     (prevState: Partial<AppState>, nextState: Partial<AppState>) => {
       const shouldInit = !prevState.appIsInited && nextState.appIsInited
-      console.log(
-        `WAS INITED? ${prevState.appIsInited} | WILL BE INITED? ${nextState.appIsInited}`
-      )
 
       if (shouldInit) {
+        console.log("Initializing application")
         router.start()
       }
 
       const pageChanged = prevState.page !== nextState.page
       if (pageChanged) {
-        const MatchBlock = getBlockByPage(nextState.page)
+        const MatchBlock = getBlockByPage(nextState.page!)
         console.log({ MatchBlock, name: MatchBlock.blockName })
 
         renderDOM("#app", new MatchBlock({}))
