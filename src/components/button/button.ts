@@ -8,37 +8,37 @@ interface ButtonProps {
   kind?: ButtonKind
   small?: boolean
   extraClass?: string
-}
-
-interface IncomingButtonProps {
-  text: string
-  kind?: ButtonKind
-  small?: boolean
-  extraClass?: string
-  onClick: EventListener
   disabled?: boolean
+  onClick: EventListener
 }
 
-export class Button extends Block<ButtonProps> {
+interface ButtonState {
+  classNames: string
+  text: string
+  disabled: boolean
+}
+export class Button extends Block<ButtonState> {
   static blockName = "Button"
 
-  constructor(props: IncomingButtonProps) {
-    super({ ...props, events: { click: props.onClick } })
+  constructor(props: ButtonProps) {
+    const cn = `
+      button
+      ${props.small ? "button_small" : ""}
+      ${props.kind ? `button_${props.kind}` : ""}
+      ${props.extraClass ? props.extraClass : ""}
+      `.trim()
+    super({
+      classNames: cn,
+      disabled: props.disabled || false,
+      text: props.text,
+      events: { click: props.onClick },
+    })
   }
 
   render(): string {
     return /* html */ `
-      <button class="button
-        {{#if kind}}
-          button_{{kind}}
-        {{/if}}
-        {{#if small}}
-          button_small
-        {{/if}}
-        {{#if extraClass}}
-          {{extraClass}}
-        {{/if}}"
-        type="{{type}}"
+      <button class="{{ classNames }}"
+        type="{{ type }}"
         {{#if disabled}}disabled{{/if}}>
         {{text}}
       </button>
