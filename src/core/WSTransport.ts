@@ -1,78 +1,88 @@
-import { WS_URL } from "../config"
+/* eslint-disable max-classes-per-file */
+import { EventBus } from "./EventBus"
 
 const PING_INTERVAL = 60 * 10
 const PING_MESSAGE = {
   type: "ping",
 }
 
-interface WSClient {
-  send(message: UnknownObject): void
-  close(): void
-}
+export const SocketEvents = {
+  Message: "SOCKET:MESSAGE",
+  Error: "SOCKET:ERROR",
+  Open: "SOCKET:OPEN",
+} as const
 
-interface WSCredentials {
-  token: string
-  chatId: number
-}
-
-export interface WSHandlers {
-  onOpen: (e: Event) => void
-  onClose: (e: CloseEvent) => void
-  onMessage: (e: MessageEvent) => void
-  onError: (e: Event) => void
-}
-
-export class WSTransport implements WSClient {
+export class WSTransport extends EventBus {
   private socket: WebSocket
 
-  private handlers: WSHandlers
+  // 0 is invalid interval ID, used only for initialization
+  private intervalId = 0
 
-  // @ts-expect-error interval initialized inside 'augmentHandlers'
-  private intervalId: number
-
-  constructor(credentials: WSCredentials, handlers: WSHandlers) {
-    this.handlers = handlers
-    this.socket = new WebSocket(
-      `${WS_URL}${credentials.token}/${credentials.chatId}`
-    )
-
-    this.attachPing()
-
-    this.bindEvents()
+  constructor(url: string) {
+    super()
+    this.socket = new WebSocket(url)
+    this.bindListeners()
   }
 
-  private attachPing() {
-    const rawOnOpen = this.handlers.onOpen
+  private bindListeners() {
+    this.socket.addEventListener("open", this.onOpen)
+    this.socket.addEventListener("close", this.onClose)
+    this.socket.addEventListener("error", this.onError)
+    this.socket.addEventListener("message", this.onMessage)
+  }
 
-    this.handlers.onOpen = (e: Event) => {
-      this.intervalId = setInterval(() => {
-        this.socket.send(JSON.stringify(PING_MESSAGE))
-      }, PING_INTERVAL)
-      rawOnOpen(e)
+  private unbindListeners() {
+    this.socket.removeEventListener("open", this.onOpen)
+    this.socket.removeEventListener("close", this.onClose)
+    this.socket.removeEventListener("error", this.onError)
+    this.socket.removeEventListener("message", this.onMessage)
+  }
+
+  private onOpen = () => {
+    console.log("socket opened")
+
+    this.intervalId = setInterval(() => {
+      this.socket.send(JSON.stringify(PING_MESSAGE))
+    }, PING_INTERVAL)
+    this.emit(SocketEvents.Open)
+  }
+
+  private onClose = (e: CloseEvent) => {
+    if (e.wasClean) {
+      console.log("socket gracefully closed")
+    } else {
+      console.log("socket abruptly closed")
     }
   }
 
-  private bindEvents() {
-    this.socket.addEventListener("open", this.handlers.onOpen)
-    this.socket.addEventListener("close", this.handlers.onClose)
-    this.socket.addEventListener("error", this.handlers.onError)
-    this.socket.addEventListener("message", this.handlers.onMessage)
+  private onMessage = (e: MessageEvent) => {
+    const message = JSON.parse(e.data)
+    console.log("got message", message)
+
+    this.emit(SocketEvents.Message, message)
   }
 
-  private unbindEvents() {
-    this.socket.removeEventListener("open", this.handlers.onOpen)
-    this.socket.removeEventListener("close", this.handlers.onClose)
-    this.socket.removeEventListener("error", this.handlers.onError)
-    this.socket.removeEventListener("message", this.handlers.onMessage)
+  private onError = (e: Event) => {
+    console.error("socket error", e)
+    this.emit(SocketEvents.Error, e)
   }
 
-  public send(payload: UnknownObject) {
-    this.socket.send(JSON.stringify(payload))
+  public sendMessage(message: string) {
+    this.socket.send(JSON.stringify({ type: "message", content: message }))
   }
 
-  public close(): void {
+  public getLastMessages(offset = "0") {
+    this.socket.send(
+      JSON.stringify({
+        type: "get old",
+        content: offset,
+      })
+    )
+  }
+
+  public close() {
     clearInterval(this.intervalId)
-    this.unbindEvents()
+    this.unbindListeners()
     this.socket.close()
   }
 }

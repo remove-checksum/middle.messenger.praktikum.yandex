@@ -5,12 +5,19 @@ import { ChatActions } from "../../store/actions"
 import { ModalVariant } from "../../components"
 import { AppStore } from "../../store"
 import { AppState } from "../../store/store"
+import { MessageActions } from "../../store/actions/Message"
+import User, { User } from "../../services/api/User"
+import { ChatsService } from "../../services/api"
+import { WSTransport } from "../../core/WSTransport"
 
 interface ChatPageProps {
   store: AppStore
   currentChatId: number | null
   chats: Chat[]
-  currentChat: Chat
+  currentChat: Chat | null
+  user: User
+  socket: WSTransport
+  messages: any[]
 }
 
 interface ChatPageState {
@@ -19,6 +26,8 @@ interface ChatPageState {
   cancelModal: VoidFunction
   confirmModal: VoidFunction
   selectChat: (id: number) => void
+  sendMessage: (message: string) => void
+  currentChat: Chat | null
 }
 
 export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
@@ -26,8 +35,11 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
 
   constructor(props: ChatPageProps) {
     super({
+      currentChat: props.currentChat,
+      messages: props.messages,
+      socket: props.socket,
+      user: props.user,
       chats: props.chats,
-      currentChat: props.currentChat || null,
       store: props.store,
       modalVariant: null,
       dispatchModal: (variant: ModalVariant) => {
@@ -44,11 +56,13 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
         this.selectChat(id)
       },
       currentChatId: props.currentChatId,
+      sendMessage: (message: string) => {
+        this.sendMessage(message)
+      },
     })
   }
 
-  componentDidMount(props: ChatPageState): void {
-    // load chats and set first chat as selected
+  componentDidMount(): void {
     this.props.store.dispatch(ChatActions.getAllChats)
   }
 
@@ -61,14 +75,21 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
   }
 
   sendMessage = (message: string) => {
-    // send message
+    if (this.props.socket) {
+      this.props.store.dispatch(MessageActions.sendMessage, { message })
+    }
   }
 
   selectChat = (id: number) => {
     const selectedId = this.props.chats.find((chat) => chat.id === id)?.id
 
-    this.props.store.dispatch({
-      currentChatId: selectedId || null,
+    if (!selectedId) {
+      return
+    }
+
+    this.props.store.dispatch(MessageActions.connectToChat, {
+      chatId: selectedId,
+      userId: this.props.user.id,
     })
   }
 
@@ -82,28 +103,22 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
             selectChat=selectChat
           }}}
           <section class="messagesColumn">
-            {{#if currentChat }}
-              <!-- {{{ ActiveChat
-                chatName="coolChat"
-                messages=currentChat.messages
+            {{#if currentChatId }}
+              {{{ ActiveChat
+                currentChat=currentChat
+                currentUserId=user.id
+                messages=messages
                 openModal=dispatchModal
-              }}} -->
-              <span style="max-width: 200px;">
-                ${JSON.stringify(this.props.currentChat)}
-
-              </span>
-
-
+              }}}
+              {{{ ChatInputbox
+                inputType=chats.input.type
+                inputName=chats.input.name
+                onMessage=sendMessage
+                openModal=dispatchModal
+              }}}
             {{else}}
-              <div>no chat selected</div>
+              <p class="messagesColumn__no-chat">Выберите чат и отправьте сообщение</p>
             {{/if}}
-
-            {{{ ChatInputbox
-              inputType=chats.input.type
-              inputName=chats.input.name
-              onMessage=sendMessage
-              openModal=dispatchModal
-            }}}
           </section>
         </div>
         {{#if modalVariant }}
@@ -121,4 +136,8 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
 export const mapChatPageProps = (state: AppState) => ({
   chats: state.chats,
   currentChatId: state.currentChatId,
+  currentChat: state.currentChat,
+  messages: state.messages,
+  user: state.user,
+  socket: state.socket,
 })

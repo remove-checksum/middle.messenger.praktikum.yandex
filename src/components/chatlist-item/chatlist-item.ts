@@ -1,6 +1,7 @@
 import { Block } from "../../core"
 import { formatUTC } from "../../helpers/formatUTC"
 import { Chat } from "../../services/api/Chats"
+import avatarFallback from "../../assets/avatar_not_found.png"
 import "./chatlist-item.css"
 
 interface ChatlistItemProps {
@@ -16,6 +17,7 @@ interface ChatlistItemState {
   lastTime: string
   lastMessage: string
   selected: boolean
+  avatarSrc: string
 }
 
 export class ChatlistItem extends Block<ChatlistItemState> {
@@ -37,11 +39,9 @@ export class ChatlistItem extends Block<ChatlistItemState> {
       unreadCount: props.chat.unreadCount,
       lastTime: displayLastTime,
       lastMessage: props.chat?.lastMessage?.content || "В чате нет сообщений",
-    })
-
-    this.setProps({
+      avatarSrc: props.chat.avatar || avatarFallback,
       events: {
-        click: (e: MouseEvent) => {
+        click: () => {
           props.onChatSelect(this.props.id)
         },
       },
@@ -51,7 +51,7 @@ export class ChatlistItem extends Block<ChatlistItemState> {
   render() {
     return /* html */ `
       <div class="chatlistItem {{#if selected}}chatlistItem_selected{{/if}}">
-        <div class="chatlistItem__avatar"></div>
+        <img class="chatlistItem__avatar" src="{{avatarSrc}}" alt="Аватар пользователя">
         <div class="chatlistItem__midsection">
           <h3 class="chatlistItem__chat-name">{{chatName}}</h3>
           <p class="chatlistItem__last-message">{{lastMessage}}</p>

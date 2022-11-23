@@ -1,4 +1,5 @@
 import { Block } from "../../core"
+import { formatUTC } from "../../helpers/formatUTC"
 import "./message-bubble.css"
 
 interface MessageBubbleProps {
@@ -8,21 +9,11 @@ interface MessageBubbleProps {
   own: boolean
 }
 
-const formatTime = (time: string) => {
-  const date = new Date(time)
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-
-  return `${hours < 10 ? `0${hours}` : hours}:${
-    minutes < 10 ? `0${minutes}` : minutes
-  }`
-}
-
 export class MessageBubble extends Block<MessageBubbleProps> {
   static blockName = "MessageBubble"
 
   constructor(props: MessageBubbleProps) {
-    super({ ...props, time: formatTime(props.time) })
+    super({ ...props, time: formatUTC(props.time) })
   }
 
   render() {

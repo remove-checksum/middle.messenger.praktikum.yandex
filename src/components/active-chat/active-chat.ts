@@ -1,19 +1,27 @@
 import { Block } from "../../core"
 import type { PopupItem, ModalVariant } from "../index"
+import { Chat } from "../../services/api/Chats"
+import { Message } from "../../store/actions/Message"
+import avatarFallback from "../../assets/avatar_not_found.png"
 import "./active-chat.css"
 
-// @ts-expect-error parcel import url resolution mechanism
-const catPictureUrl = new URL("../../assets/catpix.jpeg", import.meta.url)
-
 interface ActiveChatProps {
-  chatName: string
-  image?: string
-  messages: AnyObject
+  currentChat: Chat
+  messages: Message[]
+  currentUserId: number
   openModal: (variant: ModalVariant) => void
 }
 
+type DisplayMessage = {
+  text: string
+  image?: string
+  time: string
+  own: boolean
+}
+
 interface ActiveChatState {
-  image: string
+  chat: Chat
+  messages: DisplayMessage[]
   popupOpen: boolean
   popupItems: PopupItem[]
   popupName: "chatActions"
@@ -23,37 +31,46 @@ export class ActiveChat extends Block<ActiveChatState> {
   static blockName = "ActiveChat"
 
   constructor(props: ActiveChatProps) {
+    const popupItems = [
+      {
+        iconClass: "ph-user-plus",
+        text: "Добавить пользователя",
+        action: () => {
+          this.togglePopup()
+          props.openModal("addUser")
+        },
+      } as const,
+      {
+        iconClass: "ph-user-minus",
+        text: "Удалить пользователя",
+        action: () => {
+          this.togglePopup()
+          props.openModal("deleteUser")
+        },
+      } as const,
+      {
+        iconClass: "ph-trash",
+        text: "Удалить чат",
+        action: () => {
+          this.togglePopup()
+          props.openModal("deleteChat")
+        },
+      } as const,
+    ]
+
+    const toDisplayMessage = (message: Message): DisplayMessage => ({
+      text: message.content,
+      image: message?.file?.filename,
+      time: message.time,
+      own: message.userId === props.currentUserId,
+    })
+
     super({
-      ...props,
+      chat: props.currentChat,
+      messages: props.messages.map(toDisplayMessage),
       popupOpen: false,
       popupName: "chatActions",
-      image: catPictureUrl.href,
-      popupItems: [
-        {
-          iconClass: "ph-user-plus",
-          text: "Добавить пользователя",
-          action: () => {
-            this.togglePopup()
-            props.openModal("addUser")
-          },
-        },
-        {
-          iconClass: "ph-user-minus",
-          text: "Удалить пользователя",
-          action: () => {
-            this.togglePopup()
-            props.openModal("deleteUser")
-          },
-        },
-        {
-          iconClass: "ph-trash",
-          text: "Удалить чат",
-          action: () => {
-            this.togglePopup()
-            props.openModal("deleteChat")
-          },
-        },
-      ],
+      popupItems,
       events: {
         click: (e: MouseEvent) => {
           const isPopupTriggerButton =
@@ -68,16 +85,28 @@ export class ActiveChat extends Block<ActiveChatState> {
     })
   }
 
+  componentDidMount(): void {
+    this.scrollToLast()
+  }
+
+  scrollToLast = () => {
+    this.getContent().scrollTo({
+      top: 9000,
+    })
+  }
+
   togglePopup = () => {
     this.setProps({ popupOpen: !this.props.popupOpen })
   }
 
   render(): string {
+    const avatarSrc = this.props.chat.avatar || avatarFallback
+
     return /* html */ `
       <div class="activeChat">
         <div class="chatHeader">
-          <img  src="{{image}}" alt="фото профиля" class="chatHeader__image">
-          <h2 class="chatHeader__chatName">{{chatName}}</h2>
+          <img src="${avatarSrc}" alt="Аватар чата" class="chatHeader__image">
+          <h2 class="chatHeader__chatName">{{chat.title}}</h2>
           <div class="chatHeader__popupRoot">
             <button data-popup-trigger="{{popupName}}" class="popupTrigger">
               <i class="ph-dots-three-outline-vertical popupTrigger__icon
@@ -93,16 +122,20 @@ export class ActiveChat extends Block<ActiveChatState> {
             {{/if}}
           </div>
         </div>
-        <ol class="activeChat__messages">
-          {{#each messages as |message| }}
-            {{{ MessageBubble
-              text=message.text
-              image=message.image
-              time=message.time
-              own=message.own
-            }}}
-          {{/each}}
-        </ol>
+        {{#if messages}}
+          <ol class="activeChat__messages">
+            {{#each messages as |message| }}
+              {{{ MessageBubble
+                text=message.text
+                image=message.image
+                time=message.time
+                own=message.own
+              }}}
+            {{/each}}
+          </ol>
+        {{else}}
+          <p class="activeChat__no-messages">Напишите что-нибудь</p>
+        {{/if}}
       </div>
     `
   }
