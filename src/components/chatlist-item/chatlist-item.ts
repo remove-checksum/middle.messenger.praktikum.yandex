@@ -4,36 +4,53 @@ import { Chat } from "../../services/api/Chats"
 import "./chatlist-item.css"
 
 interface ChatlistItemProps {
-  chatMeta: Chat
+  chat: Chat
+  selectedChatId: number
+  onChatSelect: (chatId: number) => void
 }
 
 interface ChatlistItemState {
+  id: number
   chatName: string
-  unreadCount: number
+  unreadCount?: number
   lastTime: string
   lastMessage: string
+  selected: boolean
 }
 
 export class ChatlistItem extends Block<ChatlistItemState> {
   static blockName = "ChatlistItem"
 
   constructor(props: ChatlistItemProps) {
-    const displayLastTime = props.chatMeta.last_message
-      ? formatUTC(props.chatMeta.last_message.time)
+    const displayLastTime = props.chat.lastMessage
+      ? formatUTC(props.chat.lastMessage.time)
       : ""
 
+    const isSelected = props.selectedChatId
+      ? props.chat.id === props.selectedChatId
+      : false
+
     super({
-      chatName: props.chatMeta.title,
-      unreadCount: props.chatMeta.unread_count,
+      id: props.chat.id,
+      selected: isSelected,
+      chatName: props.chat.title,
+      unreadCount: props.chat.unreadCount,
       lastTime: displayLastTime,
-      lastMessage:
-        props.chatMeta.last_message?.content || "В чате нет сообщений",
+      lastMessage: props.chat?.lastMessage?.content || "В чате нет сообщений",
+    })
+
+    this.setProps({
+      events: {
+        click: (e: MouseEvent) => {
+          props.onChatSelect(this.props.id)
+        },
+      },
     })
   }
 
   render() {
     return /* html */ `
-      <div class="chatlistItem">
+      <div class="chatlistItem {{#if selected}}chatlistItem_selected{{/if}}">
         <div class="chatlistItem__avatar"></div>
         <div class="chatlistItem__midsection">
           <h3 class="chatlistItem__chat-name">{{chatName}}</h3>

@@ -1,6 +1,7 @@
 import { ChatsService } from "../../services/api"
 import { AppAction } from "../store"
 import { checkForError } from "../helpers"
+import { Transformer } from "../../services/api/transformers"
 
 const getAllChats: AppAction = async (dispatch) => {
   try {
@@ -11,7 +12,7 @@ const getAllChats: AppAction = async (dispatch) => {
       dispatch({ loading: false })
     } else {
       dispatch({
-        chats: chatsResponse,
+        chats: chatsResponse.map(Transformer.toChat),
         loading: false,
       })
     }

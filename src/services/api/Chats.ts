@@ -8,12 +8,12 @@ export type Chat = {
   id: number
   title: string
   avatar: string
-  unread_count: number
-  last_message: {
+  unreadCount: number
+  lastMessage: Nullable<{
     user: Omit<User, "id" | "display_name">
     content: string
     time: string
-  }
+  }>
 }
 
 export type ChatDeleted = {
