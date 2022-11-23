@@ -10,7 +10,10 @@ export type Chat = {
   avatar: string
   unreadCount: number
   lastMessage: Nullable<{
-    user: Omit<User, "id" | "display_name">
+    user: Pick<
+      User,
+      "id" | "firstName" | "secondName" | "email" | "login" | "phone"
+    >
     content: string
     time: string
   }>

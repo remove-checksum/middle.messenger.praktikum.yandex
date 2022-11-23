@@ -1,7 +1,7 @@
 import { AppAction } from "../store"
 import { AuthService } from "../../services/api"
 import { checkForError } from "../helpers"
-import { ResponseTransformer } from "../../services/api/transformers"
+import { Transformer } from "../../services/api/transformers"
 import { Page } from "../../router/pages"
 
 export const appInit: AppAction = async (dispatch, state) => {
@@ -12,7 +12,7 @@ export const appInit: AppAction = async (dispatch, state) => {
     if (checkForError(getUserResponse)) {
       dispatch({ page: Page.SignIn })
     } else {
-      const user = ResponseTransformer.GetUser(getUserResponse)
+      const user = Transformer.toUser(getUserResponse)
       dispatch({ user, page: Page.Chat })
     }
   } catch (error) {

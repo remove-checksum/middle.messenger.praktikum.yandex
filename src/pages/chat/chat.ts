@@ -1,51 +1,34 @@
 import { Block } from "../../core"
 import "./chat.css"
-import { ChatMeta } from "../../models/chatMeta"
-import chatData from "./chat.json"
+import { Chat } from "../../services/api/Chats"
+import { ChatActions } from "../../store/actions"
 import { ModalVariant } from "../../components"
+import { AppStore } from "../../store"
+import { AppState } from "../../store/store"
 
-// @ts-expect-error parcel import url resolution mechanism
-const cameraImage = new URL("../../assets/camera_msg.jpg", import.meta.url)
-const now = new Date().toISOString()
-
-const messages = [
-  {
-    text: `Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
-
-  Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.`,
-    time: now,
-    own: false,
-  },
-  {
-    image: cameraImage.href,
-    time: now,
-    own: false,
-  },
-  {
-    text: "Круто!",
-    time: now,
-    own: true,
-  },
-]
+interface ChatPageProps {
+  store: AppStore
+  currentChatId: number | null
+  chats: Chat[]
+  currentChat: Chat
+}
 
 interface ChatPageState {
-  chats: ChatMeta[]
   modalVariant: Nullable<ModalVariant>
-  openedChat: {
-    messages: AnyObject[]
-  }
   dispatchModal: (variant: ModalVariant) => void
   cancelModal: VoidFunction
   confirmModal: VoidFunction
+  selectChat: (id: number) => void
 }
 
-export default class ChatPage extends Block<ChatPageState> {
+export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
   static blockName = "ChatPage"
 
-  constructor() {
+  constructor(props: ChatPageProps) {
     super({
-      chats: chatData as unknown as ChatMeta[],
-      openedChat: { messages },
+      chats: props.chats,
+      currentChat: props.currentChat || null,
+      store: props.store,
       modalVariant: null,
       dispatchModal: (variant: ModalVariant) => {
         this.setProps({ modalVariant: variant })
@@ -57,7 +40,16 @@ export default class ChatPage extends Block<ChatPageState> {
         console.log("confirm goes here")
         this.closeModal()
       },
+      selectChat: (id: number) => {
+        this.selectChat(id)
+      },
+      currentChatId: props.currentChatId,
     })
+  }
+
+  componentDidMount(props: ChatPageState): void {
+    // load chats and set first chat as selected
+    this.props.store.dispatch(ChatActions.getAllChats)
   }
 
   openModal = (variant: ModalVariant) => {
@@ -68,20 +60,48 @@ export default class ChatPage extends Block<ChatPageState> {
     this.setProps({ modalVariant: null })
   }
 
+  sendMessage = (message: string) => {
+    // send message
+  }
+
+  selectChat = (id: number) => {
+    const selectedId = this.props.chats.find((chat) => chat.id === id)?.id
+
+    this.props.store.dispatch({
+      currentChatId: selectedId || null,
+    })
+  }
+
   render() {
     return /* html */ `
       {{#PageLayout}}
         <div class="chatWrapper">
-          {{{ Chatlist chats=chats.chats }}}
+          {{{ Chatlist
+            chats=chats
+            currentChatId=currentChatId
+            selectChat=selectChat
+          }}}
           <section class="messagesColumn">
-            {{{ ActiveChat
-              chatName="coolChat"
-              messages=openedChat.messages
-              openModal=dispatchModal
-            }}}
+            {{#if currentChat }}
+              <!-- {{{ ActiveChat
+                chatName="coolChat"
+                messages=currentChat.messages
+                openModal=dispatchModal
+              }}} -->
+              <span style="max-width: 200px;">
+                ${JSON.stringify(this.props.currentChat)}
+
+              </span>
+
+
+            {{else}}
+              <div>no chat selected</div>
+            {{/if}}
+
             {{{ ChatInputbox
               inputType=chats.input.type
               inputName=chats.input.name
+              onMessage=sendMessage
               openModal=dispatchModal
             }}}
           </section>
@@ -97,3 +117,8 @@ export default class ChatPage extends Block<ChatPageState> {
     `
   }
 }
+
+export const mapChatPageProps = (state: AppState) => ({
+  chats: state.chats,
+  currentChatId: state.currentChatId,
+})

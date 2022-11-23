@@ -5,21 +5,23 @@ import { ApiErrorDto } from "./dto"
 
 export interface User {
   id: number
-  first_name: string
-  second_name: string
-  display_name: string
+  firstName: string
+  secondName: string
+  displayName: string
   login: string
   email: string
   phone: string
   avatar: string
 }
 
-type ChangeUser = Omit<User, "id" | "avatar">
+export type UserPublicInfo = Omit<User, "id" | "avatar">
 
 export class UserService {
   private client = new HTTPTransport(API_URL)
 
-  changePublicInfo(newInfo: ChangeUser): Promise<Partial<User | ApiErrorDto>> {
+  changePublicInfo(
+    newInfo: UserPublicInfo
+  ): Promise<Partial<User | ApiErrorDto>> {
     return this.client.put("user/profile", {
       headers: {
         ...Headers.ContentType.JSON,

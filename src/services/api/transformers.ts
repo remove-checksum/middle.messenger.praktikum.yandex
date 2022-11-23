@@ -1,8 +1,8 @@
 import { Chat } from "./Chats"
-import { ChatDto, LastMessage, MessageDto, SignUpDto } from "./dto"
+import { ChatDto, GetUserDto, LastMessage, MessageDto, SignUpDto } from "./dto"
 import { User } from "./User"
 
-export function toChat(res: ChatDto): Chat {
+function toChat(res: ChatDto): Chat {
   return {
     id: res.id,
     avatar: res.avatar,
@@ -12,14 +12,35 @@ export function toChat(res: ChatDto): Chat {
       ? {
           content: res.last_message.content,
           time: res.last_message.time,
-          user: res.last_message.user,
+          user: {
+            id: res.last_message.user.id,
+            firstName: res.last_message.user.first_name,
+            secondName: res.last_message.user.second_name,
+            email: res.last_message.user.email,
+            login: res.last_message.user.login,
+            phone: res.last_message.user.phone,
+          },
         }
       : null,
   }
 }
 
+function toUser(res: GetUserDto): User {
+  return {
+    id: res.id,
+    avatar: res.avatar,
+    displayName: res.dispay_name,
+    firstName: res.first_name,
+    secondName: res.second_name,
+    email: res.email,
+    login: res.login,
+    phone: res.phone,
+  }
+}
+
 export const Transformer = {
   toChat,
+  toUser,
 }
 
 // export const ResponseTransformer = {

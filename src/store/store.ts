@@ -1,8 +1,5 @@
-import { ItemMessage } from "../components/message-bubble/message-bubble"
 import { Store } from "../core"
 import { Action, Dispatch } from "../core/Store"
-import { WSTransport } from "../core/WSTransport"
-import { ChatUserDto } from "../services/api/dto"
 import { User } from "../services/api/User"
 import { Chat } from "../services/api/Chats"
 import { Page } from "../router/pages"
@@ -12,14 +9,10 @@ export interface AppState {
   loading: boolean
   page: Page | null
   user: User | null
-  currentChat: Nullable<{
-    id: number
-    token: string
-    chatUsers: ChatUserDto[]
-    messages: ItemMessage
-    socket: WSTransport
-  }>
-  chats: Chat[] | null
+  currentChatId: number | null
+  currentChat: Chat | null
+  chats: Chat[]
+  messages: Message[]
   errors: {
     signIn: string | null
     signUp: string | null
@@ -40,7 +33,9 @@ export const initialAppState: AppState = {
   page: null,
   user: null,
   currentChat: null,
-  chats: null,
+  currentChatId: null,
+  chats: [],
+  messages: [],
   errors: {
     signIn: null,
     signUp: null,

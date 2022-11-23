@@ -21,13 +21,16 @@ export type ApiErrorDto = {
 
 /* --------- CHAT --------- */
 
-type UserPublicInfo = Pick<
+export type UserPublicInfoDto = Pick<
   GetUserDto,
   "first_name" | "second_name" | "avatar" | "email" | "login" | "phone"
 >
 
-type LastMessage = {
-  user: UserPublicInfo
+export type LastMessage = {
+  user: Pick<
+    GetUserDto,
+    "id" | "first_name" | "second_name" | "email" | "login" | "phone"
+  >
   time: string
   content: string
 }
