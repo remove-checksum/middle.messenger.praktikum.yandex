@@ -1,14 +1,13 @@
 import { Block } from "../../core"
-import "./chat.css"
 import { Chat } from "../../services/api/Chats"
 import { ChatActions } from "../../store/actions"
 import { ModalVariant } from "../../components"
 import { AppStore } from "../../store"
 import { AppState } from "../../store/store"
-import { MessageActions } from "../../store/actions/Message"
-import User, { User } from "../../services/api/User"
-import { ChatsService } from "../../services/api"
+import { Message, MessageActions } from "../../store/actions/Message"
+import { User } from "../../services/api/User"
 import { WSTransport } from "../../core/WSTransport"
+import "./chat.css"
 
 interface ChatPageProps {
   store: AppStore
@@ -17,7 +16,7 @@ interface ChatPageProps {
   currentChat: Chat | null
   user: User
   socket: WSTransport
-  messages: any[]
+  messages: Message[]
 }
 
 interface ChatPageState {

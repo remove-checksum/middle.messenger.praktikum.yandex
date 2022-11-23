@@ -67,12 +67,11 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
       }
 
       if (!isAuthorized && route.isProtected) {
-        store.dispatch({ page: Page.SignIn })
+        router.go(Page.SignIn)
       }
 
       if (!hasCurrentPage) {
-        console.log("fallback")
-        store.dispatch({ page: Page.SignIn })
+        router.go(Page.SignIn)
       }
     })
   })
@@ -83,14 +82,12 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
       const shouldInit = !prevState.appIsInited && nextState.appIsInited
 
       if (shouldInit) {
-        console.log("Initializing application")
         router.start()
       }
 
       const pageChanged = prevState.page !== nextState.page
       if (pageChanged) {
         const MatchBlock = getBlockByPage(nextState.page!)
-        console.log({ MatchBlock, name: MatchBlock.blockName })
 
         renderDOM("#app", new MatchBlock({}))
         document.title = `ChatApp / ${MatchBlock.blockName}`

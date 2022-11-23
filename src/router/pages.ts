@@ -12,7 +12,7 @@ import { BlockConstructable } from "../core"
 export const Page = {
   SignIn: "/sign-in",
   SignUp: "/sign-up",
-  Chat: "/chats",
+  Chat: "/chat",
   Profile: "/profile",
   NotFound: "/not-found",
   ServerError: "/server-error",
