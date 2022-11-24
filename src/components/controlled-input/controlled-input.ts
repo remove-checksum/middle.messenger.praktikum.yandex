@@ -9,7 +9,7 @@ interface ControlledInputProps {
   label?: string
   placeholder: string
   type: InputType
-  name: UserCredentialsFieldName
+  name: Omit<string, UserCredentialsFieldName> | UserCredentialsFieldName
   value?: string
   error?: true
   extraClass?: string
@@ -75,6 +75,15 @@ export class ControlledInput extends Block<ControlledInputProps> {
     label.classList.remove("controlledInput__label_error")
     input.classList.remove("controlledInput__input_error")
     this.setProps({})
+  }
+
+  getInputValue = () => {
+    const { input } = this.getInputElements()
+    return input.value
+  }
+
+  setInputValue = (newValue: string) => {
+    this.getInputElements().input.value = newValue
   }
 
   render(): string {

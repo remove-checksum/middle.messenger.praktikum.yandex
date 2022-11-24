@@ -3,24 +3,19 @@ import { targetHelper } from "../../helpers"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { SignInCredentials } from "../../services/api/Auth"
 import { AuthActions } from "../../store/actions"
-import { withStore, StoreContext } from "../../hoc/withStore"
+import { AppStore } from "../../store"
 
 import "./sign-in.css"
 
-interface SignInPageState {
-  formInvalid: boolean
+interface SignInPageProps {
+  store: AppStore
 }
 
-export default class SignInPage extends Block<StoreContext & SignInPageState> {
+export default class SignInPage extends Block {
   static blockName = "SignIn"
 
-  constructor(props: StoreContext) {
-    super({
-      ...props,
-      formInvalid: false,
-    })
-
-    console.log(this.props)
+  constructor(props: SignInPageProps) {
+    super(props)
 
     this.setProps({
       events: {
@@ -77,7 +72,12 @@ export default class SignInPage extends Block<StoreContext & SignInPageState> {
               label="Пароль"
               placeholder="Введите пароль"
             }}}
-            {{{ Button text="Войти" type="submit" extraClass="signinForm__button" disabled=true }}}
+            {{{ Button
+              text="Войти"
+              type="submit"
+              extraClass="signinForm__button"
+              disabled=formInvalid
+            }}}
             {{{ Link
               to="/sign-up"
               extraClass="signinForm__link"

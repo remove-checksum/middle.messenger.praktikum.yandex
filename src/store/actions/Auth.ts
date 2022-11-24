@@ -1,7 +1,7 @@
 import { AuthService } from "../../services/api"
 import { AppAction } from "../store"
 import { withLogException } from "./common"
-import { ResponseTransformer } from "../../services/api/transformers"
+import { Transformer } from "../../services/api/transformers"
 import { getGlobalRouter } from "../../helpers"
 import { checkForError } from "../helpers"
 
@@ -18,7 +18,7 @@ const getUser: AppAction = async (dispatch, state) => {
   const getUserResponse = await AuthService.getUser()
 
   if (!checkForError(getUserResponse)) {
-    const user = ResponseTransformer.GetUser(getUserResponse)
+    const user = Transformer.toUser(getUserResponse)
     dispatch({
       user,
       errors: {

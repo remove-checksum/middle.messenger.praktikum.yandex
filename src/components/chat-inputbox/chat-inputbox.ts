@@ -4,8 +4,7 @@ import { PopupItem } from "../popup/popup"
 import "./chat-inputbox.css"
 
 interface ChatInputboxProps {
-  inputType: string
-  inputName: string
+  onMessage: (message: string) => void
   openModal: (variant: ModalVariant) => void
 }
 
@@ -15,7 +14,7 @@ interface ChatInputboxState {
   popupOpen: boolean
 }
 
-export class ChatInputbox extends Block<ChatInputboxProps & ChatInputboxState> {
+export class ChatInputbox extends Block<ChatInputboxState> {
   static blockName = "ChatInputbox"
 
   constructor(props: ChatInputboxProps) {
@@ -55,7 +54,18 @@ export class ChatInputbox extends Block<ChatInputboxProps & ChatInputboxState> {
             e.target instanceof HTMLButtonElement &&
             e.target.dataset.popupTrigger === this.props.popupName
           ) {
+            e.preventDefault()
             this.togglePopup()
+          }
+        },
+        submit: (e: SubmitEvent) => {
+          e.preventDefault()
+          const input = this.getContent().querySelector(
+            ".controlledInput__input"
+          ) as HTMLInputElement
+
+          if (input.value.length) {
+            props.onMessage(input.value)
           }
         },
       },
@@ -68,7 +78,7 @@ export class ChatInputbox extends Block<ChatInputboxProps & ChatInputboxState> {
 
   render() {
     return /* html */ `
-      <form action="#" class="chatInputbox">
+      <form action="POST" class="chatInputbox">
         <div class="chatInputbox__popupRoot">
           <button class="popupTrigger" data-popup-trigger="{{popupName}}">
             <i class="ph-paperclip popupTrigger__icon
@@ -84,13 +94,14 @@ export class ChatInputbox extends Block<ChatInputboxProps & ChatInputboxState> {
           {{/if}}
         </div>
         {{{ ControlledInput
-          name=inputName
+          name="message"
           hasLabel=false
           extraClass="chatInputbox__input"
-          type=chatInputType
+          type="text"
           placeholder="Введите сообщение"
+          dontValidate=true
         }}}
-        <button class="chatInputbox__button">
+        <button class="chatInputbox__button" type="submit">
           <i class="ph-paper-plane-right chatInputbox__icon"></i>
         </button>
       </form>

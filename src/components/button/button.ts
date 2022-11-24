@@ -8,7 +8,7 @@ interface ButtonProps {
   kind?: ButtonKind
   small?: boolean
   extraClass?: string
-  disabled?: boolean
+  disabled: boolean
   onClick: EventListener
 }
 
@@ -29,7 +29,7 @@ export class Button extends Block<ButtonState> {
       `.trim()
     super({
       classNames: cn,
-      disabled: props.disabled || false,
+      disabled: props.disabled,
       text: props.text,
       events: { click: props.onClick },
     })

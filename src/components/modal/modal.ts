@@ -1,16 +1,15 @@
-import { Block } from "../../core"
+import { Block, BlockConstructable } from "../../core"
 import { ControlledInput, FileInput } from "../index"
 import "./modal.css"
 
-export type ModalVariant = "addUser" | "deleteUser" | "addFile" | "deleteChat"
+export type ModalVariant =
+  | "addUser"
+  | "deleteUser"
+  | "addFile"
+  | "deleteChat"
+  | "createChat"
 
-interface ModalProps {
-  variant: ModalVariant
-  title: string
-  buttonText: string
-}
-
-const variants = {
+const variants: VariantPropsMap = {
   addUser: {
     title: "Добавить пользователя",
     buttonText: "Добавить",
@@ -30,6 +29,7 @@ const variants = {
       hasLabel: false,
       type: "text",
     }),
+    warning: true,
   },
   addFile: {
     title: "Загрузите файл",
@@ -39,36 +39,59 @@ const variants = {
   deleteChat: {
     title: "Удалить чат",
     buttonText: "Удалить",
-    content: null,
+    warning: true,
+  },
+  createChat: {
+    title: "Добавить чат",
+    buttonText: "Добавить",
+    content: new ControlledInput({
+      placeholder: "Введите имя чата",
+      name: "display_name",
+      hasLabel: false,
+      type: "text",
+    }),
   },
 }
 
-interface ModalProps {
-  confirm: (e: Event) => void
-  cancel: (e: Event) => void
-  variant: ModalVariant
-}
+export type ModalDispatch = (spec: ModalSpec | null) => void
 
-interface ModalState {
+export interface ModalSpec {
   title: string
   buttonText: string
-  content: Nullable<HTMLElement>
-  warning: boolean
+  content: Block | null
+  warning?: boolean
+  confirm: (e: Event) => void
+  cancel: (e: Event) => void
 }
 
-export class Modal extends Block<ModalProps & ModalState> {
+type ModalState = Omit<ModalSpec, "content"> & { content: HTMLElement | null }
+
+interface ModalProps {
+  spec: ModalSpec
+}
+
+export class Modal extends Block<ModalState> {
   static blockName = "Modal"
 
   constructor(props: ModalProps) {
-    const { content, title, buttonText } = variants[props.variant]
-    const replacer = content && content.getContent()
+    const {
+      content = null,
+      title,
+      buttonText,
+      warning = false,
+      confirm,
+      cancel,
+    } = props.spec
+
+    const replacer = content?.getContent() || null
 
     super({
-      ...props,
       content: replacer,
       title,
       buttonText,
-      warning: props.variant === "deleteChat",
+      warning,
+      confirm,
+      cancel,
       events: {
         click: (e: MouseEvent) => {
           const isBackdrop = (e.target as HTMLElement).classList.contains(
@@ -112,6 +135,7 @@ export class Modal extends Block<ModalProps & ModalState> {
 
   render() {
     const { id } = this
+    const { warning } = this.props
 
     return /* html */ `
       <div class="modal">
@@ -122,21 +146,12 @@ export class Modal extends Block<ModalProps & ModalState> {
             </button>
             <h2 class="modal__heading">{{title}}</h2>
             <div data-stub="${id}-modal"></div>
-
-            {{#if warning}}
               {{{ Button
                 text=buttonText
                 onClick=confirm
                 extraClass="modal__confirmButton"
-                kind="warning"
+                ${warning ? 'kind="warning"' : ""}
               }}}
-            {{else}}
-              {{{ Button
-                text=buttonText
-                onClick=confirm
-                extraClass="modal__confirmButton"
-              }}}
-            {{/if}}
           </div>
         </div>
       </div>

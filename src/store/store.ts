@@ -3,6 +3,7 @@ import { Action, Dispatch } from "../core/Store"
 import { User } from "../services/api/User"
 import { Chat } from "../services/api/Chats"
 import { Page } from "../router/pages"
+import { Message } from "./actions/Message"
 
 export interface AppState {
   appIsInited: boolean
@@ -13,6 +14,7 @@ export interface AppState {
   currentChat: Chat | null
   chats: Chat[]
   messages: Message[]
+  socket: WebSocket | null
   errors: {
     signIn: string | null
     signUp: string | null
@@ -36,6 +38,7 @@ export const initialAppState: AppState = {
   currentChatId: null,
   chats: [],
   messages: [],
+  socket: null,
   errors: {
     signIn: null,
     signUp: null,
