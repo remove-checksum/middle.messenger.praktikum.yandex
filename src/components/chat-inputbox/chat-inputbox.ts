@@ -80,7 +80,7 @@ export class ChatInputbox extends Block<ChatInputboxState> {
     return /* html */ `
       <form action="POST" class="chatInputbox">
         <div class="chatInputbox__popupRoot">
-          <button class="popupTrigger" data-popup-trigger="{{popupName}}">
+          <button class="popupTrigger" data-popup-trigger="{{popupName}}" type="button">
             <i class="ph-paperclip popupTrigger__icon
               {{~#if popupOpen}} popupTrigger__icon_open{{/if}}"
             ></i>
@@ -100,6 +100,7 @@ export class ChatInputbox extends Block<ChatInputboxState> {
           type="text"
           placeholder="Введите сообщение"
           dontValidate=true
+          noAutocomplete=true
         }}}
         <button class="chatInputbox__button" type="submit">
           <i class="ph-paper-plane-right chatInputbox__icon"></i>

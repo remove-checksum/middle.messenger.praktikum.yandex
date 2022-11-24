@@ -9,7 +9,7 @@ interface ControlledInputProps {
   label?: string
   placeholder: string
   type: InputType
-  name: Omit<string, UserCredentialsFieldName> | UserCredentialsFieldName
+  name: UserCredentialsFieldName
   value?: string
   error?: true
   extraClass?: string
@@ -17,6 +17,7 @@ interface ControlledInputProps {
   extraLabelClass?: string
   dontValidate?: boolean
   disabled?: boolean
+  noAutocomplete?: boolean
 }
 
 export class ControlledInput extends Block<ControlledInputProps> {
@@ -60,21 +61,26 @@ export class ControlledInput extends Block<ControlledInputProps> {
   setError = (error: string) => {
     const { label, input } = this.getInputElements()
 
-    label.style.display = "initial"
-    label.innerText = error
-    label.style.fontSize = "12px"
-    label.classList.add("controlledInput__label_error")
+    if (label instanceof HTMLLabelElement) {
+      label.style.display = "initial"
+      label.innerText = error
+      label.style.fontSize = "12px"
+      label.classList.add("controlledInput__label_error")
+    }
+
     input.classList.add("controlledInput__input_error")
-    this.setProps({})
   }
 
   clearError = () => {
     const { label, input } = this.getInputElements()
-    label.style.fontSize = "19px"
-    label.innerText = this.props.label || ""
-    label.classList.remove("controlledInput__label_error")
+
+    if (label instanceof HTMLLabelElement) {
+      label.style.fontSize = "19px"
+      label.innerText = this.props.label || ""
+      label.classList.remove("controlledInput__label_error")
+    }
+
     input.classList.remove("controlledInput__input_error")
-    this.setProps({})
   }
 
   getInputValue = () => {
@@ -104,7 +110,9 @@ export class ControlledInput extends Block<ControlledInputProps> {
             placeholder="{{placeholder}}"
             value="{{value}}"
             class="controlledInput__input {{extraInputClass}}"
-            {{#if disabled}}disabled{{/if}}>
+            {{#if disabled}}disabled{{/if}}
+            autocomplete="{{#if noAutocomplete}}off{{else}}on{{/if}}"
+            >
             <span>{{error}}</span>
           </div>
       `
