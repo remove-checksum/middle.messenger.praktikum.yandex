@@ -4,6 +4,7 @@ import { withLogException } from "./common"
 import { Transformer } from "../../services/api/transformers"
 import { getGlobalRouter } from "../../helpers"
 import { checkForError } from "../helpers"
+import { Page } from "../../router/pages"
 
 const signOut: AppAction = async (dispatch) => {
   dispatch({ loading: true })
@@ -52,7 +53,7 @@ const signUp: AppAction = async (dispatch, state, payload) => {
 
   if (!state.errors.getUser) {
     const router = getGlobalRouter()
-    router.go("/chats")
+    router.go(Page.Chat)
   } else {
     dispatch(signOut)
   }
@@ -74,7 +75,7 @@ const signIn: AppAction = async (dispatch, state, payload) => {
 
   if (!state.errors.getUser) {
     const router = getGlobalRouter()
-    router.go("/chats")
+    router.go(Page.Chat)
   } else {
     dispatch(signOut)
   }
