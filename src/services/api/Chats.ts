@@ -3,6 +3,7 @@ import { HTTPTransport } from "../../core/HTTPTransport"
 import { User } from "./User"
 import { Headers } from "./common"
 import { ChatDeletedDto, ChatDto, ChatTokenDto, ChatUserDto } from "./dto"
+import { Transformer } from "./transformers"
 
 export type Chat = {
   id: number
@@ -41,7 +42,9 @@ class ChatsService {
   private client = new HTTPTransport(API_URL)
 
   getChats() {
-    return this.client.get("chats") as Promise<ChatDto[]>
+    return this.client
+      .get("chats")
+      .then((chats) => (chats as ChatDto[]).map(Transformer.toChat))
   }
 
   createChat(chatTitle: string) {
@@ -65,7 +68,9 @@ class ChatsService {
   }
 
   getChatUsers(chatId: number) {
-    return this.client.get(`chats/${chatId}/users`) as Promise<ChatUserDto[]>
+    return this.client
+      .get(`chats/${chatId}/users`)
+      .then((users) => (users as ChatUserDto[]).map(Transformer.toUser))
   }
 
   addUsersToChat(userIds: number[], chatId: number) {

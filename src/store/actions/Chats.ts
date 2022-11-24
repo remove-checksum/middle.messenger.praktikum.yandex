@@ -1,15 +1,14 @@
-import { ChatsService } from "../../services/api"
+import { ChatsService, UserService } from "../../services/api"
 import { AppAction } from "../store"
 import { checkForError } from "../helpers"
-import { Transformer } from "../../services/api/transformers"
 
 const getAllChats: AppAction = async (dispatch) => {
   try {
-    const chatsResponse = await ChatsService.getChats()
+    const allChats = await ChatsService.getChats()
 
-    if (!checkForError(chatsResponse)) {
+    if (!checkForError(allChats)) {
       dispatch({
-        chats: chatsResponse.map(Transformer.toChat),
+        chats: allChats,
       })
     }
   } catch (error) {
@@ -35,7 +34,7 @@ const createChat: AppAction = async (
     } else {
       const allChats = await ChatsService.getChats()
 
-      dispatch({ chats: allChats.map(Transformer.toChat) })
+      dispatch({ chats: allChats })
     }
   } catch (error) {
     console.error(error)
@@ -47,78 +46,89 @@ const deleteChat: AppAction = async (
   _,
   payload: { chatId: number }
 ) => {
-  const deleteChatResponse = await ChatsService.deleteChat(payload.chatId)
+  try {
+    const deleteChatResponse = await ChatsService.deleteChat(payload.chatId)
 
-  if (!checkForError(deleteChatResponse)) {
-    const allChats = await ChatsService.getChats()
+    if (!checkForError(deleteChatResponse)) {
+      const allChats = await ChatsService.getChats()
 
-    dispatch({ chats: allChats.map(Transformer.toChat) })
+      dispatch({ chats: allChats })
+    }
+  } catch (error) {
+    console.error(error)
   }
 }
 
-const addUserToChat: AppAction = async (
-  dispatch,
-  _,
-  payload: { userId: number; chatId: number }
-) => {
-  dispatch({ loading: true })
-  const addUserResponse = await ChatsService.addUsersToChat(
-    [payload.userId],
-    payload.chatId
-  )
-
-  if (!checkForError(addUserResponse)) {
-    const allChats = await ChatsService.getChats()
-    dispatch({ chats: allChats.map(Transformer.toChat) })
-  }
-}
-
-const removeUserFromChat: AppAction = async (
-  dispatch,
-  _,
-  payload: { userId: number; chatId: number }
-) => {
-  const removeUserResponse = await ChatsService.removeUsersFromChat(
-    [payload.userId],
-    payload.chatId
-  )
-
-  if (!checkForError(removeUserResponse)) {
-    const allChats = await ChatsService.getChats()
-
-    dispatch({ chats: allChats.map(Transformer.toChat) })
-  }
-}
-
-const getChatMessageToken: AppAction = async (
+const addUserByLogin: AppAction = async (
   dispatch,
   state,
-  payload: { chatId: number }
+  payload: { loginQuery: string }
 ) => {
-  dispatch({ loading: true })
-  const getChatTokenResponse = await ChatsService.getMessageServerToken(
-    payload.chatId
-  )
+  try {
+    const usersByLogin = await UserService.getUsersByLogin(payload.loginQuery)
+    if (!usersByLogin.length || !state.currentChatId) {
+      return
+    }
 
-  if (checkForError(dispatch, getChatMessageToken)) {
-    return
+    const idToAdd = usersByLogin[0].id
+
+    const addUserResponse = await ChatsService.addUsersToChat(
+      [idToAdd],
+      state.currentChatId
+    )
+
+    if (!checkForError(addUserResponse)) {
+      const allChats = await ChatsService.getChats()
+      dispatch({ chats: allChats })
+    }
+  } catch (error) {
+    console.error(error)
   }
+}
 
-  const { token } = getChatTokenResponse as ChatTokenDto
+const removeUserByLogin: AppAction = async (
+  dispatch,
+  state,
+  payload: { loginQuery: string }
+) => {
+  try {
+    if (!state.currentChatId) {
+      return
+    }
 
-  const currentChat = { id: state.currentChat!.id, messages: [], token }
+    const chatUsers = await ChatsService.getChatUsers(state.currentChatId)
 
-  dispatch({
-    currentChat,
-    loading: false,
-  })
+    if (!chatUsers.length) {
+      return
+    }
+
+    const userToRemove = chatUsers.find((user) =>
+      user.login.toLowerCase().includes(payload.loginQuery.toLowerCase())
+    )
+
+    if (!userToRemove) {
+      return
+    }
+
+    const removeUserResponse = await ChatsService.removeUsersFromChat(
+      [userToRemove.id],
+      state.currentChatId
+    )
+
+    if (!checkForError(removeUserResponse)) {
+      const allChats = await ChatsService.getChats()
+
+      dispatch({ chats: allChats })
+    }
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const ChatActions = {
   createChat,
   deleteChat,
-  addUserToChat,
-  removeUserFromChat,
+  addUserByLogin,
+  removeUserByLogin,
   getAllChats,
-  getChatMessageToken,
 }

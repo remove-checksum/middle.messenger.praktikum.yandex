@@ -134,19 +134,9 @@ export class ActiveChat extends Block<ActiveChatState> {
       cancel: () => {
         this.props.setModal(null)
       },
-      confirm: async () => {
-        const chatId = this.props.currentChat.id
-        const users = await ChatsService.getChatUsers(chatId)
-        const userQuery = block.getInputValue().toLowerCase()
-        const userToDelete = users.find((user) =>
-          user.login.toLowerCase().includes(userQuery)
-        )
-        if (userToDelete?.id) {
-          this.props.appDispatch(ChatActions.removeUserFromChat, {
-            chatId,
-            userId: userToDelete.id,
-          })
-        }
+      confirm: () => {
+        const loginQuery = block.getInputValue()
+        this.props.appDispatch(ChatActions.removeUserByLogin, { loginQuery })
         block.setInputValue("")
         this.props.setModal(null)
       },
@@ -169,17 +159,9 @@ export class ActiveChat extends Block<ActiveChatState> {
       cancel: () => {
         this.props.setModal(null)
       },
-      confirm: async () => {
-        const chatId = this.props.currentChat.id
-        const userQuery = block.getInputValue().toLowerCase()
-        const usersByLogin = await UserService.getUsersByLogin(userQuery)
-        if (usersByLogin.length) {
-          const idToAdd = usersByLogin[0].id
-          this.props.appDispatch(ChatActions.addUserToChat, {
-            userId: idToAdd,
-            chatId,
-          })
-        }
+      confirm: () => {
+        const loginQuery = block.getInputValue()
+        this.props.appDispatch(ChatActions.addUserByLogin, { loginQuery })
         block.setInputValue("")
         this.props.setModal(null)
       },

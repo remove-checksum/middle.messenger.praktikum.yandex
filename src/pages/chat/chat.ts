@@ -1,14 +1,13 @@
 import { Block } from "../../core"
 import { Chat } from "../../services/api/Chats"
 import { ChatActions } from "../../store/actions"
-import { ModalVariant } from "../../components"
 import { AppStore } from "../../store"
 import { AppDispatch, AppState } from "../../store/store"
 import { Message, MessageActions } from "../../store/actions/Message"
 import { User } from "../../services/api/User"
 import { WSTransport } from "../../core/WSTransport"
 import "./chat.css"
-import { Modal, ModalDispatch, ModalSpec } from "../../components/modal/modal"
+import { ModalDispatch, ModalSpec } from "../../components/modal/modal"
 
 interface ChatPageProps {
   store: AppStore

@@ -1,8 +1,7 @@
 import { Chat } from "./Chats"
-import { ChatDto, GetUserDto, LastMessage, MessageDto, SignUpDto } from "./dto"
+import { ChatDto, ChatUserDto, GetUserDto, MessageDto } from "./dto"
 import { Message } from "../../store/actions/Message"
 import { User } from "./User"
-import { DisplayMessage } from "../../components/active-chat/active-chat"
 
 function toChat(res: ChatDto): Chat {
   return {
@@ -27,11 +26,11 @@ function toChat(res: ChatDto): Chat {
   }
 }
 
-function toUser(res: GetUserDto): User {
+function toUser(res: ChatUserDto): User {
   return {
     id: res.id,
     avatar: res.avatar,
-    displayName: res.dispay_name,
+    displayName: res.display_name,
     firstName: res.first_name,
     secondName: res.second_name,
     email: res.email,
