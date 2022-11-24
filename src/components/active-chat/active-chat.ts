@@ -1,18 +1,24 @@
 import { Block } from "../../core"
-import type { PopupItem, ModalVariant } from "../index"
+import type { PopupItem } from "../index"
 import { Chat } from "../../services/api/Chats"
 import { Message } from "../../store/actions/Message"
 import avatarFallback from "../../assets/avatar_not_found.png"
+import { ModalDispatch } from "../modal/modal"
+import { ControlledInput } from "../index"
 import "./active-chat.css"
+import { AppDispatch } from "../../store"
+import { ChatActions } from "../../store/actions"
+import { ChatsService, UserService } from "../../services/api"
 
 interface ActiveChatProps {
   currentChat: Chat
   messages: Message[]
   currentUserId: number
-  openModal: (variant: ModalVariant) => void
+  openModal: ModalDispatch
+  appDispatch: AppDispatch
 }
 
-type DisplayMessage = {
+export type DisplayMessage = {
   text: string
   image?: string
   time: string
@@ -20,11 +26,13 @@ type DisplayMessage = {
 }
 
 interface ActiveChatState {
-  chat: Chat
+  currentChat: Chat
   messages: DisplayMessage[]
   popupOpen: boolean
   popupItems: PopupItem[]
   popupName: "chatActions"
+  setModal: ModalDispatch
+  appDispatch: AppDispatch
 }
 
 export class ActiveChat extends Block<ActiveChatState> {
@@ -37,7 +45,7 @@ export class ActiveChat extends Block<ActiveChatState> {
         text: "Добавить пользователя",
         action: () => {
           this.togglePopup()
-          props.openModal("addUser")
+          this.activateAddUserModal()
         },
       } as const,
       {
@@ -45,7 +53,7 @@ export class ActiveChat extends Block<ActiveChatState> {
         text: "Удалить пользователя",
         action: () => {
           this.togglePopup()
-          props.openModal("deleteUser")
+          this.activateDeleteUserModal()
         },
       } as const,
       {
@@ -53,7 +61,7 @@ export class ActiveChat extends Block<ActiveChatState> {
         text: "Удалить чат",
         action: () => {
           this.togglePopup()
-          props.openModal("deleteChat")
+          this.activateDeleteChatModal()
         },
       } as const,
     ]
@@ -66,10 +74,12 @@ export class ActiveChat extends Block<ActiveChatState> {
     })
 
     super({
-      chat: props.currentChat,
+      currentChat: props.currentChat,
       messages: props.messages.map(toDisplayMessage),
+      setModal: props.openModal,
       popupOpen: false,
       popupName: "chatActions",
+      appDispatch: props.appDispatch,
       popupItems,
       events: {
         click: (e: MouseEvent) => {
@@ -89,6 +99,93 @@ export class ActiveChat extends Block<ActiveChatState> {
     this.scrollToLast()
   }
 
+  activateDeleteChatModal = () => {
+    this.props.setModal({
+      title: "Удалить чат",
+      buttonText: "Удалить",
+      content: null,
+      warning: true,
+      cancel: () => {
+        this.props.setModal(null)
+      },
+      confirm: () => {
+        const chatId = this.props.currentChat.id
+
+        this.props.appDispatch(ChatActions.deleteChat, { chatId })
+        this.props.setModal(null)
+      },
+    })
+  }
+
+  activateDeleteUserModal = () => {
+    const block = new ControlledInput({
+      placeholder: "Логин пользователя",
+      name: "deleteUser",
+      type: "text",
+      hasLabel: false,
+      dontValidate: true,
+    })
+
+    this.props.setModal({
+      title: "Удалить пользователя",
+      buttonText: "Удалить",
+      warning: true,
+      content: block,
+      cancel: () => {
+        this.props.setModal(null)
+      },
+      confirm: async () => {
+        const chatId = this.props.currentChat.id
+        const users = await ChatsService.getChatUsers(chatId)
+        const userQuery = block.getInputValue().toLowerCase()
+        const userToDelete = users.find((user) =>
+          user.login.toLowerCase().includes(userQuery)
+        )
+        if (userToDelete?.id) {
+          this.props.appDispatch(ChatActions.removeUserFromChat, {
+            chatId,
+            userId: userToDelete.id,
+          })
+        }
+        block.setInputValue("")
+        this.props.setModal(null)
+      },
+    })
+  }
+
+  activateAddUserModal = () => {
+    const block = new ControlledInput({
+      placeholder: "Логин пользователя",
+      name: "addUser",
+      type: "text",
+      hasLabel: false,
+      dontValidate: true,
+    })
+
+    this.props.setModal({
+      title: "Добавить пользователя",
+      buttonText: "Добавить",
+      content: block,
+      cancel: () => {
+        this.props.setModal(null)
+      },
+      confirm: async () => {
+        const chatId = this.props.currentChat.id
+        const userQuery = block.getInputValue().toLowerCase()
+        const usersByLogin = await UserService.getUsersByLogin(userQuery)
+        if (usersByLogin.length) {
+          const idToAdd = usersByLogin[0].id
+          this.props.appDispatch(ChatActions.addUserToChat, {
+            userId: idToAdd,
+            chatId,
+          })
+        }
+        block.setInputValue("")
+        this.props.setModal(null)
+      },
+    })
+  }
+
   scrollToLast = () => {
     this.getContent().scrollTo({
       top: 9000,
@@ -100,13 +197,13 @@ export class ActiveChat extends Block<ActiveChatState> {
   }
 
   render(): string {
-    const avatarSrc = this.props.chat.avatar || avatarFallback
+    const avatarSrc = this.props.currentChat.avatar || avatarFallback
 
     return /* html */ `
       <div class="activeChat">
         <div class="chatHeader">
           <img src="${avatarSrc}" alt="Аватар чата" class="chatHeader__image">
-          <h2 class="chatHeader__chatName">{{chat.title}}</h2>
+          <h2 class="chatHeader__chatName">{{currentChat.title}}</h2>
           <div class="chatHeader__popupRoot">
             <button data-popup-trigger="{{popupName}}" class="popupTrigger">
               <i class="ph-dots-three-outline-vertical popupTrigger__icon

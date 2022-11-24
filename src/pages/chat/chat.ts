@@ -3,11 +3,12 @@ import { Chat } from "../../services/api/Chats"
 import { ChatActions } from "../../store/actions"
 import { ModalVariant } from "../../components"
 import { AppStore } from "../../store"
-import { AppState } from "../../store/store"
+import { AppDispatch, AppState } from "../../store/store"
 import { Message, MessageActions } from "../../store/actions/Message"
 import { User } from "../../services/api/User"
 import { WSTransport } from "../../core/WSTransport"
 import "./chat.css"
+import { Modal, ModalDispatch, ModalSpec } from "../../components/modal/modal"
 
 interface ChatPageProps {
   store: AppStore
@@ -20,13 +21,13 @@ interface ChatPageProps {
 }
 
 interface ChatPageState {
-  modalVariant: Nullable<ModalVariant>
-  dispatchModal: (variant: ModalVariant) => void
-  cancelModal: VoidFunction
-  confirmModal: VoidFunction
+  modalSpec: ModalSpec | null
+  currentChat: Chat | null
+  setModal: ModalDispatch
   selectChat: (id: number) => void
   sendMessage: (message: string) => void
-  currentChat: Chat | null
+  createChat: (title: string) => void
+  appDispatch: AppDispatch
 }
 
 export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
@@ -35,29 +36,18 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
   constructor(props: ChatPageProps) {
     super({
       currentChat: props.currentChat,
+      currentChatId: props.currentChatId,
       messages: props.messages,
       socket: props.socket,
       user: props.user,
       chats: props.chats,
       store: props.store,
-      modalVariant: null,
-      dispatchModal: (variant: ModalVariant) => {
-        this.setProps({ modalVariant: variant })
-      },
-      cancelModal: () => {
-        this.closeModal()
-      },
-      confirmModal: () => {
-        console.log("confirm goes here")
-        this.closeModal()
-      },
-      selectChat: (id: number) => {
-        this.selectChat(id)
-      },
-      currentChatId: props.currentChatId,
-      sendMessage: (message: string) => {
-        this.sendMessage(message)
-      },
+      modalSpec: null,
+      appDispatch: props.store.dispatch,
+      setModal: (spec) => this.setProps({ modalSpec: spec }),
+      selectChat: (id) => this.selectChat(id),
+      sendMessage: (msg) => this.sendMessage(msg),
+      createChat: (title) => this.createChat(title),
     })
   }
 
@@ -65,12 +55,16 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
     this.props.store.dispatch(ChatActions.getAllChats)
   }
 
-  openModal = (variant: ModalVariant) => {
-    this.setProps({ modalVariant: variant })
+  createChat = (title: string) => {
+    this.props.store.dispatch(ChatActions.createChat, { title })
   }
 
-  closeModal = () => {
-    this.setProps({ modalVariant: null })
+  deleteChat = (chatId: number) => {
+    this.props.store.dispatch(ChatActions.deleteChat, { chatId })
+  }
+
+  setModal = (spec: ModalSpec) => {
+    this.setProps({ modalSpec: spec })
   }
 
   sendMessage = (message: string) => {
@@ -100,6 +94,8 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
             chats=chats
             currentChatId=currentChatId
             selectChat=selectChat
+            openModal=setModal
+            createChat=createChat
           }}}
           <section class="messagesColumn">
             {{#if currentChatId }}
@@ -107,25 +103,22 @@ export default class ChatPage extends Block<ChatPageState & ChatPageProps> {
                 currentChat=currentChat
                 currentUserId=user.id
                 messages=messages
-                openModal=dispatchModal
+                openModal=setModal
+                appDispatch=store.dispatch
               }}}
               {{{ ChatInputbox
                 inputType=chats.input.type
                 inputName=chats.input.name
                 onMessage=sendMessage
-                openModal=dispatchModal
+                openModal=setModal
               }}}
             {{else}}
               <p class="messagesColumn__no-chat">Выберите чат и отправьте сообщение</p>
             {{/if}}
           </section>
         </div>
-        {{#if modalVariant }}
-          {{{ Modal
-            variant=modalVariant
-            cancel=closeModal
-            confirm=confirmModal
-          }}}
+        {{#if modalSpec }}
+          {{{ Modal spec=modalSpec }}}
         {{/if}}
       {{/PageLayout}}
     `

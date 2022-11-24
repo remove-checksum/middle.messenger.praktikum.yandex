@@ -1,6 +1,8 @@
 import { Chat } from "./Chats"
 import { ChatDto, GetUserDto, LastMessage, MessageDto, SignUpDto } from "./dto"
+import { Message } from "../../store/actions/Message"
 import { User } from "./User"
+import { DisplayMessage } from "../../components/active-chat/active-chat"
 
 function toChat(res: ChatDto): Chat {
   return {
@@ -38,9 +40,30 @@ function toUser(res: GetUserDto): User {
   }
 }
 
+function toMessage(res: MessageDto): Message {
+  return {
+    chatId: res.chat_id,
+    userId: res.user_id,
+    type: res.type,
+    time: res.time,
+    content: res.content,
+    file: res.file
+      ? {
+          contentType: res.file.content_type,
+          uploadDate: res.file.upload_date,
+          filename: res.file.filename,
+          id: res.file.id,
+          path: res.file.path,
+          userId: res.file.user_id,
+        }
+      : null,
+  }
+}
+
 export const Transformer = {
   toChat,
   toUser,
+  toMessage,
 }
 
 // export const ResponseTransformer = {

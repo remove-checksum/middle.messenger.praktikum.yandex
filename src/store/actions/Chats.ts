@@ -5,15 +5,11 @@ import { Transformer } from "../../services/api/transformers"
 
 const getAllChats: AppAction = async (dispatch) => {
   try {
-    dispatch({ loading: true })
     const chatsResponse = await ChatsService.getChats()
 
-    if (checkForError(chatsResponse)) {
-      dispatch({ loading: false })
-    } else {
+    if (!checkForError(chatsResponse)) {
       dispatch({
         chats: chatsResponse.map(Transformer.toChat),
-        loading: false,
       })
     }
   } catch (error) {
@@ -27,19 +23,19 @@ const createChat: AppAction = async (
   payload: { title: string }
 ) => {
   try {
-    dispatch({ loading: true })
     const createChatResponse = await ChatsService.createChat(payload.title)
 
     if (checkForError(createChatResponse)) {
       dispatch({
-        loading: false,
         errors: {
           ...state.errors,
           chatCreate: createChatResponse.reason,
         },
       })
     } else {
-      dispatch({ loading: false })
+      const allChats = await ChatsService.getChats()
+
+      dispatch({ chats: allChats.map(Transformer.toChat) })
     }
   } catch (error) {
     console.error(error)
@@ -48,26 +44,21 @@ const createChat: AppAction = async (
 
 const deleteChat: AppAction = async (
   dispatch,
-  state,
+  _,
   payload: { chatId: number }
 ) => {
-  dispatch({ loading: true })
   const deleteChatResponse = await ChatsService.deleteChat(payload.chatId)
 
-  if (isBadRequest(dispatch, deleteChatResponse)) {
-    return
+  if (!checkForError(deleteChatResponse)) {
+    const allChats = await ChatsService.getChats()
+
+    dispatch({ chats: allChats.map(Transformer.toChat) })
   }
-
-  console.log(`deleted chat ${deleteChatResponse}`)
-
-  await getChats(dispatch, state, payload)
-
-  dispatch({ loading: false })
 }
 
 const addUserToChat: AppAction = async (
   dispatch,
-  state,
+  _,
   payload: { userId: number; chatId: number }
 ) => {
   dispatch({ loading: true })
@@ -76,33 +67,27 @@ const addUserToChat: AppAction = async (
     payload.chatId
   )
 
-  if (isBadRequest(dispatch, addUserResponse)) {
-    return
+  if (!checkForError(addUserResponse)) {
+    const allChats = await ChatsService.getChats()
+    dispatch({ chats: allChats.map(Transformer.toChat) })
   }
-
-  await getChats(dispatch, state, payload)
-
-  dispatch({ loading: false })
 }
 
 const removeUserFromChat: AppAction = async (
   dispatch,
-  state,
+  _,
   payload: { userId: number; chatId: number }
 ) => {
-  dispatch({ loading: true })
   const removeUserResponse = await ChatsService.removeUsersFromChat(
     [payload.userId],
     payload.chatId
   )
 
-  if (isBadRequest(dispatch, removeUserResponse)) {
-    return
+  if (!checkForError(removeUserResponse)) {
+    const allChats = await ChatsService.getChats()
+
+    dispatch({ chats: allChats.map(Transformer.toChat) })
   }
-
-  await getChats(dispatch, state, payload)
-
-  dispatch({ loading: false })
 }
 
 const getChatMessageToken: AppAction = async (
@@ -115,7 +100,7 @@ const getChatMessageToken: AppAction = async (
     payload.chatId
   )
 
-  if (isBadRequest(dispatch, getChatMessageToken)) {
+  if (checkForError(dispatch, getChatMessageToken)) {
     return
   }
 
@@ -134,6 +119,6 @@ export const ChatActions = {
   deleteChat,
   addUserToChat,
   removeUserFromChat,
-  getChats,
+  getAllChats,
   getChatMessageToken,
 }
