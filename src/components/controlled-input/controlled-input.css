@@ -11,8 +11,6 @@
   font-size: inherit;
   line-height: 23px;
   padding: var(--s-2) var(--s-2);
-
-  /* min-width: 15em; */
 }
 
 .controlledInput__label {

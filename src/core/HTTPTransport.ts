@@ -96,7 +96,11 @@ export class HTTPTransport implements HTTPHandles {
       }
 
       if (options.body) {
-        xhr.send(JSON.stringify(options.body))
+        xhr.send(
+          options.body instanceof FormData
+            ? options.body
+            : JSON.stringify(options.body)
+        )
       } else {
         xhr.send()
       }

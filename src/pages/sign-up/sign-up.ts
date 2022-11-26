@@ -1,9 +1,9 @@
 import { Block } from "../../core"
 import signupFormData from "./sign-up.json"
-import "./sign-up.css"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { AuthActions } from "../../store/actions"
 import { StoreContext } from "../../hoc/withStore"
+import "./sign-up.css"
 
 interface SignUpPageState {
   signUp: typeof signupFormData

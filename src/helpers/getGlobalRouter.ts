@@ -13,5 +13,5 @@ export const getGlobalStore = () => {
     throw new Error("Router not in global")
   }
 
-  return store
+  return store.getState()
 }

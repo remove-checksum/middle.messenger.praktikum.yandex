@@ -33,9 +33,6 @@ export class UserService {
     return this.client
       .put("user/profile/avatar", {
         body: formData,
-        headers: {
-          ...Headers.ContentType.FormData,
-        },
       })
       .then((response) => Transformer.toUser(response as ChatUserDto))
   }

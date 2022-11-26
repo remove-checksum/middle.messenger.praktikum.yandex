@@ -1,5 +1,7 @@
 import { Block } from "../../core"
+import { API_RESOURCES_URL } from "../../config"
 import avatarFallback from "../../assets/avatar_not_found.png"
+import { getGlobalStore } from "../../helpers/getGlobalRouter"
 import "./avatar.css"
 
 interface AvatarProps {
@@ -11,8 +13,9 @@ export class Avatar extends Block<AvatarProps> {
   static blockName = "Avatar"
 
   constructor(props: AvatarProps) {
+    const avatarUrl = `${API_RESOURCES_URL}${getGlobalStore().user?.avatar}`
     super({
-      avatarUrl: props.avatarUrl || avatarFallback,
+      avatarUrl: avatarUrl || avatarFallback,
       onImageClick: props.onImageClick,
       events: {
         click: (e) => {

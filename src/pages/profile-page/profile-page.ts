@@ -6,10 +6,10 @@ import { AuthActions, ProfileActions } from "../../store/actions"
 import { User, UserPublicInfo } from "../../services/api/User"
 import { AppState } from "../../store"
 import { INPUT_ERROR_CLASS } from "../../components/controlled-input/controlled-input"
-import "./profile-page.css"
 import { FileInput } from "../../components"
 import { Page } from "../../router/pages"
 import { ModalDispatch, ModalSpec } from "../../components/modal/modal"
+import "./profile-page.css"
 
 type FormType = "password" | "publicInfo"
 
@@ -63,6 +63,7 @@ export default class ProfilePage extends Block<
               const file = block.getProps().selectedFile
               if (file) {
                 this.submitAvatarChange(file)
+                this.setProps({ modalSpec: null })
               }
             },
           },
@@ -157,8 +158,8 @@ export default class ProfilePage extends Block<
 
     const hasEmptyFields = formInputs.some((input) => input.value === "")
     const isIncompletePasswordForm = formType === "password" && hasEmptyFields
-    const [newPassword, repeatNewPassword] = formInputs.filter(
-      (input) => input.name.match("(new_password|repeat_new_password)") // new_password | repeat_new_password
+    const [newPassword, repeatNewPassword] = formInputs.filter((input) =>
+      input.name.match("(new_password|repeat_new_password)")
     )
 
     const sameRepeatPassword =
@@ -194,8 +195,13 @@ export default class ProfilePage extends Block<
   }
 
   submitAvatarChange = (file: File) => {
-    const formData = new FormData()
-    formData.append("new_avatar", file)
+    // FormData made from FormElement sends correct preflight request
+    const form = document.createElement("form")
+    form.method = "put"
+
+    const formData = new FormData(form)
+
+    formData.append("avatar", file, file.name)
 
     this.props.store.dispatch(ProfileActions.changeAvatar, { formData })
   }

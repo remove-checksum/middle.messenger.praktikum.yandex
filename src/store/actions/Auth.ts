@@ -71,23 +71,27 @@ const signUp: AppAction = async (dispatch, state, payload) => {
 }
 
 const signIn: AppAction = async (dispatch, state, payload) => {
-  const signInResponse = await AuthService.signIn(payload)
+  try {
+    const signInResponse = await AuthService.signIn(payload)
 
-  if (checkForError(signInResponse)) {
-    dispatch({
-      loading: false,
-      errors: { ...state.errors, signIn: signInResponse.reason },
-    })
+    if (checkForError(signInResponse)) {
+      dispatch({
+        loading: false,
+        errors: { ...state.errors, signIn: signInResponse.reason },
+      })
+    }
+
+    const user = await AuthService.getUser()
+
+    if (checkForError(user)) {
+      dispatch(signOut)
+      return
+    }
+    dispatch({ user })
+    getGlobalRouter().go(Page.Chat)
+  } catch (error) {
+    console.error(error)
   }
-
-  const user = await AuthService.getUser()
-
-  if (checkForError(user)) {
-    dispatch(signOut)
-    return
-  }
-  dispatch({ user })
-  getGlobalRouter().go(Page.Chat)
 }
 
 export const AuthActions = {

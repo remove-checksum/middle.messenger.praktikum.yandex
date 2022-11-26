@@ -68,8 +68,6 @@ const changeAvatar: AppAction = async (
   try {
     const updatedUser = await UserService.changeAvatar(payload.formData)
 
-    console.log(updatedUser)
-
     if (checkForError(updatedUser)) {
       return
     }
