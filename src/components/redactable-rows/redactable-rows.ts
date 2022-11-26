@@ -39,12 +39,14 @@ export class RedactableRows extends Block<InputDataProps> {
       "input.redactableRowsUserInfo__input"
     ) as NodeListOf<HTMLInputElement>
 
-    AuthService.getUser().then((user) => {
-      inputs.forEach((input) => {
-        // @ts-expect-error cannot index
-        input.value = user[rel[input.name as keyof User]]
+    AuthService.getUser()
+      .then((user) => {
+        inputs.forEach((input) => {
+          // @ts-expect-error cannot index
+          input.value = user[rel[input.name as keyof User]]
+        })
       })
-    })
+      .catch((error) => console.error(error))
   }
 
   render(): string {
