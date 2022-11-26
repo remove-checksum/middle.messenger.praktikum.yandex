@@ -5,8 +5,8 @@ import { UserCredentialsFieldName } from "../../models/forms"
 
 export const INPUT_ERROR_CLASS = "controlledInput__input_error"
 export const LABEL_ERROR_CLASS = "controlledInput__label_error"
-const FONT_SIZE_LABEL = "19px"
-const FONT_SIZE_ERROR_MESSAGE = "12px"
+export const FONT_SIZE_LABEL = "19px"
+export const FONT_SIZE_ERROR_MESSAGE = "12px"
 
 type InputType = "text" | "tel" | "password" | "email"
 

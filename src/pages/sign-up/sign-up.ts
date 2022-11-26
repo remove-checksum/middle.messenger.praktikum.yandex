@@ -4,6 +4,11 @@ import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { AuthActions } from "../../store/actions"
 import { StoreContext } from "../../hoc/withStore"
 import "./sign-up.css"
+import {
+  LABEL_ERROR_CLASS,
+  FONT_SIZE_ERROR_MESSAGE,
+  FONT_SIZE_LABEL,
+} from "../../components/controlled-input/controlled-input"
 
 interface SignUpPageState {
   signUp: typeof signupFormData
@@ -45,15 +50,15 @@ export default class SignUpPage extends Block<StoreContext & SignUpPageState> {
       "input[type=password]"
     ) as NodeListOf<HTMLInputElement>
     const passwordsMatch = password.value === repeatPassword.value
+    const label = repeatPassword.previousElementSibling as HTMLLabelElement
 
     if (!passwordsMatch) {
-      const label = repeatPassword.previousElementSibling as HTMLLabelElement
-      const labelError = label.classList.contains(
-        "controlledInput__label_error"
-      )
-      if (label && labelError) {
-        label.innerText = "Пароли не совпадают"
-      }
+      label.innerText = "Пароли не совпадают"
+      label.style.fontSize = FONT_SIZE_ERROR_MESSAGE
+      label.classList.add(LABEL_ERROR_CLASS)
+    } else {
+      label.style.fontSize = FONT_SIZE_LABEL
+      label.classList.remove(LABEL_ERROR_CLASS)
     }
   }
 
