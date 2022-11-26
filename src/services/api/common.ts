@@ -4,7 +4,7 @@ export const Headers = {
       "Content-Type": "application/json",
     },
     FormData: {
-      "Content-Type": "multipart/formData",
+      "Content-Type": "multipart/form-data",
     },
   },
 } as const

@@ -4,7 +4,7 @@ export type GetUserDto = {
   id: number
   first_name: string
   second_name: string
-  dispay_name: string
+  display_name: string
   login: string
   email: string
   phone: string
@@ -23,7 +23,7 @@ export type ApiErrorDto = {
 
 export type UserPublicInfoDto = Pick<
   GetUserDto,
-  "first_name" | "second_name" | "avatar" | "email" | "login" | "phone"
+  "first_name" | "second_name" | "display_name" | "email" | "login" | "phone"
 >
 
 export type LastMessage = {

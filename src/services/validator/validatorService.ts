@@ -40,13 +40,15 @@ const validators: Record<InputFieldName, Validator> = {
   repeat_new_password: passwordValidator,
 }
 
-export const validate = <N extends InputFieldName>(
+export function validate<N extends InputFieldName>(
   name: N,
   value: string
-): Nullable<string> => {
-  const validatorForName = validators[name]
-  if (!validatorForName) {
-    throw new Error("No validator for given input name")
+): string | null {
+  if (name in validators) {
+    const validatorForName = validators[name]
+    if (validatorForName) {
+      return validatorForName(value)
+    }
   }
-  return validatorForName(value)
+  return null
 }

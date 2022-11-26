@@ -1,8 +1,9 @@
 import { AppState, AppStore } from "../store/store"
 import { BlockConstructable, BlockProps } from "../core/Block"
-import { StoreEvents, Block, Store } from "../core"
+import { StoreEvents } from "../core"
 
 export type StoreContext = { store: AppStore }
+
 type StateMapper = (state: AppState) => UnknownObject
 
 export function withStore(
@@ -22,7 +23,7 @@ export function withStore(
       })
     }
 
-    private onStoreChange = (prev: AppState, next: AppState) => {
+    private onStoreChange = () => {
       this.setProps(mapStateToProps(this.props.store.getState()) as P)
     }
 

@@ -102,7 +102,6 @@ export default class SignUpPage extends Block<StoreContext & SignUpPageState> {
                 text="Зарегистрироваться"
                 type="submit"
                 extraClass="signupForm__button"
-                disabled=true
               }}}
               {{{ Link
                 to="/sign-in"

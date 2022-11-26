@@ -1,7 +1,8 @@
 import { API_URL } from "../../config"
 import { HTTPTransport } from "../../core/HTTPTransport"
 import { Headers } from "./common"
-import { ApiErrorDto } from "./dto"
+import { ApiErrorDto, ChatUserDto, GetUserDto } from "./dto"
+import { Transformer } from "./transformers"
 
 export interface User {
   id: number
@@ -19,28 +20,31 @@ export type UserPublicInfo = Omit<User, "id" | "avatar">
 export class UserService {
   private client = new HTTPTransport(API_URL)
 
-  changePublicInfo(
-    newInfo: UserPublicInfo
-  ): Promise<Partial<User | ApiErrorDto>> {
+  changePublicInfo(newInfo: UserPublicInfo) {
     return this.client.put("user/profile", {
       headers: {
         ...Headers.ContentType.JSON,
       },
       body: newInfo,
-    }) as Promise<Partial<User | ApiErrorDto>>
+    })
   }
 
-  changeAvatar(formData: FormData): Promise<unknown | ApiErrorDto> {
-    return this.client.put("user/profile/avatar", {
-      body: formData,
-    })
+  changeAvatar(formData: FormData) {
+    return this.client
+      .put("user/profile/avatar", {
+        body: formData,
+        headers: {
+          ...Headers.ContentType.FormData,
+        },
+      })
+      .then((response) => Transformer.toUser(response as ChatUserDto))
   }
 
   changePassword(
     oldPassword: string,
     newPassword: string
   ): Promise<unknown | ApiErrorDto> {
-    return this.client.put("user/profile/password", {
+    return this.client.put("user/password", {
       headers: {
         ...Headers.ContentType.JSON,
       },

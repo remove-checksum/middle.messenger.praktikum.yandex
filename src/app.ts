@@ -1,13 +1,11 @@
 import { registerComponents } from "./helpers" // !!! This import must be first
 import { PathRouter } from "./core/Router"
-import { Store, StoreEvents } from "./core/Store"
+import { Store } from "./core/Store"
 import { initRouter } from "./router/router"
 import { AppState, initialAppState } from "./store/store"
 import { renderDOM } from "./core"
 import { appInit } from "./store/actions/Init"
 import { Loader } from "./components"
-import { logStore } from "./store/helpers"
-import { Listener } from "./core/EventBus"
 import "./shared/main.css"
 
 registerComponents()
@@ -15,8 +13,6 @@ registerComponents()
 const bootstrapApplication = () => {
   const router = new PathRouter()
   const store = new Store<AppState>(initialAppState)
-
-  store.on(StoreEvents.Updated, logStore as Listener)
 
   window.__internals = {
     router,

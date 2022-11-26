@@ -1,6 +1,5 @@
 import { AppAction } from "../store"
 import { WS_URL } from "../../config"
-import { SocketEvents, WSTransport } from "../../core/WSTransport"
 import { ChatsService } from "../../services/api"
 import { Transformer } from "../../services/api/transformers"
 
@@ -48,7 +47,7 @@ const connectToChat: AppAction = async (
 
     const { token } = await ChatsService.getMessageServerToken(payload.chatId)
 
-    const userId = state.user?.id
+    const userId = state.user!.id
     const socket = new WebSocket(
       toSocketURL({ userId, chatId: payload.chatId, token })
     )
@@ -82,8 +81,6 @@ const connectToChat: AppAction = async (
       } else {
         dispatch({ messages: [...state.messages, Transformer.toMessage(data)] })
       }
-
-      console.log(data)
     }
 
     const currentChat = JSON.parse(

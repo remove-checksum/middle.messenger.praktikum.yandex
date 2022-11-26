@@ -1,7 +1,8 @@
 import { HTTPTransport } from "../../core/HTTPTransport"
 import { Headers } from "./common"
 import { API_URL } from "../../config"
-import { ApiErrorDto, GetUserDto, SignUpDto } from "./dto"
+import { ApiErrorDto, ChatUserDto, SignUpDto } from "./dto"
+import { Transformer } from "./transformers"
 
 export type SignUpCredentials = {
   first_name: string
@@ -38,8 +39,10 @@ class AuthService {
     })
   }
 
-  getUser(): Promise<GetUserDto | ApiErrorDto> {
-    return this.client.get("auth/user") as Promise<GetUserDto | ApiErrorDto>
+  getUser() {
+    return this.client
+      .get("auth/user")
+      .then((user) => Transformer.toUser(user as ChatUserDto))
   }
 
   signOut() {

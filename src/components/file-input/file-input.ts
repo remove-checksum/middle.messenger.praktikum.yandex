@@ -1,10 +1,13 @@
 import { Block } from "../../core"
 import "./file-input.css"
 
-interface FileInputProps {}
+interface FileInputProps {
+  onFileSubmit: (file: File) => void
+}
 
 interface FileInputState {
-  selectedFileName: Nullable<string>
+  selectedFile: File | null
+  selectedFileName: string
 }
 
 export class FileInput extends Block<FileInputProps & FileInputState> {
@@ -13,38 +16,48 @@ export class FileInput extends Block<FileInputProps & FileInputState> {
   constructor(props: FileInputProps) {
     super({
       ...props,
-      selectedFileName: null,
+      selectedFile: null,
+      selectedFileName: "",
       events: {
-        click: (e: MouseEvent) => {
-          const fileInput = this.element?.querySelector(
-            "input[type=file]"
-          ) as HTMLInputElement
-
-          if (e.target instanceof HTMLButtonElement) {
-            fileInput.click()
-          }
+        click: () => {
+          this.triggerFileInput()
         },
-        change: ({ target }: Event) => {
-          if (target instanceof HTMLInputElement) {
-            if (target.files?.length) {
-              const file = target.files[0]
-
-              this.setProps({ selectedFileName: file.name })
-            }
-          }
+        change: (e: Event) => {
+          this.setFileName()
+          e.stopPropagation()
+        },
+        input: (e) => {
+          e.stopPropagation()
         },
       },
     })
+  }
+
+  getFileElement = () =>
+    this.getContent().querySelector("input[type=file]") as HTMLInputElement
+
+  setFileName = () => {
+    const { files } = this.getFileElement()
+
+    if (files && files[0]) {
+      const selectedFile = files[0]
+
+      this.setProps({ selectedFile, selectedFileName: selectedFile.name })
+    }
+  }
+
+  triggerFileInput = () => {
+    this.getFileElement().click()
   }
 
   render() {
     return /* html */ `
     <div class="fileInput">
       <input type="file" class="fileInput__input" accept="image/*">
-      {{#if selectedFile}}
-        <span class="fileInput__selectedName">{{selectedFile}}</span>
+      {{#if selectedFile }}
+        <span class="fileInput__selectedName">{{selectedFileName}}</span>
       {{/if}}
-      <button class="fileInput__button link">Выберите файл</button>
+      <button class="fileInput__button link" type="button">Выберите файл</button>
     </div>
     `
   }

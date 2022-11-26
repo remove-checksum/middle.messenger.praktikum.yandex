@@ -1,67 +1,76 @@
 import { AuthService } from "../../services/api"
-import { AppAction } from "../store"
-import { withLogException } from "./common"
-import { Transformer } from "../../services/api/transformers"
+import { AppAction, initialAppState } from "../store"
 import { getGlobalRouter } from "../../helpers"
 import { checkForError } from "../helpers"
 import { Page } from "../../router/pages"
 
 const signOut: AppAction = async (dispatch) => {
-  dispatch({ loading: true })
-  await AuthService.signOut()
-  dispatch({ loading: false, user: null })
+  try {
+    const signOutResponse = await AuthService.signOut()
 
-  const router = getGlobalRouter() // TODO: call getGlobalRouter on module import
-  router.go("/sign-in")
+    if (checkForError(signOutResponse)) {
+      return
+    }
+
+    dispatch(initialAppState)
+    getGlobalRouter().go(Page.SignIn)
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const getUser: AppAction = async (dispatch, state) => {
-  const getUserResponse = await AuthService.getUser()
+  try {
+    const user = await AuthService.getUser()
 
-  if (!checkForError(getUserResponse)) {
-    const user = Transformer.toUser(getUserResponse)
-    dispatch({
-      user,
-      errors: {
-        ...state.errors,
-        getUser: null,
-      },
-    })
-  } else {
-    dispatch({
-      errors: {
-        ...state.errors,
-        getUser: getUserResponse.reason,
-      },
-    })
+    if (!checkForError(user)) {
+      dispatch({
+        user,
+        errors: {
+          ...state.errors,
+          getUser: null,
+        },
+      })
+    } else {
+      dispatch({
+        errors: {
+          ...state.errors,
+          getUser: user.reason,
+        },
+      })
+    }
+  } catch (error) {
+    console.error(error)
   }
 }
 
 const signUp: AppAction = async (dispatch, state, payload) => {
-  dispatch({ loading: true })
+  try {
+    dispatch({ loading: true })
 
-  const signUpResponse = await AuthService.signUp(payload)
+    const signUpResponse = await AuthService.signUp(payload)
 
-  if (checkForError(signUpResponse)) {
-    dispatch({
-      loading: false,
-      errors: { ...state.errors, signUp: signUpResponse.reason },
-    })
-  }
+    if (checkForError(signUpResponse)) {
+      dispatch({
+        loading: false,
+        errors: { ...state.errors, signUp: signUpResponse.reason },
+      })
+    }
 
-  await getUser(dispatch, state, payload)
+    const userResponse = await AuthService.getUser()
 
-  if (!state.errors.getUser) {
-    const router = getGlobalRouter()
-    router.go(Page.Chat)
-  } else {
-    dispatch(signOut)
+    if (checkForError(userResponse)) {
+      dispatch(signOut)
+      return
+    }
+    dispatch({ user: userResponse })
+    getGlobalRouter().go(Page.Chat)
+  } catch (error) {
+    console.error(error)
   }
 }
 
 const signIn: AppAction = async (dispatch, state, payload) => {
-  dispatch({ loading: true })
-
   const signInResponse = await AuthService.signIn(payload)
 
   if (checkForError(signInResponse)) {
@@ -71,19 +80,19 @@ const signIn: AppAction = async (dispatch, state, payload) => {
     })
   }
 
-  await getUser(dispatch, state, payload)
+  const user = await AuthService.getUser()
 
-  if (!state.errors.getUser) {
-    const router = getGlobalRouter()
-    router.go(Page.Chat)
-  } else {
+  if (checkForError(user)) {
     dispatch(signOut)
+    return
   }
+  dispatch({ user })
+  getGlobalRouter().go(Page.Chat)
 }
 
 export const AuthActions = {
-  getUser: withLogException(getUser),
-  signIn: withLogException(signIn),
-  signUp: withLogException(signUp),
-  signOut: withLogException(signOut),
+  getUser,
+  signIn,
+  signUp,
+  signOut,
 }

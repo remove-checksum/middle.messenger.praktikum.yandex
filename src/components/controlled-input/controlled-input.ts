@@ -1,15 +1,19 @@
 import { Block } from "../../core"
 import "./controlled-input.css"
-import { validate } from "../../services"
+import { InputFieldName, validate } from "../../services"
 import { UserCredentialsFieldName } from "../../models/forms"
 
+export const INPUT_ERROR_CLASS = "controlledInput__input_error"
+export const LABEL_ERROR_CLASS = "controlledInput__label_error"
+
 type InputType = "text" | "tel" | "password" | "email"
+
 interface ControlledInputProps {
   hasLabel: boolean
   label?: string
   placeholder: string
   type: InputType
-  name: UserCredentialsFieldName
+  name: UserCredentialsFieldName | string
   value?: string
   error?: true
   extraClass?: string
@@ -32,7 +36,7 @@ export class ControlledInput extends Block<ControlledInputProps> {
         return
       }
 
-      const error = validate(name, input.value)
+      const error = validate(name as InputFieldName, input.value)
 
       if (error) {
         this.setError(error)
@@ -65,10 +69,10 @@ export class ControlledInput extends Block<ControlledInputProps> {
       label.style.display = "initial"
       label.innerText = error
       label.style.fontSize = "12px"
-      label.classList.add("controlledInput__label_error")
+      label.classList.add(LABEL_ERROR_CLASS)
     }
 
-    input.classList.add("controlledInput__input_error")
+    input.classList.add(INPUT_ERROR_CLASS)
   }
 
   clearError = () => {
@@ -77,10 +81,10 @@ export class ControlledInput extends Block<ControlledInputProps> {
     if (label instanceof HTMLLabelElement) {
       label.style.fontSize = "19px"
       label.innerText = this.props.label || ""
-      label.classList.remove("controlledInput__label_error")
+      label.classList.remove(LABEL_ERROR_CLASS)
     }
 
-    input.classList.remove("controlledInput__input_error")
+    input.classList.remove(INPUT_ERROR_CLASS)
   }
 
   getInputValue = () => {

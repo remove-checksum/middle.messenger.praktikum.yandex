@@ -1,69 +1,87 @@
-import { ChangeUser } from "../../services/api/User"
-import { UserService } from "../../services/api"
+import { AuthService, UserService } from "../../services/api"
+import { UserPublicInfo } from "../../services/api/User"
+import { checkForError } from "../helpers"
 import { AppAction } from "../store"
-import { AuthActions } from "./Auth"
-import { onResponseSuccess } from "./common"
 
 const changePublicInfo: AppAction = async (
   dispatch,
-  state,
-  payload: ChangeUser
+  _,
+  payload: UserPublicInfo
 ) => {
-  dispatch(onResponseSuccess, {
-    apiResponse: UserService.changePublicInfo(payload),
-    onSuccess: {
-      action: AuthActions.getUser,
-    },
-  })
+  try {
+    const newPublicInfo = await UserService.changePublicInfo(payload)
+
+    if (checkForError(newPublicInfo)) {
+      return
+    }
+
+    const newUserInfo = await AuthService.getUser()
+
+    if (checkForError(newUserInfo)) {
+      return
+    }
+
+    dispatch({
+      user: newUserInfo,
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const changePassword: AppAction = async (
   dispatch,
-  state,
-  payload: { oldPassword: string; newPassword: string }
+  _,
+  payload: { old_password: string; new_password: string }
 ) => {
-  dispatch(onResponseSuccess, {
-    apiResponse: UserService.changePassword(
-      payload.oldPassword,
-      payload.newPassword
-    ),
-  })
+  try {
+    const changePasswordResponse = await UserService.changePassword(
+      payload.old_password,
+      payload.new_password
+    )
+
+    if (checkForError(changePasswordResponse)) {
+      return
+    }
+
+    const newUserInfo = await AuthService.getUser()
+
+    if (checkForError(newUserInfo)) {
+      return
+    }
+
+    dispatch({
+      user: newUserInfo,
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const changeAvatar: AppAction = async (
   dispatch,
-  state,
+  _,
   payload: {
     formData: FormData
   }
 ) => {
-  dispatch(onResponseSuccess, {
-    apiResponse: UserService.changeAvatar(payload.formData),
-    onSuccess: {
-      action: AuthActions.getUser,
-    },
-  })
-}
+  try {
+    const updatedUser = await UserService.changeAvatar(payload.formData)
 
-// TODO add field for user search
-const getOneById: AppAction = async (
-  dispatch,
-  state,
-  payload: {
-    userId: number
+    console.log(updatedUser)
+
+    if (checkForError(updatedUser)) {
+      return
+    }
+
+    dispatch({ user: updatedUser })
+  } catch (error) {
+    console.error(error)
   }
-) => {
-  dispatch(onResponseSuccess, {
-    apiResponse: UserService.getOneById(payload.userId),
-    onSuccess: {
-      action: {},
-    },
-  })
 }
 
 export const ProfileActions = {
   changeAvatar,
   changePassword,
   changePublicInfo,
-  getOneById,
 }

@@ -6,7 +6,8 @@
 }
 
 .fileInput__input {
-  display: none;
+  visibility: collapse;
+  display: block;
 }
 
 .fileInput__button {
@@ -14,9 +15,13 @@
   background-color: transparent;
   cursor: pointer;
   font-size: var(--text-regular);
+  width: max-content;
+  align-self: center;
 }
 
 .fileInput__selectedName {
   color: var(--colour-dark-grey);
   margin-bottom: var(--s-6);
+  display: block;
+  text-align: center;
 }

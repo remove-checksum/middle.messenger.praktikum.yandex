@@ -10,24 +10,31 @@ interface ButtonProps {
   extraClass?: string
   disabled: boolean
   onClick: EventListener
+  type?: "submit" | "button"
 }
 
 interface ButtonState {
   classNames: string
   text: string
   disabled: boolean
+  type?: "submit" | "button"
 }
+
 export class Button extends Block<ButtonState> {
   static blockName = "Button"
 
   constructor(props: ButtonProps) {
-    const cn = `
-      button
+    const cn = `button
       ${props.small ? "button_small" : ""}
       ${props.kind ? `button_${props.kind}` : ""}
       ${props.extraClass ? props.extraClass : ""}
-      `.trim()
+      `
+      .trim()
+      .split("\n")
+      .join(" ")
+
     super({
+      type: props.type,
       classNames: cn,
       disabled: props.disabled,
       text: props.text,
@@ -37,9 +44,12 @@ export class Button extends Block<ButtonState> {
 
   render(): string {
     return /* html */ `
-      <button class="{{ classNames }}"
+      <button
+        class="{{ classNames }}"
         type="{{ type }}"
-        {{#if disabled}}disabled{{/if}}>
+        {{#if disabled}}disabled{{/if}}
+        {{#if type}}type="{{ type }}"{{/if}}
+        >
         {{text}}
       </button>
     `

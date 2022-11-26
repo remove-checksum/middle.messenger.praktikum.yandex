@@ -50,9 +50,9 @@ const deleteChat: AppAction = async (
     const deleteChatResponse = await ChatsService.deleteChat(payload.chatId)
 
     if (!checkForError(deleteChatResponse)) {
-      const allChats = await ChatsService.getChats()
+      const chats = await ChatsService.getChats()
 
-      dispatch({ chats: allChats })
+      dispatch({ chats, currentChat: null, currentChatId: null })
     }
   } catch (error) {
     console.error(error)
