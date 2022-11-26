@@ -1,0 +1,47 @@
+{
+  "fields": {
+    "email": {
+      "label": "Почта",
+      "value": "email@mail.com",
+      "input_type": "email",
+      "name": "email",
+      "placeholder": "Собака и домен"
+    },
+    "login": {
+      "label": "Логин",
+      "value": "ivanov_ivan",
+      "input_type": "text",
+      "name": "login",
+      "placeholder": "3-20 букв и '-' '_'"
+    },
+    "first_name": {
+      "label": "Имя",
+      "value": "Иван",
+      "input_type": "text",
+      "name": "first_name",
+      "placeholder": "До 20 букв и '-'"
+    },
+    "second_name": {
+      "label": "Фамилия",
+      "value": "Иванов",
+      "input_type": "text",
+      "name": "second_name",
+      "placeholder": "До 20 букв и '-'"
+    },
+    "display_name": {
+      "label": "Имя в чате",
+      "value": "Иван",
+      "input_type": "text",
+      "name": "display_name",
+      "placeholder": "До 20 букв"
+    },
+    "phone": {
+      "label": "Телефон",
+      "value": "+7 800 525 35 35",
+      "input_type": "tel",
+      "name": "phone",
+      "placeholder": "10-15 цифр, может начинаться с '+'"
+    }
+  },
+  "avatar": { "label": "Поменять аватар", "url": "../../assets/catpix.jpeg" }
+}

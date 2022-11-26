@@ -2,9 +2,13 @@
 
 .signup-card {
   width: 697px;
+  height: 740px;
   background-color: var(--colour-light-pink);
   border: 2px solid var(--colour-black);
   padding: var(--s-8) var(--s-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .signup-card__heading {
@@ -14,13 +18,22 @@
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  gap: var(--s-5);
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.signup-form__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
 }
 
 .signup-form__row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: var(--s-5);
 }
 
 .signup-form__row > div {
@@ -28,11 +41,11 @@
 }
 
 .signup-form__button {
-  margin-top: var(--s-9);
+  margin-top: auto;
   align-self: center;
   width: 16em;
 }
 
 .signup-form__link {
-  align-self: center;
+  text-align: center;
 }

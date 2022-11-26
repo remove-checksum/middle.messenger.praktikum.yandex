@@ -1,20 +1,20 @@
 @import "../../shared/variables.css";
 
-.chat-wrapper {
-  height: 100%;
+.chatWrapper {
+  height: 100vh;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
 }
 
-.messages-column {
+.messagesColumn {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.messages-column__select-chat {
+.messagesColumn__select-chat {
   margin-top: 45vh;
   align-self: center;
   color: var(--text-colour-secondary);

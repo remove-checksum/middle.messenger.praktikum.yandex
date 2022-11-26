@@ -1,9 +1,8 @@
-.user-info {
+.redactableRowsUserInfo {
   width: 640px;
-  gap: 30px;
 }
 
-.user-info__row {
+.redactableRowsUserInfo__row {
   display: flex;
   justify-content: space-between;
   background-color: var(--colour-white);
@@ -11,20 +10,22 @@
   height: 46px;
   padding-left: var(--s-3);
   padding-right: var(--s-3);
-  margin-bottom: var(--s-2);
+  margin-bottom: var(--s-6);
 }
 
-.user-info__text {
+.redactableRowsUserInfo__text {
   padding-top: var(--s-3);
+  width: 24em;
 }
 
-.user-info__input {
+.redactableRowsUserInfo__input {
   margin-right: calc(-1 * var(--s-3));
   position: relative;
   top: 2px;
   height: 100%;
+  text-align: end;
 }
 
-.user-info__data {
+.redactableRowsUserInfo__data {
   color: var(--text-colour-secondary);
 }

@@ -1,7 +1,11 @@
+@import '../../shared/variables.css';
+
 .avatar {
   width: 150px;
   height: 150px;
   position: relative;
+  min-width: 150px;
+  min-height: 150px;
 }
 
 .avatar__image {
