@@ -5,9 +5,8 @@ import { AppStore } from "../../store"
 import { AppDispatch, AppState } from "../../store/store"
 import { Message, MessageActions } from "../../store/actions/Message"
 import { User } from "../../services/api/User"
-import { WSTransport } from "../../core/WSTransport"
-import "./chat.css"
 import { ModalDispatch, ModalSpec } from "../../components/modal/modal"
+import "./chat.css"
 
 interface ChatPageProps {
   store: AppStore
@@ -15,7 +14,7 @@ interface ChatPageProps {
   chats: Chat[]
   currentChat: Chat | null
   user: User
-  socket: WSTransport
+  socket: WebSocket
   messages: Message[]
 }
 

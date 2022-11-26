@@ -1,7 +1,7 @@
 import { Block } from "../../core"
 import { InputDefinition } from "../../models/inputDefinition"
 import { AuthService } from "../../services/api"
-import { UserPublicInfo } from "../../services/api/User"
+import { User, UserPublicInfo } from "../../services/api/User"
 import "./redactable-rows.css"
 
 interface InputDataProps {
@@ -21,7 +21,7 @@ export class RedactableRows extends Block<InputDataProps> {
     })
   }
 
-  componentDidMount(props: InputDataProps): void {
+  componentDidMount(): void {
     this.setDefaultValues()
   }
 
@@ -41,11 +41,8 @@ export class RedactableRows extends Block<InputDataProps> {
 
     AuthService.getUser().then((user) => {
       inputs.forEach((input) => {
-        const modelKey = rel[input.name]
-
-        const modelValue = user[modelKey]
-
-        input.value = modelValue
+        // @ts-expect-error cannot index
+        input.value = user[rel[input.name as keyof User]]
       })
     })
   }

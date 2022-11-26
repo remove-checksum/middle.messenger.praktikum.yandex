@@ -59,8 +59,6 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
       const isAuthorized = Boolean(store.getState().user)
       const hasCurrentPage = Boolean(store.getState().page)
 
-      console.log("inside handler")
-
       if (isAuthorized || !route.isProtected) {
         store.dispatch({ page: route.block })
         return
@@ -76,22 +74,24 @@ export const initRouter = (router: PathRouter, store: Store<AppState>) => {
     })
   })
 
-  store.on(
-    StoreEvents.Updated,
-    (prevState: Partial<AppState>, nextState: Partial<AppState>) => {
-      const shouldInit = !prevState.appIsInited && nextState.appIsInited
+  store.on(StoreEvents.Updated, (prevState, nextState) => {
+    const prev = prevState as Partial<AppState>
+    const next = nextState as Partial<AppState>
 
-      if (shouldInit) {
-        router.start()
-      }
+    const shouldInit = !prev.appIsInited && next.appIsInited
 
-      const pageChanged = prevState.page !== nextState.page
-      if (pageChanged) {
-        const MatchBlock = getBlockByPage(nextState.page!)
+    if (shouldInit) {
+      router.start()
+    }
+
+    const pageChanged = prev.page !== next.page
+    if (pageChanged) {
+      if (next.page) {
+        const MatchBlock = getBlockByPage(next.page)
 
         renderDOM("#app", new MatchBlock({}))
         document.title = `ChatApp / ${MatchBlock.blockName}`
       }
     }
-  )
+  })
 }

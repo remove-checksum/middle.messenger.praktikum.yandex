@@ -1,1 +1,5 @@
-export { validate, InputFieldName } from "./validator/validatorService"
+export {
+  validate,
+  validators,
+  InputFieldName,
+} from "./validator/validatorService"

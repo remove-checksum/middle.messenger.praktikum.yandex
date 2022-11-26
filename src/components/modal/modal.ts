@@ -1,5 +1,4 @@
-import { Block, BlockConstructable } from "../../core"
-import { ControlledInput, FileInput } from "../index"
+import { Block } from "../../core"
 import "./modal.css"
 
 export type ModalVariant =
@@ -8,50 +7,6 @@ export type ModalVariant =
   | "addFile"
   | "deleteChat"
   | "createChat"
-
-const variants: VariantPropsMap = {
-  addUser: {
-    title: "Добавить пользователя",
-    buttonText: "Добавить",
-    content: new ControlledInput({
-      placeholder: "Логин пользователя",
-      name: "login",
-      hasLabel: false,
-      type: "text",
-    }),
-  },
-  deleteUser: {
-    title: "Удалить пользователя",
-    buttonText: "Удалить",
-    content: new ControlledInput({
-      placeholder: "Логин пользователя",
-      name: "login",
-      hasLabel: false,
-      type: "text",
-    }),
-    warning: true,
-  },
-  addFile: {
-    title: "Загрузите файл",
-    buttonText: "Подтвердить",
-    content: new FileInput({}),
-  },
-  deleteChat: {
-    title: "Удалить чат",
-    buttonText: "Удалить",
-    warning: true,
-  },
-  createChat: {
-    title: "Добавить чат",
-    buttonText: "Добавить",
-    content: new ControlledInput({
-      placeholder: "Введите имя чата",
-      name: "display_name",
-      hasLabel: false,
-      type: "text",
-    }),
-  },
-}
 
 export type ModalDispatch = (spec: ModalSpec | null) => void
 

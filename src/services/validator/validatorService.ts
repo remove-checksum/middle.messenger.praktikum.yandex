@@ -22,7 +22,7 @@ export type InputFieldName =
   | UserCredentialsFieldName
   | "message"
 
-const validators: Record<InputFieldName, Validator> = {
+export const validators: Record<InputFieldName, Validator> = {
   // user settings
   first_name: nameValidator,
   second_name: nameValidator,

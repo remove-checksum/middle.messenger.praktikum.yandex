@@ -1,4 +1,4 @@
-import { validators, InputFields } from "../../services"
+import { validators, InputFieldName } from "../../services"
 
 type InputWithError = {
   input: HTMLInputElement
@@ -13,7 +13,7 @@ const inputsWithErrors = (form: HTMLFormElement) =>
       if (!(input instanceof HTMLInputElement)) {
         throw new Error("No viable inputs")
       }
-      const error = validators[input.name as InputFields](input.value)
+      const error = validators[input.name as InputFieldName](input.value)
 
       return {
         label: input.previousElementSibling,
@@ -52,6 +52,6 @@ export const printFormData = (form: HTMLFormElement) => {
   const confirmMessage = Array.from(fd).reduce((acc, [key, value]) => {
     acc[key] = value
     return acc
-  }, {} as UnknownObject) as Record<InputFields, string>
+  }, {} as UnknownObject) as Record<InputFieldName, string>
   console.table(confirmMessage)
 }

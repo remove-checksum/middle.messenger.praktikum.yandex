@@ -1,7 +1,7 @@
 import { API_URL } from "../../config"
 import { HTTPTransport } from "../../core/HTTPTransport"
 import { Headers } from "./common"
-import { ApiErrorDto, ChatUserDto, GetUserDto } from "./dto"
+import { ApiErrorDto, ChatUserDto } from "./dto"
 import { Transformer } from "./transformers"
 
 export interface User {

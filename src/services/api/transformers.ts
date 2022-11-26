@@ -1,11 +1,5 @@
 import { Chat } from "./Chats"
-import {
-  ChatDto,
-  ChatUserDto,
-  GetUserDto,
-  MessageDto,
-  UserPublicInfoDto,
-} from "./dto"
+import { ChatDto, ChatUserDto, MessageDto, UserPublicInfoDto } from "./dto"
 import { Message } from "../../store/actions/Message"
 import { User, UserPublicInfo } from "./User"
 

@@ -4,7 +4,7 @@ import { StoreEvents } from "../core"
 
 export type StoreContext = { store: AppStore }
 
-type StateMapper = (state: AppState) => UnknownObject
+type StateMapper = (state: AppState) => AnyObject
 
 export function withStore(
   mapStateToProps: StateMapper,

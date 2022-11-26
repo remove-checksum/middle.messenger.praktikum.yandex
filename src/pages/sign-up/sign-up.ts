@@ -3,7 +3,7 @@ import signupFormData from "./sign-up.json"
 import "./sign-up.css"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { AuthActions } from "../../store/actions"
-import { StoreContext, withStore } from "../../hoc/withStore"
+import { StoreContext } from "../../hoc/withStore"
 
 interface SignUpPageState {
   signUp: typeof signupFormData
@@ -31,7 +31,6 @@ export default class SignUpPage extends Block<StoreContext & SignUpPageState> {
     const form = e.target as HTMLFormElement
 
     const credentials = formToFieldData(form)
-    console.log(this.props.store)
 
     this.props.store.dispatch(AuthActions.signUp, credentials)
   }

@@ -8,7 +8,6 @@ import { ControlledInput } from "../index"
 import "./active-chat.css"
 import { AppDispatch } from "../../store"
 import { ChatActions } from "../../store/actions"
-import { ChatsService, UserService } from "../../services/api"
 
 interface ActiveChatProps {
   currentChat: Chat
