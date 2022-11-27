@@ -1,55 +1,95 @@
 import { Block } from "../../core"
-import { BlockProps } from "../../core/Block"
+import signupFormData from "./sign-up.json"
+import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
+import { AuthActions } from "../../store/actions"
+import { StoreContext } from "../../hoc/withStore"
 import "./sign-up.css"
-import signupData from "./sign-up.json"
-import { onFormErrorSubmit } from "../../helpers"
+import {
+  LABEL_ERROR_CLASS,
+  FONT_SIZE_ERROR_MESSAGE,
+  FONT_SIZE_LABEL,
+} from "../../components/controlled-input/controlled-input"
 
-interface SignUpPageProps extends BlockProps {
-  signUp: typeof signupData
+interface SignUpPageState {
+  signUp: typeof signupFormData
 }
 
-type SignUpPageRefs = {
-  inputRef: Block
-}
-
-export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
+export default class SignUpPage extends Block<StoreContext & SignUpPageState> {
   static blockName = "SignUpPage"
 
-  constructor(props: SignUpPageProps) {
+  constructor(props: StoreContext) {
     super({
       ...props,
-      signUp: signupData,
-      events: {
-        submit: (e: SubmitEvent) => {
-          e.preventDefault()
-          if (!(e.target instanceof HTMLFormElement)) {
-            return
-          }
-          const valid = onFormErrorSubmit(e.target)
-          if (valid) {
-            const formEntries = Array.from(new FormData(e.target).entries())
+      signUp: signupFormData,
+    })
 
-            const pretty = formEntries.reduce((acc, [name, value]) => {
-              Reflect.set(acc, name, value)
-              return acc
-            }, {})
-            console.table(pretty)
-            window.location.hash = "#chat"
-          }
-        },
+    this.setProps({
+      events: {
+        submit: this.onFormSubmit,
+        input: this.onFormInput,
       },
     })
+  }
+
+  onFormSubmit = (e: SubmitEvent) => {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+
+    const credentials = formToFieldData(form)
+
+    this.props.store.dispatch(AuthActions.signUp, credentials)
+  }
+
+  onFormInput = () => {
+    this.checkRepeatPassword()
+    this.activateFormSubmit()
+  }
+
+  checkRepeatPassword = () => {
+    const [password, repeatPassword] = this.getContent().querySelectorAll(
+      "input[type=password]"
+    ) as NodeListOf<HTMLInputElement>
+    const passwordsMatch = password.value === repeatPassword.value
+    const label = repeatPassword.previousElementSibling as HTMLLabelElement
+
+    if (!passwordsMatch) {
+      label.innerText = "Пароли не совпадают"
+      label.style.fontSize = FONT_SIZE_ERROR_MESSAGE
+      label.classList.add(LABEL_ERROR_CLASS)
+    } else {
+      label.style.fontSize = FONT_SIZE_LABEL
+      label.classList.remove(LABEL_ERROR_CLASS)
+    }
+  }
+
+  activateFormSubmit = () => {
+    const inputs = Array.from(this.getContent().querySelectorAll("input"))
+    const submitButton = this.getContent().querySelector("button[type=submit]")
+
+    const isEveryInputValid = inputs.every((input) => {
+      const inputFilled = Boolean(input.value)
+      const inputErrored = input.classList.contains(
+        "controlledInput__input_error"
+      )
+      return inputFilled && !inputErrored
+    })
+
+    if (isEveryInputValid) {
+      submitButton?.removeAttribute("disabled")
+    } else {
+      submitButton?.setAttribute("disabled", "true")
+    }
   }
 
   render() {
     return /* html */ `
       {{#PageLayout}}
-        <section class="signup-card">
-            <h1 class="signup-card__heading">Регистрация</h1>
-            <form action="#" class="signup-form">
-              <ul class="signup-form__wrapper">
+        <section class="signupCard">
+            <h1 class="signupCard__heading">Регистрация</h1>
+            <form action="#" class="signupForm">
+              <ul class="signupForm__wrapper">
                 {{#each signUp.rows as |row|}}
-                <li class="signup-form__row">
+                <li class="signupForm__row">
                   {{#each row as |field|}}
                     {{{ ControlledInput
                       type=field.type
@@ -62,8 +102,16 @@ export class SignUpPage extends Block<SignUpPageProps, SignUpPageRefs> {
                   </li>
                 {{/each}}
               </ul>
-              {{{ Button text="Зарегистрироваться" type="submit" extraClass="signup-form__button" }}}
-              <a href="/#sign-in" class="signup-form__link">Войти</a>
+              {{{ Button
+                text="Зарегистрироваться"
+                type="submit"
+                extraClass="signupForm__button"
+              }}}
+              {{{ Link
+                to="/sign-in"
+                extraClass="signupForm__link"
+                text="Войти"
+              }}}
             </form>
         </section>
       {{/PageLayout}}

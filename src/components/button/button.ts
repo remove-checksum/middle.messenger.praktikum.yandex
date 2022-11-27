@@ -1,47 +1,55 @@
 import { Block } from "../../core"
-import { BlockProps } from "../../core/Block"
 import "./button.css"
 
 type ButtonKind = "warning" | "secondary"
 
-interface ButtonProps extends BlockProps {
+interface ButtonProps {
   text: string
   kind?: ButtonKind
   small?: boolean
   extraClass?: string
-  events: {
-    click: EventListener
-  }
-}
-
-interface IncomingButtonProps {
-  text: string
-  kind?: ButtonKind
-  small?: boolean
-  extraClass?: string
+  disabled: boolean
   onClick: EventListener
+  type?: "submit" | "button"
 }
 
-export class Button extends Block<ButtonProps> {
+interface ButtonState {
+  classNames: string
+  text: string
+  disabled: boolean
+  type?: "submit" | "button"
+}
+
+export class Button extends Block<ButtonState> {
   static blockName = "Button"
 
-  constructor(props: IncomingButtonProps) {
-    super({ ...props, events: { click: props.onClick } })
+  constructor(props: ButtonProps) {
+    const cn = `button
+      ${props.small ? "button_small" : ""}
+      ${props.kind ? `button_${props.kind}` : ""}
+      ${props.extraClass ? props.extraClass : ""}
+      `
+      .trim()
+      .split("\n")
+      .join(" ")
+
+    super({
+      type: props.type,
+      classNames: cn,
+      disabled: props.disabled,
+      text: props.text,
+      events: { click: props.onClick },
+    })
   }
 
   render(): string {
     return /* html */ `
-      <button class="button
-        {{#if kind}}
-          button_{{kind}}
-        {{/if}}
-        {{#if small}}
-          button_small
-        {{/if}}
-        {{#if extraClass}}
-          {{extraClass}}
-        {{/if}}"
-        type="{{type}}">
+      <button
+        class="{{ classNames }}"
+        type="{{ type }}"
+        {{#if disabled}}disabled{{/if}}
+        {{#if type}}type="{{ type }}"{{/if}}
+        >
         {{text}}
       </button>
     `

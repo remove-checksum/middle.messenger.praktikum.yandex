@@ -14,11 +14,30 @@
   gap: var(--s-6);
   flex-direction: column;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
 }
 
-.controlsBox__button {
-  min-width: 10em;
-  padding: var(--s-1) var(--s-9);
-  align-self: end;
-  flex-grow: 1;
+.controlsBox__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controlsBox__addChatButton {
+  font-size: 32px;
+  background-color: unset;
+  border: none;
+  cursor: pointer;
+}
+
+.controlsBox__addChatButton > i {
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+.controlsBox__addChatButton:hover {
+  color: var(--colour-dark-grey);
 }

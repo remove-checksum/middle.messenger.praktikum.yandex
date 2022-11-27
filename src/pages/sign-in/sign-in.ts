@@ -1,34 +1,55 @@
 import { Block } from "../../core"
-import { onFormErrorSubmit } from "../../helpers/formHelpers/formHelpers"
-import "./sign-in.css"
-import { printFormData } from "../../helpers"
+import { targetHelper } from "../../helpers"
+import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
+import { SignInCredentials } from "../../services/api/Auth"
+import { AuthActions } from "../../store/actions"
+import { AppStore } from "../../store"
 
-type SignInPageRefs = {
-  loginRef: Block
-  passwordRef: Block
+import "./sign-in.css"
+
+interface SignInPageProps {
+  store: AppStore
 }
 
-export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
+export default class SignInPage extends Block {
   static blockName = "SignIn"
 
-  constructor(props: EmptyObject) {
-    super({
-      ...props,
-      events: {
-        submit: (e: SubmitEvent) => {
-          e.preventDefault()
-          const { target } = e
-          if (target && target instanceof HTMLFormElement) {
-            const valid = onFormErrorSubmit(target)
-            if (valid) {
-              printFormData(target)
+  constructor(props: SignInPageProps) {
+    super(props)
 
-              window.location.hash = "#chat"
-            }
-          }
-        },
+    this.setProps({
+      events: {
+        submit: targetHelper(HTMLFormElement, this.onFormSubmit),
+        input: this.activateFormSubmit,
       },
     })
+  }
+
+  activateFormSubmit = () => {
+    const inputs = Array.from(this.getContent().querySelectorAll("input"))
+    const submitButton = this.getContent().querySelector("button[type=submit]")
+
+    const isEveryInputValid = inputs.every((input) => {
+      const inputFilled = Boolean(input.value)
+      const inputErrored = input.classList.contains(
+        "controlledInput__input_error"
+      )
+      return inputFilled && !inputErrored
+    })
+
+    if (isEveryInputValid) {
+      submitButton?.removeAttribute("disabled")
+    } else {
+      submitButton?.setAttribute("disabled", "true")
+    }
+  }
+
+  onFormSubmit = (e: SubmitEvent) => {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+
+    const credentials = formToFieldData(form) as SignInCredentials
+    this.props.store.dispatch(AuthActions.signIn, credentials)
   }
 
   render() {
@@ -36,14 +57,13 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
       {{#PageLayout}}
         <section class="signinCard">
           <h1 class="signinCard__heading">Вход</h1>
-          <form action="#" class="signinForm">
+          <form action="POST" class="signinForm">
             {{{ ControlledInput
               hasLabel=true
               type="text"
               name="login"
               label="Логин"
               placeholder="Введите имя пользователя"
-              ref="loginRef"
             }}}
             {{{ ControlledInput
               hasLabel=true
@@ -51,10 +71,18 @@ export class SignInPage extends Block<EmptyObject, SignInPageRefs> {
               name="password"
               label="Пароль"
               placeholder="Введите пароль"
-              ref="passwordRef"
             }}}
-            {{{ Button text="Войти" type="submit" extraClass="signinForm__button" }}}
-            <a href="/#sign-up" class="signinForm__link">Зарегистрироваться</a>
+            {{{ Button
+              text="Войти"
+              type="submit"
+              extraClass="signinForm__button"
+              disabled=formInvalid
+            }}}
+            {{{ Link
+              to="/sign-up"
+              extraClass="signinForm__link"
+              text="Зарегистрироваться"
+            }}}
           </form>
         </section>
       {{/PageLayout}}

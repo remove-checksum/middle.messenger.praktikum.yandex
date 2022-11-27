@@ -1,4 +1,4 @@
-import { validators, InputFields } from "../../services"
+import { validators, InputFieldName } from "../../services"
 
 type InputWithError = {
   input: HTMLInputElement
@@ -13,7 +13,7 @@ const inputsWithErrors = (form: HTMLFormElement) =>
       if (!(input instanceof HTMLInputElement)) {
         throw new Error("No viable inputs")
       }
-      const error = validators[input.name as InputFields](input.value)
+      const error = validators[input.name as InputFieldName](input.value)
 
       return {
         label: input.previousElementSibling,
@@ -22,7 +22,7 @@ const inputsWithErrors = (form: HTMLFormElement) =>
       }
     }) as unknown as InputWithError[]
 
-const onFormErrorSubmit = (form: HTMLFormElement) => {
+export const toggleErrorState = (form: HTMLFormElement) => {
   const elements = inputsWithErrors(form) as InputWithError[]
   elements.forEach(({ label, input, error }) => {
     if (error) {
@@ -38,16 +38,20 @@ const onFormErrorSubmit = (form: HTMLFormElement) => {
     }
   })
 
-  return elements.every((e) => e.error === "")
+  return elements.every((e) => !e.error)
 }
 
-const printFormData = (form: HTMLFormElement) => {
+export const formToFieldData = (form: HTMLFormElement) =>
+  Array.from(new FormData(form)).reduce((dto, [key, value]) => {
+    dto[key] = value
+    return dto
+  }, {} as Indexed)
+
+export const printFormData = (form: HTMLFormElement) => {
   const fd = new FormData(form).entries()
   const confirmMessage = Array.from(fd).reduce((acc, [key, value]) => {
     acc[key] = value
     return acc
-  }, {} as EmptyObject) as Record<InputFields, string>
+  }, {} as UnknownObject) as Record<InputFieldName, string>
   console.table(confirmMessage)
 }
-
-export { onFormErrorSubmit, printFormData }

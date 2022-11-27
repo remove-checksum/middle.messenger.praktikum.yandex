@@ -3,11 +3,19 @@
 .chatlistItem {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   height: 115px;
   padding: var(--s-3);
   gap: var(--s-3);
   border-top: 2px solid var(--colour-black);
+}
+
+.chatlistItem_selected {
+  background-color: var(--colour-light-pink);
+}
+
+.chatlistItem:nth-child(2) {
+  border: none;
 }
 
 .chatlistItem:hover {
@@ -28,6 +36,7 @@
   min-height: 90px;
   background-color: var(--colour-mid-grey);
   border-radius: 50%;
+  border: 2px solid var(--colour-black);
 }
 
 .chatlistItem__chat-name {

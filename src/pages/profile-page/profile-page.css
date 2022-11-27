@@ -37,6 +37,7 @@
 .closeButton__icon {
   font-size: 45px;
   color: var(--text-colour-secondary);
+  pointer-events: none;
 }
 
 .closeButton__icon:hover {

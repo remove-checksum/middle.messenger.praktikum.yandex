@@ -1,33 +1,43 @@
 import { Block } from "../../core"
+import { API_RESOURCES_URL } from "../../config"
+import avatarFallback from "../../assets/avatar_not_found.png"
+import { getGlobalStore } from "../../helpers/getGlobalRouter"
 import "./avatar.css"
-
-// @ts-expect-error 'resolving path to image
-const catPictureUrl = new URL("../../assets/catpix.jpeg", import.meta.url)
 
 interface AvatarProps {
   avatarUrl: string
-  inputLabel: string
-  inputName: string
+  onImageClick: VoidFunction
 }
 
 export class Avatar extends Block<AvatarProps> {
   static blockName = "Avatar"
 
   constructor(props: AvatarProps) {
-    const urlString = catPictureUrl as unknown as string
-
-    super({ ...props, avatarUrl: urlString })
+    const avatarUrl = `${API_RESOURCES_URL}${getGlobalStore().user?.avatar}`
+    super({
+      avatarUrl: avatarUrl || avatarFallback,
+      onImageClick: props.onImageClick,
+      events: {
+        click: (e) => {
+          const isAvatarOverlay =
+            e.target instanceof HTMLDivElement &&
+            e.target.classList.contains("avatar__overlay")
+          if (isAvatarOverlay) {
+            this.props.onImageClick()
+          }
+        },
+      },
+    })
   }
 
   render(): string {
     return /* html */ `
       <picture class="avatar">
-        <label class="avatar__overlay">
-          <span class="avatar__label-text">
-            {{inputLabel}}
-          </span>
-          <input class="avatar__input" type="file" name="{{inputName}}" />
-        </label>
+          <div class="avatar__overlay">
+            <span class="avatar__labelText">
+              Выберите аватар
+            </span>
+          </div>
         <img src="{{avatarUrl}}" alt="Аватар пользователя" class="avatar__image" />
       </picture>
     `

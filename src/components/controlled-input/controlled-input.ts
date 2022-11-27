@@ -1,145 +1,126 @@
 import { Block } from "../../core"
 import "./controlled-input.css"
-import { validators } from "../../services"
-import { UserCredentialsFields } from "../../models/forms"
+import { InputFieldName, validate } from "../../services"
+import { UserCredentialsFieldName } from "../../models/forms"
+
+export const INPUT_ERROR_CLASS = "controlledInput__input_error"
+export const LABEL_ERROR_CLASS = "controlledInput__label_error"
+export const FONT_SIZE_LABEL = "19px"
+export const FONT_SIZE_ERROR_MESSAGE = "12px"
+
+type InputType = "text" | "tel" | "password" | "email"
 
 interface ControlledInputProps {
-  label: string
   hasLabel: boolean
+  label?: string
   placeholder: string
-  type: string
-  name: UserCredentialsFields
+  type: InputType
+  name: UserCredentialsFieldName | string
   value?: string
   error?: true
-  small?: true
   extraClass?: string
-  disabled: boolean
-  onFocus: (e: FocusEvent) => void
-  onBlur: (e: FocusEvent) => void
-  onInput: (e: InputEvent) => void
+  extraInputclass?: string
+  extraLabelClass?: string
+  dontValidate?: boolean
+  disabled?: boolean
+  noAutocomplete?: boolean
 }
 
-interface ControlledInputExternalProps {
-  label: string
-  hasLabel: boolean
-  placeholder: string
-  type: string
-  name: UserCredentialsFields
-  value?: string
-  error?: true
-  small?: true
-  extraClass?: string
-  disabled: boolean
-  onFocus: (e: FocusEvent) => void
-  onBlur: (e: FocusEvent) => void
-  onInput: (e: InputEvent) => void
-}
-
-interface ControlledInputRefs extends AnyObject {
-  inputRef: Block<EmptyObject>
-  labelRef: Block<EmptyObject>
-}
-
-export class ControlledInput extends Block<
-  ControlledInputProps,
-  ControlledInputRefs
-> {
+export class ControlledInput extends Block<ControlledInputProps> {
   static blockName = "ControlledInput"
 
-  constructor(props: ControlledInputExternalProps) {
+  constructor(props: ControlledInputProps) {
+    const validateCallback = () => {
+      const { input } = this.getInputElements()
+      const { dontValidate, name } = props
+
+      if (dontValidate) {
+        return
+      }
+
+      const error = validate(name as InputFieldName, input.value)
+
+      if (error) {
+        this.setError(error)
+      } else {
+        this.clearError()
+      }
+    }
+
     super({
       ...props,
-      onBlur: (e: FocusEvent) => {
-        if (!(e.target instanceof HTMLInputElement)) {
-          console.error("Focus target not InputElement")
-          return
-        }
-
-        const error = this.validate(e.target.value, props.name)
-
-        if (error) {
-          this.setErrorState(error)
-        } else {
-          this.removeErrorState()
-        }
-      },
-      onFocus: (e: FocusEvent) => {
-        if (!(e.target instanceof HTMLInputElement)) {
-          console.error("Focus target not InputElement")
-          return
-        }
-
-        const error = this.validate(e.target.value, props.name)
-
-        if (error) {
-          this.setErrorState(error)
-        } else {
-          this.removeErrorState()
-        }
-      },
-      onInput: (e: InputEvent) => {
-        if (!(e.target instanceof HTMLInputElement)) {
-          console.error("Focus target not InputElement")
-          return
-        }
-
-        const error = this.validate(e.target.value, props.name)
-        if (error) {
-          this.setErrorState(error)
-        } else {
-          this.removeErrorState()
-        }
+      events: {
+        blur: validateCallback,
+        focus: validateCallback,
+        input: validateCallback,
       },
     })
   }
 
-  setErrorState(error: string) {
-    const label = this.refs.labelRef.element
+  getInputElements = () => {
+    const label = this.element?.querySelector("label") as HTMLLabelElement
+    const input = this.element?.querySelector("input") as HTMLInputElement
+
+    return { label, input }
+  }
+
+  setError = (error: string) => {
+    const { label, input } = this.getInputElements()
 
     if (label instanceof HTMLLabelElement) {
       label.style.display = "initial"
       label.innerText = error
-      label.classList.add("controlledInput__label_error")
+      label.style.fontSize = FONT_SIZE_ERROR_MESSAGE
+      label.classList.add(LABEL_ERROR_CLASS)
     }
 
-    this.refs.inputRef.element?.classList.add("controlledInput_error")
+    input.classList.add(INPUT_ERROR_CLASS)
   }
 
-  removeErrorState() {
-    const label = this.refs.labelRef.element
+  clearError = () => {
+    const { label, input } = this.getInputElements()
 
     if (label instanceof HTMLLabelElement) {
-      label.style.display = "none"
-      label.innerText = ""
-      label.classList.remove("controlledInput__label_error")
+      label.style.fontSize = FONT_SIZE_LABEL
+      label.innerText = this.props.label || ""
+      label.classList.remove(LABEL_ERROR_CLASS)
     }
 
-    this.refs.inputRef.element?.classList.remove("controlledInput_error")
+    input.classList.remove(INPUT_ERROR_CLASS)
   }
 
-  validate(value: string, name: UserCredentialsFields) {
-    return validators[name](value)
+  getInputValue = () => {
+    const { input } = this.getInputElements()
+    return input.value
+  }
+
+  setInputValue = (newValue: string) => {
+    this.getInputElements().input.value = newValue
   }
 
   render(): string {
     return /* html */ `
-        <div class="controlledInput__wrapper">
-          {{{ InputLabel for=name error=error label="" ref="labelRef" }}}
-          {{{ BaseInput
-            name=name
-            type=type
-            id=name
-            placeholder=placeholder
-            error=error
-            value=value
-            extraClass=extraClass
-            ref="inputRef"
-            onFocus=onFocus
-            onBlur=onBlur
-            onInput=onInput
-            disabled=disabled
-          }}}
-        </div>
+        <div class="controlledInput {{extraClass}}">
+          {{#if hasLabel}}
+           <label
+            for="{{name}}"
+            class="controlledInput__label {{extraLabelClass}}">
+            {{label}}
+          </label>
+          {{/if}}
+
+          <input
+            type="{{type}}"
+            name="{{name}}"
+            id="{{name}}"
+            placeholder="{{placeholder}}"
+            value="{{value}}"
+            class="controlledInput__input {{extraInputClass}}"
+            {{#if disabled}}disabled{{/if}}
+            autocomplete="{{#if noAutocomplete}}off{{else}}on{{/if}}"
+            >
+            <span>{{error}}</span>
+          </div>
       `
   }
 }

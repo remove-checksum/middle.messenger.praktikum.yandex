@@ -1,6 +1,6 @@
 @import "../../shared/variables.css";
 
-.signup-card {
+.signupCard {
   width: 697px;
   height: 740px;
   background-color: var(--colour-light-pink);
@@ -11,11 +11,11 @@
   justify-content: space-between;
 }
 
-.signup-card__heading {
+.signupCard__heading {
   margin-bottom: var(--s-9);
 }
 
-.signup-form {
+.signupForm {
   display: flex;
   flex-direction: column;
   gap: var(--s-5);
@@ -23,29 +23,29 @@
   flex-grow: 1;
 }
 
-.signup-form__wrapper {
+.signupForm__wrapper {
   display: flex;
   flex-direction: column;
   gap: var(--s-7);
 }
 
-.signup-form__row {
+.signupForm__row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: var(--s-5);
 }
 
-.signup-form__row > div {
+.signupForm__row > div {
   flex-basis: 300px;
 }
 
-.signup-form__button {
+.signupForm__button {
   margin-top: auto;
   align-self: center;
   width: 16em;
 }
 
-.signup-form__link {
-  text-align: center;
+.signupForm__link {
+  align-self: center;
 }

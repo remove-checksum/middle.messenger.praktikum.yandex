@@ -1,0 +1,70 @@
+@import '../../shared/variables.css';
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  justify-content: space-between;
+  padding: var(--s-2);
+  padding-inline: var(--s-3);
+  border-bottom: 2px solid var(--colour-black);
+  background-color: var(--colour-white);
+  position: sticky;
+  top: 0;
+}
+
+.chatHeader__image {
+  height: 70px;
+  width: 70px;
+  border-radius: 9999px;
+  border: 2px solid var(--colour-black);
+}
+
+.chatHeader__chatName {
+  font-weight: normal;
+}
+
+.chatHeader__popupRoot {
+  position: relative;
+}
+
+.chatHeader__popup {
+  top: 40px;
+  right: 20px;
+}
+
+.activeChat {
+  overflow: scroll;
+  height: 100%;
+}
+
+.activeChat__messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: var(--s-2);
+  padding: var(--s-3);
+}
+
+.activeChat__no-messages {
+  text-align: center;
+  margin-top: 40%;
+  color: var(--text-colour-secondary);
+}
+
+.popupTrigger {
+  border: none;
+  background: none;
+}
+
+.popupTrigger__icon {
+  font-size: 32px;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+.popupTrigger__icon_open {
+  transform: rotate(90deg);
+}
+
+

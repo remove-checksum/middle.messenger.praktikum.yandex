@@ -1,53 +1,51 @@
 import errorMessages from "./errorMessages.json"
-import {
-  emailMatcher,
-  loginMatcher,
-  nameMatcher,
-  passwordMatcher,
-  phoneMatcher,
-} from "./matchers"
 import { from, upto, notEmpty } from "./helpers"
+import { MATCHERS } from "./matchers"
 
 export interface Validator {
-  (value: string): string | null
+  (value: string): string
 }
 
 const passwordValidator: Validator = (value) => {
-  const valid = from(8)(value) && upto(40)(value) && passwordMatcher.test(value)
+  const isValid =
+    from(8)(value) && upto(40)(value) && MATCHERS.PASSWORD.test(value)
 
-  return valid ? "" : errorMessages.password.characters
+  return isValid ? "" : errorMessages.password.characters
 }
 
 const nameValidator: Validator = (value) => {
-  const valid = notEmpty(value) && upto(20)(value) && nameMatcher.test(value)
+  const isValid =
+    notEmpty(value) && upto(20)(value) && MATCHERS.NAME.test(value)
 
-  return valid ? "" : errorMessages.name.characters
+  return isValid ? "" : errorMessages.name.characters
 }
 
 const loginValidator: Validator = (value) => {
-  const valid = from(3)(value) && upto(20)(value) && loginMatcher.test(value)
+  const isValid =
+    from(3)(value) && upto(20)(value) && MATCHERS.LOGIN.test(value)
 
-  return valid ? "" : errorMessages.login.characters
+  return isValid ? "" : errorMessages.login.characters
 }
 
 const emailValidator: Validator = (value) => {
-  const valid = upto(40)(value) && emailMatcher.test(value)
-  return valid ? "" : errorMessages.email.characters
+  const isValid = upto(40)(value) && MATCHERS.EMAIL.test(value)
+  return isValid ? "" : errorMessages.email.characters
 }
 
 const phoneValidator: Validator = (value) => {
-  const valid = from(10)(value) && upto(15)(value) && phoneMatcher.test(value)
-  return valid ? "" : errorMessages.phone.characters
+  const isValid =
+    from(10)(value) && upto(15)(value) && MATCHERS.PHONE.test(value)
+  return isValid ? "" : errorMessages.phone.characters
 }
 
 const messageValidator: Validator = (value) => {
-  const valid = notEmpty(value)
-  return valid ? "" : errorMessages.message.empty
+  const isValid = notEmpty(value)
+  return isValid ? "" : errorMessages.message.empty
 }
 
 const displayNameValidator: Validator = (value) => {
-  const valid = upto(20)(value) && notEmpty(value)
-  return valid ? "" : errorMessages.display_name.empty
+  const isValid = upto(20)(value) && notEmpty(value)
+  return isValid ? "" : errorMessages.display_name.empty
 }
 
 export {

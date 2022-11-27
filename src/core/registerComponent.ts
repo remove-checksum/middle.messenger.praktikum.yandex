@@ -1,14 +1,15 @@
 import Handlebars, { HelperOptions } from "handlebars"
-import { Block, BlockProps } from "./Block"
+import { BlockConstructable } from "./Block"
 
-export interface BlockConstructable<Props extends BlockProps = AnyObject> {
-  new (props: Props): Block<Props>
-  blockName: string
-}
-
-export function registerComponent<Props extends EmptyObject = AnyObject>(
+export function registerComponent<Props extends UnknownObject = AnyObject>(
   Component: BlockConstructable<Props>
 ) {
+  // console.log(
+  //   Component.blockName === "" ? Component.toString() : Component.blockName
+  // )
+
+  //   console.log({ Component: Component.blockName })
+
   Handlebars.registerHelper(
     Component.blockName,
     function componentFactory(

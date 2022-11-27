@@ -1,0 +1,25 @@
+.loader {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  height: 100vh;
+}
+
+@keyframes coggers {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader i {
+  font-size: 320px;
+  animation-timing-function: ease-in-out;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-name: coggers;
+}

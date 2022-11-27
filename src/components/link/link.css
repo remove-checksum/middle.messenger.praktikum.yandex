@@ -1,0 +1,28 @@
+@import "../../shared/variables.css";
+
+.link {
+  color: var(--colour-blue);
+  border: none;
+  background-color: unset;
+  font-size: (var(--text-regular));
+}
+
+.link:visited {
+  color: var(--colour-link-visited);
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  color: var(--colour-link-hover);
+  cursor: pointer;
+  outline: 0 transparent;
+}
+
+.link:focus {
+  color: var(--colour-focused);
+  outline: 0 transparent;
+  background-color: var(--colour-focus);
+  box-shadow: 0 3px 0 0 var(--colour-focused);
+  text-decoration: none;
+}

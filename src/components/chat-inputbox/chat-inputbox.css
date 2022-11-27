@@ -1,6 +1,6 @@
 @import '../../shared/variables.css';
 
-.chatInputboxForm {
+.chatInputbox {
   background-color: var(--colour-light-pink);
   padding: var(--s-2) var(--s-4);
   width: 100%;
@@ -10,18 +10,28 @@
   gap: var(--s-2);
 }
 
-.chatInputboxForm__input {
+.chatInputbox__input {
+  flex-grow: 1;
   width: 100%;
 }
 
-.chatInputboxForm__button {
+.chatInputbox__button {
   border: 0;
   background-color: unset;
   cursor: pointer;
 }
 
-.chatInputboxForm__icon {
+.chatInputbox__icon {
   position: relative;
   top: 2px;
   font-size: var(--s-6);
+}
+
+.chatInputbox__popupRoot {
+  position: relative;
+}
+
+.chatInputbox__popup {
+  top: -130px;
+  left: 20px;
 }

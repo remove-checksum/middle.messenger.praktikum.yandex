@@ -1,29 +1,29 @@
-import { renderDOM, registerComponent } from "./core"
-import * as Components from "./components"
-import { PageLayout } from "./layouts"
-import * as Pages from "./pages"
-import { routes, Routes } from "./routes"
+import { registerComponents } from "./helpers" // !!! This import must be first
+import { PathRouter } from "./core/Router"
+import { Store } from "./core/Store"
+import { initRouter } from "./router/router"
+import { AppState, initialAppState } from "./store/store"
+import { renderDOM } from "./core"
+import { appInit } from "./store/actions/Init"
+import { Loader } from "./components"
 import "./shared/main.css"
 
-const allComponents = [
-  ...Object.values(Components),
-  ...Object.values(Pages),
-  PageLayout,
-]
+registerComponents()
 
-// @ts-expect-error 'every block generic should be instantiated with its props'
-allComponents.forEach((component) => registerComponent(component))
+const bootstrapApplication = () => {
+  const router = new PathRouter()
+  const store = new Store<AppState>(initialAppState)
 
-document.addEventListener("DOMContentLoaded", () => {
-  // const route = window.location.hash as Routes
-  // const CurrentPage = routes[route] || Pages.SignInPage
-  // console.log(route, CurrentPage)
-  renderDOM("#app", new Pages.SignInPage({}))
+  window.__internals = {
+    router,
+    store,
+  }
 
-  window.addEventListener("hashchange", () => {
-    const route = window.location.hash as Routes
-    const CurrentPage = routes[route] || Pages.SignInPage
-    // @ts-expect-error 'every block generic should be instantiated with its props'
-    renderDOM("#app", new CurrentPage({}))
-  })
-})
+  renderDOM("#app", new Loader({}))
+
+  initRouter(router, store)
+
+  store.dispatch(appInit)
+}
+
+document.addEventListener("DOMContentLoaded", bootstrapApplication)

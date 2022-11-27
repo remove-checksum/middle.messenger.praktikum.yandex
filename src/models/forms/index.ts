@@ -1,11 +1,11 @@
-type PasswordChangeFields =
+type PasswordChangeFieldName =
   | "old_password"
   | "new_password"
   | "repeat_new_password"
 
-type SignInFields = "login" | "password"
+type SignInFieldName = "login" | "password"
 
-type SignUpFields =
+type SignUpFieldName =
   | "first_name"
   | "second_name"
   | "login"
@@ -14,7 +14,7 @@ type SignUpFields =
   | "password"
   | "password_repeat"
 
-type UserCredentialsFields =
+type UserCredentialsFieldName =
   | "email"
   | "login"
   | "first_name"
@@ -23,8 +23,8 @@ type UserCredentialsFields =
   | "phone"
 
 export {
-  PasswordChangeFields,
-  SignInFields,
-  SignUpFields,
-  UserCredentialsFields,
+  PasswordChangeFieldName,
+  SignInFieldName,
+  SignUpFieldName,
+  UserCredentialsFieldName,
 }
