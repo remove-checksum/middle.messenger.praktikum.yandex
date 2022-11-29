@@ -98,11 +98,11 @@ export abstract class Block<
   }
 
   // This method meant to be overriden
-  // eslint-disable-next-line
+  /* eslint-disable-next-line */ // @ts-expect-error props typing
   componentDidMount(props: P) {}
 
   // This method meant to be overriden
-  // eslint-disable-next-line
+  /* eslint-disable-next-line */ // @ts-expect-error props typing
   componentWillUnmount(props: P) {}
 
   private _componentDidUpdate(oldProps: P, newProps: P) {
@@ -114,7 +114,7 @@ export abstract class Block<
   }
 
   // This method meant to be overriden
-  // eslint-disable-next-line
+  /* eslint-disable-next-line */ // @ts-expect-error props typing
   componentDidUpdate(oldProps: P, newProps: P) {
     return true
   }

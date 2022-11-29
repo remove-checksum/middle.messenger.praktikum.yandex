@@ -3,7 +3,7 @@ interface Debounce {
 }
 
 export const debounce: Debounce = (fn, time) => {
-  let timer: number
+  let timer: ReturnType<typeof setTimeout>
 
   return function debouncedFunction(...args: unknown[]) {
     if (timer) {
