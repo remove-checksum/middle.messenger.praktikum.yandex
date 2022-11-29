@@ -9,9 +9,10 @@
     "start:dev": "webpack serve",
     "build": "webpack --config webpack.config.mjs",
     "start": "npm run build && node ./server",
-    "lint:styles": "npx stylelint 'src/**/*.css'",
     "lint": "eslint src",
-    "check-types": "tsc --project ./tsconfig.json --noEmit"
+    "lint:styles": "npx stylelint 'src/**/*.css'",
+    "check-types": "tsc --project ./tsconfig.json --noEmit",
+    "precommit": "npm run check-types && npm run lint && npm run lint:styles"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.5.0",
     "html-webpack-plugin": "5.5.0",
+    "husky": "^8.0.2",
     "mini-css-extract-plugin": "2.7.0",
     "mocha": "10.1.0",
     "postcss": "8.4.16",
