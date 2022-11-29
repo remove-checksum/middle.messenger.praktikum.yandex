@@ -1,7 +1,7 @@
 import { Block } from "../../core"
 import { API_RESOURCES_URL } from "../../config"
 import avatarFallback from "../../assets/avatar_not_found.png"
-import { getGlobalStore } from "../../helpers/getGlobalRouter"
+import { getGlobalStore } from "../../helpers/getGlobals"
 import "./avatar.css"
 
 interface AvatarProps {
