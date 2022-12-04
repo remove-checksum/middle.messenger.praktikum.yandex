@@ -9,6 +9,3 @@ services:
       - type: redirect
         source: /*
         destination: /src/index.html
-    ipAllowList:
-      - source: 0.0.0.0/0
-        description: everywhere
