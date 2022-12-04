@@ -12,8 +12,7 @@
     "test": "jest",
     "lint": "eslint src",
     "lint:styles": "npx stylelint 'src/**/*.css'",
-    "check-types": "tsc --project ./tsconfig.json --noEmit",
-    "precommit": "npm run check-types && npm run lint && npm run lint:styles && npm test"
+    "check-types": "tsc --project ./tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",
