@@ -5,10 +5,10 @@ services:
     repo: https://github.com/remove-checksum/middle.messenger.praktikum.yandex
     branch: sprint_4
     region: frankfurt
-  routes:
-    - type: redirect
-      source: /*
-      destination: /src/index.html
-  ipAllowList:
-    - source: 0.0.0.0/0
-      description: everywhere
+    routes:
+      - type: redirect
+        source: /*
+        destination: /src/index.html
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
