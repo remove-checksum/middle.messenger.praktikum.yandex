@@ -1,0 +1,3 @@
+{
+  "*.ts": ["tsc", "stylelint", "prettier", "eslint", "jest"]
+}
