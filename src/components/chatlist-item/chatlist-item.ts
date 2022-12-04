@@ -3,6 +3,7 @@ import { formatUTC } from "../../helpers/formatUTC"
 import { Chat } from "../../services/api/Chats"
 import avatarFallback from "../../assets/avatar_not_found.png"
 import "./chatlist-item.css"
+import { API_RESOURCES_URL } from "../../config"
 
 interface ChatlistItemProps {
   chat: Chat
@@ -32,14 +33,18 @@ export default class ChatlistItem extends Block<ChatlistItemState> {
       ? props.chat.id === props.selectedChatId
       : false
 
+    const avatarSrc = props.chat.avatar
+      ? `${API_RESOURCES_URL}${props.chat.avatar}`
+      : avatarFallback
+
     super({
+      avatarSrc,
       id: props.chat.id,
       selected: isSelected,
       chatName: props.chat.title,
       unreadCount: props.chat.unreadCount,
       lastTime: displayLastTime,
       lastMessage: props.chat?.lastMessage?.content || "В чате нет сообщений",
-      avatarSrc: props.chat.avatar || avatarFallback,
       events: {
         click: () => {
           props.onChatSelect(this.props.id)
