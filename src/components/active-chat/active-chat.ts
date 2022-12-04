@@ -8,6 +8,7 @@ import { ControlledInput } from "../controlled-input"
 import "./active-chat.css"
 import { AppDispatch } from "../../store"
 import { ChatActions } from "../../store/actions"
+import { API_RESOURCES_URL } from "../../config"
 
 interface ActiveChatProps {
   currentChat: Chat
@@ -178,7 +179,9 @@ export default class ActiveChat extends Block<ActiveChatState> {
   }
 
   render(): string {
-    const avatarSrc = this.props.currentChat.avatar || avatarFallback
+    const avatarSrc = this.props.currentChat.avatar
+      ? `${API_RESOURCES_URL}${this.props.currentChat.avatar}`
+      : avatarFallback
 
     return /* html */ `
       <div class="activeChat">
