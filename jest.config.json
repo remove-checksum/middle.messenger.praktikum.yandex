@@ -1,0 +1,11 @@
+{
+  "preset": "ts-jest",
+  "testRegex": ".*\\.test\\.ts$",
+  "testEnvironment": "jsdom",
+  "moduleNameMapper": {
+    "\\.(css|png)$": "identity-obj-proxy"
+  },
+  "setupFilesAfterEnv": [
+    "<rootDir>/src/tests/setup.ts"
+  ]
+}

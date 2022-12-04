@@ -9,6 +9,7 @@
     "start:dev": "webpack serve",
     "build": "webpack --config webpack.config.mjs",
     "start": "npm run build && node ./server",
+    "test": "jest",
     "lint": "eslint src",
     "lint:styles": "npx stylelint 'src/**/*.css'",
     "check-types": "tsc --project ./tsconfig.json --noEmit",
@@ -27,10 +28,16 @@
   "dependencies": {
     "express": "4.18.1",
     "handlebars": "4.7.7",
-    "nanoid": "4.0.0"
+    "nanoid": "3.3.4"
   },
   "devDependencies": {
+    "@babel/core": "7.20.5",
+    "@babel/preset-env": "7.20.2",
+    "@babel/preset-typescript": "7.18.6",
+    "@testing-library/dom": "8.19.0",
+    "@testing-library/jest-dom": "5.16.5",
     "@types/chai": "4.3.4",
+    "@types/jest": "27.5.2",
     "@types/mocha": "10.0.0",
     "@typescript-eslint/eslint-plugin": "5.38.1",
     "@typescript-eslint/parser": "5.38.1",
@@ -41,6 +48,8 @@
     "eslint-config-prettier": "8.5.0",
     "html-webpack-plugin": "5.5.0",
     "husky": "^8.0.2",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "27.5.1",
     "mini-css-extract-plugin": "2.7.0",
     "mocha": "10.1.0",
     "postcss": "8.4.16",
@@ -53,6 +62,7 @@
     "stylelint": "14.12.1",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-standard": "28.0.0",
+    "ts-jest": "27.1.5",
     "ts-loader": "9.4.1",
     "typescript": "4.8.3",
     "webpack": "5.75.0",
