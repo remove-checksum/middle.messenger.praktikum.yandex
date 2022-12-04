@@ -1,11 +1,9 @@
-import { registerComponents } from "./helpers" // !!! This import must be first
+import { registerComponents } from "./helpers"
 import { PathRouter } from "./core/Router"
 import { Store } from "./core/Store"
 import { initRouter } from "./router/router"
 import { AppState, initialAppState } from "./store/store"
-import { renderDOM } from "./core"
 import { appInit } from "./store/actions/Init"
-import { Loader } from "./components"
 import "./shared/main.css"
 
 registerComponents()
@@ -18,8 +16,6 @@ const bootstrapApplication = () => {
     router,
     store,
   }
-
-  renderDOM("#app", new Loader({}))
 
   initRouter(router, store)
 

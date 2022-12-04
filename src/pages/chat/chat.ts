@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { Chat } from "../../services/api/Chats"
 import { ChatActions } from "../../store/actions"
 import { AppStore } from "../../store"

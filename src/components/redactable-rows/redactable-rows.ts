@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { InputDefinition } from "../../models/inputDefinition"
 import { AuthService } from "../../services/api"
 import { User, UserPublicInfo } from "../../services/api/User"
@@ -10,7 +10,7 @@ interface InputDataProps {
   inactive: boolean
 }
 
-export class RedactableRows extends Block<InputDataProps> {
+export default class RedactableRows extends Block<InputDataProps> {
   static blockName = "RedactableRows"
 
   constructor(props: InputDataProps) {

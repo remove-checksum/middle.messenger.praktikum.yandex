@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { formatUTC } from "../../helpers/formatUTC"
 import "./message-bubble.css"
 
@@ -9,7 +9,7 @@ interface MessageBubbleProps {
   own: boolean
 }
 
-export class MessageBubble extends Block<MessageBubbleProps> {
+export default class MessageBubble extends Block<MessageBubbleProps> {
   static blockName = "MessageBubble"
 
   constructor(props: MessageBubbleProps) {

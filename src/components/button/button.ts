@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./button.css"
 
 type ButtonKind = "warning" | "secondary"
@@ -20,7 +20,7 @@ interface ButtonState {
   type?: "submit" | "button"
 }
 
-export class Button extends Block<ButtonState> {
+export default class Button extends Block<ButtonState> {
   static blockName = "Button"
 
   constructor(props: ButtonProps) {

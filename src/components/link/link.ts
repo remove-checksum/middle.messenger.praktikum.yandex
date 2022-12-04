@@ -1,5 +1,4 @@
 import { Block, PathRouter } from "../../core"
-import { withRouter } from "../../hoc/withRouter"
 import "./link.css"
 
 interface LinkContext {
@@ -11,7 +10,7 @@ interface LinkProps {
   extraClass: string
 }
 
-export class Link extends Block<LinkProps & LinkContext> {
+export default class Link extends Block<LinkProps & LinkContext> {
   static blockName = "Link"
 
   constructor(props: LinkProps & LinkContext) {
@@ -19,7 +18,6 @@ export class Link extends Block<LinkProps & LinkContext> {
       ...props,
       events: {
         click: () => {
-          console.log(`going to ${this.props.to}`)
           this.props.router.go(this.props.to)
         },
       },
@@ -32,5 +30,3 @@ export class Link extends Block<LinkProps & LinkContext> {
     `
   }
 }
-
-export default withRouter(Link)

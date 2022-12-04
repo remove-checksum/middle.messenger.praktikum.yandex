@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./popup.css"
 
 export interface PopupItem<S extends string = string> {
@@ -16,7 +16,7 @@ interface PopupProps {
   }
 }
 
-export class Popup extends Block<PopupProps> {
+export default class Popup extends Block<PopupProps> {
   static blockName = "Popup"
 
   constructor(props: PopupProps) {
@@ -35,15 +35,6 @@ export class Popup extends Block<PopupProps> {
       },
     })
   }
-
-  // componentDidMount(props: PopupProps): void {
-  //   const popup = this.element
-  //   if (popup) {
-  //     popup.style.top = `${props.position.top}px`
-  //     popup.style.left = `${props.position.left}px`
-  //     popup.classList.remove("popup_hidden")
-  //   }
-  // }
 
   render() {
     return /* html */ `

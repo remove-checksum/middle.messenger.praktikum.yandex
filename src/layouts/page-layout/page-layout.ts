@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./page-layout.css"
 
 interface PageLayoutProps {

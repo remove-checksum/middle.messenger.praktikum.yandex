@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./404.css"
 
 export default class NotFoundPage extends Block {

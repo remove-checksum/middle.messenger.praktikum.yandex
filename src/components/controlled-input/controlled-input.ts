@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./controlled-input.css"
 import { InputFieldName, validate } from "../../services"
 import { UserCredentialsFieldName } from "../../models/forms"
@@ -26,7 +26,7 @@ interface ControlledInputProps {
   noAutocomplete?: boolean
 }
 
-export class ControlledInput extends Block<ControlledInputProps> {
+export default class ControlledInput extends Block<ControlledInputProps> {
   static blockName = "ControlledInput"
 
   constructor(props: ControlledInputProps) {

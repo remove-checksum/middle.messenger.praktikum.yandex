@@ -1,7 +1,7 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./loader.css"
 
-export class Loader extends Block {
+export default class Loader extends Block {
   static blockName = "Loader"
 
   render() {

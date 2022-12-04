@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import signupFormData from "./sign-up.json"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { AuthActions } from "../../store/actions"

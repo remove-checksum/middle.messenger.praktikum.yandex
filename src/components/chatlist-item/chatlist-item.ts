@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { formatUTC } from "../../helpers/formatUTC"
 import { Chat } from "../../services/api/Chats"
 import avatarFallback from "../../assets/avatar_not_found.png"
@@ -20,7 +20,7 @@ interface ChatlistItemState {
   avatarSrc: string
 }
 
-export class ChatlistItem extends Block<ChatlistItemState> {
+export default class ChatlistItem extends Block<ChatlistItemState> {
   static blockName = "ChatlistItem"
 
   constructor(props: ChatlistItemProps) {

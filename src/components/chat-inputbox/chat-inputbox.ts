@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { ModalVariant } from "../modal/modal"
 import { PopupItem } from "../popup/popup"
 import "./chat-inputbox.css"
@@ -14,7 +14,7 @@ interface ChatInputboxState {
   popupOpen: boolean
 }
 
-export class ChatInputbox extends Block<ChatInputboxState> {
+export default class ChatInputbox extends Block<ChatInputboxState> {
   static blockName = "ChatInputbox"
 
   constructor(props: ChatInputboxProps) {
