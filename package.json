@@ -10,6 +10,7 @@
     "build": "webpack --config webpack.config.mjs",
     "start": "npm run build && node ./server",
     "test": "jest",
+    "test:staged": "jest --bail --findRelatedTests",
     "lint": "eslint src",
     "lint:styles": "npx stylelint 'src/**/*.css'",
     "check-types": "tsc --project ./tsconfig.json --noEmit"

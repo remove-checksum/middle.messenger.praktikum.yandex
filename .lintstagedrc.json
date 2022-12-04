@@ -1,3 +1,4 @@
 {
-  "*.ts": ["tsc", "stylelint", "prettier", "eslint", "jest"]
+  "src/**/*.ts": ["prettier", "eslint", "npm run test:staged"],
+  "src/**/*.css": ["stylelint **/*.css"]
 }
