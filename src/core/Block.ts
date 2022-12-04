@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
 import { EventBus } from "./EventBus"
-import { addProxyHandler } from "../helpers"
+import { addProxyHandler } from "../helpers/addProxyHandler"
 
 type Events = Values<typeof Block.EVENTS>
 
@@ -98,12 +98,12 @@ export abstract class Block<
   }
 
   // This method meant to be overriden
-  /* eslint-disable-next-line */ // @ts-expect-error props typing
-  componentDidMount(props: P) {}
+  /* eslint-disable-next-line */
+  public componentDidMount(props: P) {}
 
   // This method meant to be overriden
-  /* eslint-disable-next-line */ // @ts-expect-error props typing
-  componentWillUnmount(props: P) {}
+  /* eslint-disable-next-line */
+  public componentWillUnmount(props: P) {}
 
   private _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps)
@@ -114,7 +114,7 @@ export abstract class Block<
   }
 
   // This method meant to be overriden
-  /* eslint-disable-next-line */ // @ts-expect-error props typing
+  /* eslint-disable-next-line */
   componentDidUpdate(oldProps: P, newProps: P) {
     return true
   }
