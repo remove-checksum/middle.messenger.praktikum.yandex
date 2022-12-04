@@ -10,6 +10,8 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9e343c10-e020-4480-b23c-21dace2348bf/deploy-status)](https://app.netlify.com/sites/square-chat-app/deploys)
 
+## Развернуто на [Render](https://boxy-in-a-box.onrender.com)
+
 ## Экраны приложения
 
 - 404
@@ -33,7 +35,10 @@ src\
       router\ - описания страниц и конфиг роутера
        store\ - глобальное хранилище и его настройки
       shared\ - глобальные файлы стилей
+       tests\ - настройки и утилиты для тестов
       app.ts  - точка входа
+
+typings\ - глобальные типы
 ```
 
 ## Установка и запуск
@@ -99,7 +104,16 @@ npm run start
     <img width="200" src="https://raw.githubusercontent.com/eslint/eslint/main/docs/src/assets/images/logo/eslint-logo-color.svg" alt="eslint logo">
   </a>
 
+  <a href="https://testing-library.com/" target="_blank">
+    <img width="160" src="https://testing-library.com/img/octopus-128x128.png" alt="jest logo">
+  </a>
+  
   <a href="https://stylelint.io/" target="_blank">
    <img width="200" src="https://raw.githubusercontent.com/stylelint/stylelint.io/main/static/img/light.svg" alt="stylelint logo">
   </a>
+
+  <a href="https://jestjs.io/" target="_blank">
+    <img width="200" src="https://raw.githubusercontent.com/facebook/jest/2ec6d243612c891d74fb6d3d0f2af453cb4d1106/website/static/img/jest.svg" alt="jest logo">
+  </a>
+
 </div>
