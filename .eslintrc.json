@@ -10,12 +10,14 @@
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
     "no-use-before-define":"off",
     "@typescript-eslint/no-use-before-define": "warn",
     "no-param-reassign": "off",
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": "error"
+    "@typescript-eslint/no-shadow": "error",
+    "max-classes-per-file": "off"
   }
 }

@@ -1,4 +1,4 @@
-import { EventBus } from "./index"
+import { EventBus } from "./EventBus"
 import { mergeDeep } from "../helpers/mergeDeep"
 
 export type Dispatch<S> = (

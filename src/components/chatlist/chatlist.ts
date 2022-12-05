@@ -1,7 +1,7 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { Page } from "../../router/pages"
 import { Chat } from "../../services/api/Chats"
-import { ControlledInput } from "../controlled-input/controlled-input"
+import { ControlledInput } from "../controlled-input"
 import { ModalDispatch } from "../modal/modal"
 import "./chatlist.css"
 
@@ -24,7 +24,7 @@ interface ChatlistState {
   createChat: (title: string) => void
 }
 
-export class Chatlist extends Block<ChatlistState> {
+export default class Chatlist extends Block<ChatlistState> {
   static blockName = "Chatlist"
 
   constructor(props: ChatlistProps) {

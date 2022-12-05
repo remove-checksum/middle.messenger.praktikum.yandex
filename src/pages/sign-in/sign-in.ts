@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import { targetHelper } from "../../helpers"
 import { formToFieldData } from "../../helpers/formHelpers/formHelpers"
 import { SignInCredentials } from "../../services/api/Auth"

@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./file-input.css"
 
 interface FileInputProps {
@@ -10,7 +10,7 @@ interface FileInputState {
   selectedFileName: string
 }
 
-export class FileInput extends Block<FileInputProps & FileInputState> {
+export default class FileInput extends Block<FileInputProps & FileInputState> {
   static blockName = "FileInput"
 
   constructor(props: FileInputProps) {

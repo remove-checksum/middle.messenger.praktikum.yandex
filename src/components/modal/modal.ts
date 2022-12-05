@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./modal.css"
 
 export type ModalVariant =
@@ -25,7 +25,7 @@ interface ModalProps {
   spec: ModalSpec
 }
 
-export class Modal extends Block<ModalState> {
+export default class Modal extends Block<ModalState> {
   static blockName = "Modal"
 
   constructor(props: ModalProps) {

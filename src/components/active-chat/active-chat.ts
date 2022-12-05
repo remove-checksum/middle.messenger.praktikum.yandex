@@ -1,13 +1,14 @@
-import { Block } from "../../core"
-import type { PopupItem } from "../index"
+import { Block } from "../../core/Block"
+import type { PopupItem } from "../popup/popup"
 import { Chat } from "../../services/api/Chats"
 import { Message } from "../../store/actions/Message"
 import avatarFallback from "../../assets/avatar_not_found.png"
 import { ModalDispatch } from "../modal/modal"
-import { ControlledInput } from "../index"
+import { ControlledInput } from "../controlled-input"
 import "./active-chat.css"
 import { AppDispatch } from "../../store"
 import { ChatActions } from "../../store/actions"
+import { API_RESOURCES_URL } from "../../config"
 
 interface ActiveChatProps {
   currentChat: Chat
@@ -34,7 +35,7 @@ interface ActiveChatState {
   appDispatch: AppDispatch
 }
 
-export class ActiveChat extends Block<ActiveChatState> {
+export default class ActiveChat extends Block<ActiveChatState> {
   static blockName = "ActiveChat"
 
   constructor(props: ActiveChatProps) {
@@ -178,7 +179,9 @@ export class ActiveChat extends Block<ActiveChatState> {
   }
 
   render(): string {
-    const avatarSrc = this.props.currentChat.avatar || avatarFallback
+    const avatarSrc = this.props.currentChat.avatar
+      ? `${API_RESOURCES_URL}${this.props.currentChat.avatar}`
+      : avatarFallback
 
     return /* html */ `
       <div class="activeChat">

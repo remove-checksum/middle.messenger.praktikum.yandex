@@ -1,4 +1,4 @@
-import { Block } from "../../core"
+import { Block } from "../../core/Block"
 import "./500.css"
 
 export default class ServerErrorPage extends Block {
